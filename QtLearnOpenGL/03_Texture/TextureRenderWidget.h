@@ -16,6 +16,7 @@ public:
         // Postion
         float pos[3];
         float color[3];
+        float coord[2];
     };
 
 public:
@@ -50,6 +51,10 @@ private:
     // Attribute Location
     GLint m_nPosAttrLocationId;
     GLint m_nColorAttrLocationId;
+    GLint m_nCoordAttrLocationId;
+
+    // Uniform Location
+    GLint m_nCoordLocationId;
 
 
     bool m_isFill = true;

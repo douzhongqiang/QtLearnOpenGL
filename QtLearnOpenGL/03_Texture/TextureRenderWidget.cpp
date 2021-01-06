@@ -26,6 +26,9 @@ void TextureRenderWidget::initializeGL()
     // 获取位置和颜色的locationID
     m_nPosAttrLocationId = glGetAttribLocation(m_shaderProgramId, "pos");
     m_nColorAttrLocationId = glGetAttribLocation(m_shaderProgramId, "color");
+    m_nCoordAttrLocationId = glGetAttribLocation(m_shaderProgramId, "texCoord");
+    // 获取Uniform的Location
+    m_nCoordLocationId = glGetUniformLocation(m_shaderProgramId, "texture1");
 
     // 创建顶点属性数据
     VertexAttributeData vAttrData[4];
@@ -52,9 +55,16 @@ void TextureRenderWidget::initializeGL()
     // 设置原色信息属性指针
     glVertexAttribPointer(m_nColorAttrLocationId, 4, GL_FLOAT, GL_FALSE, sizeof(VertexAttributeData), (void*)(sizeof (float) * 3));
     glEnableVertexAttribArray(m_nColorAttrLocationId);
+    // 设置纹理坐标
+    glVertexAttribPointer(m_nCoordAttrLocationId, 4, GL_FLOAT, GL_FALSE, sizeof(VertexAttributeData), (void*)(sizeof (float) * 6));
+    glEnableVertexAttribArray(m_nCoordAttrLocationId);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    QImage image("./EasyCanvasV2.png");
+    image.convertTo(QImage::Format_RGB888);
+    createTexture(image);
 }
 
 void TextureRenderWidget::resizeGL(int w, int h)
@@ -76,6 +86,10 @@ void TextureRenderWidget::paintGL()
 
     // 使用shader
     m_pShaderProgram->bind();
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, m_nCoordAttrLocationId);
+    glUniform1i(m_nCoordLocationId, 0);
 
     //glBindBuffer(GL_ARRAY_BUFFER, m_nVBOId);
 //    // 绘制
@@ -132,6 +146,9 @@ void TextureRenderWidget::createVertexAttributeData(VertexAttributeData* pVetAtt
     pVetAttr[0].color[0] = 1.0f;
     pVetAttr[0].color[1] = 0.0f;
     pVetAttr[0].color[2] = 0.0f;
+    // 第一个点的纹理坐标
+    pVetAttr[0].coord[0] = 0.0f;
+    pVetAttr[0].coord[1] = 1.0f;
 
     // 第二个点位置信息
     pVetAttr[1].pos[0] = -0.5f;
@@ -141,6 +158,9 @@ void TextureRenderWidget::createVertexAttributeData(VertexAttributeData* pVetAtt
     pVetAttr[1].color[0] = 0.0f;
     pVetAttr[1].color[1] = 1.0f;
     pVetAttr[1].color[2] = 0.0f;
+    // 第二个点的纹理坐标
+    pVetAttr[1].coord[0] = 0.0f;
+    pVetAttr[1].coord[1] = 0.0f;
 
     // 第三个点位置信息
     pVetAttr[2].pos[0] = 0.5f;
@@ -150,6 +170,9 @@ void TextureRenderWidget::createVertexAttributeData(VertexAttributeData* pVetAtt
     pVetAttr[2].color[0] = 0.0f;
     pVetAttr[2].color[1] = 0.0f;
     pVetAttr[2].color[2] = 1.0f;
+    // 第三个点的纹理坐标
+    pVetAttr[2].coord[0] = 1.0f;
+    pVetAttr[2].coord[1] = 0.0f;
 
     // 第四个点位置信息
     pVetAttr[3].pos[0] = 0.5f;
@@ -159,6 +182,9 @@ void TextureRenderWidget::createVertexAttributeData(VertexAttributeData* pVetAtt
     pVetAttr[3].color[0] = 0.0f;
     pVetAttr[3].color[1] = 1.0f;
     pVetAttr[3].color[2] = 1.0f;
+    // 第四个点的纹理坐标
+    pVetAttr[3].coord[0] = 1.0f;
+    pVetAttr[3].coord[1] = 1.0f;
 }
 
 void TextureRenderWidget::setFillStatus(bool isFill)
