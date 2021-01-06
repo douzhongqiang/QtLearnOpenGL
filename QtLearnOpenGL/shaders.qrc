@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>01_HelloTriangle/shader/fragmentshader.fsh</file>
+        <file>01_HelloTriangle/shader/vertexshader.vsh</file>
+        <file>02_IBOAndPolygonMode/shader/fragmentshader.fsh</file>
+        <file>02_IBOAndPolygonMode/shader/vertexshader.vsh</file>
+        <file>03_Texture/shader/fragmentshader.fsh</file>
+        <file>03_Texture/shader/vertexshader.vsh</file>
+    </qresource>
+</RCC>
