@@ -23,8 +23,13 @@ public:
     TextureRenderWidget(QWidget* parent = nullptr);
     ~TextureRenderWidget();
 
+    // 设置/获取线框模式
     void setFillStatus(bool isFill);
     bool isFill(void);
+
+    // 混色参数
+    void setMixNumber(float number);
+    float getMixNumber(void);
 
 protected:
     void initializeGL() override;
@@ -36,7 +41,7 @@ private:
     void createVertexAttributeData(VertexAttributeData* pVetAttr);
 
     // 添加纹理
-    void createTexture(const QImage& image);
+    void createTexture(const QImage& image, GLuint& textureid);
 
     GLuint m_shaderProgramId;
     QOpenGLShaderProgram* m_pShaderProgram = nullptr;
@@ -47,6 +52,7 @@ private:
     GLuint m_nIBOId;
 
     GLuint m_nTextureId;
+    GLuint m_nTextureId2;
 
     // Attribute Location
     GLint m_nPosAttrLocationId;
@@ -55,8 +61,10 @@ private:
 
     // Uniform Location
     GLint m_nCoordLocationId;
-
+    GLint m_nCoordLocationId2;
+    GLint m_nMixNumLocationId;
 
     bool m_isFill = true;
+    float m_mixNumber = 0.5f;
 };
 #endif

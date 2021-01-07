@@ -6,5 +6,7 @@
         <file>02_IBOAndPolygonMode/shader/vertexshader.vsh</file>
         <file>03_Texture/shader/fragmentshader.fsh</file>
         <file>03_Texture/shader/vertexshader.vsh</file>
+        <file>03_Texture/image/TestImage1.jpg</file>
+        <file>03_Texture/image/TestImage2.jpg</file>
     </qresource>
 </RCC>

@@ -1,5 +1,6 @@
 #include "TextureWidget.h"
 #include "TextureRenderWidget.h"
+#include "CustomCombineControl/UICustomDoubleControl.h"
 #include <QVBoxLayout>
 #include <QPushButton>
 
@@ -14,10 +15,12 @@ TextureWidget::TextureWidget(QWidget* parent)
     m_pRenderWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     pLayout->addWidget(m_pRenderWidget);
 
-    QPushButton* pButton = new QPushButton(tr("OK"));
-    QObject::connect(pButton, &QPushButton::clicked, this, &TextureWidget::onClickedButton);
-    pButton->setMinimumHeight(40);
-    pLayout->addWidget(pButton);
+    m_pMinNumberControl = new UICustomDoubleControl;
+    m_pMinNumberControl->setRangeValue(0, 1);
+    m_pMinNumberControl->setTagText(tr("Mix Number: "));
+    m_pMinNumberControl->setCurrentValue(m_pRenderWidget->getMixNumber());
+    QObject::connect(m_pMinNumberControl, &UICustomDoubleControl::valueChanged, this, &TextureWidget::onValueChanged);
+    pLayout->addWidget(m_pMinNumberControl);
 }
 
 TextureWidget::~TextureWidget()
@@ -25,8 +28,7 @@ TextureWidget::~TextureWidget()
 
 }
 
-void TextureWidget::onClickedButton(void)
+void TextureWidget::onValueChanged(qreal value, bool cmd)
 {
-    bool isFilled = m_pRenderWidget->isFill();
-    m_pRenderWidget->setFillStatus(!isFilled);
+    m_pRenderWidget->setMixNumber(value);
 }

@@ -4,6 +4,7 @@
 #include <QWidget>
 
 class TextureRenderWidget;
+class UICustomDoubleControl;
 class TextureWidget : public QWidget
 {
     Q_OBJECT
@@ -14,9 +15,10 @@ public:
 
 private:
     TextureRenderWidget* m_pRenderWidget = nullptr;
+    UICustomDoubleControl* m_pMinNumberControl = nullptr;
 
 private slots:
-    void onClickedButton(void);
+    void onValueChanged(qreal value, bool cmd);
 };
 
 #endif

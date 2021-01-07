@@ -10,7 +10,7 @@ TextureRenderWidget::TextureRenderWidget(QWidget* parent)
 
 TextureRenderWidget::~TextureRenderWidget()
 {
-
+    qDebug() << __FUNCTION__;
 }
 
 void TextureRenderWidget::initializeGL()
@@ -29,6 +29,8 @@ void TextureRenderWidget::initializeGL()
     m_nCoordAttrLocationId = glGetAttribLocation(m_shaderProgramId, "texCoord");
     // 获取Uniform的Location
     m_nCoordLocationId = glGetUniformLocation(m_shaderProgramId, "texture1");
+    m_nCoordLocationId2 = glGetUniformLocation(m_shaderProgramId, "texture2");
+    m_nMixNumLocationId = glGetUniformLocation(m_shaderProgramId, "mixNumber");
 
     // 创建顶点属性数据
     VertexAttributeData vAttrData[4];
@@ -62,9 +64,15 @@ void TextureRenderWidget::initializeGL()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    QImage image("./EasyCanvasV2.png");
-    image.convertTo(QImage::Format_RGB888);
-    createTexture(image);
+    // 创建第一个纹理
+    QImage image(":/03_Texture/image/TestImage1.jpg");
+    image = image.convertToFormat(QImage::Format_RGB888);
+    createTexture(image, m_nTextureId);
+
+    // 创建第二个纹理
+    QImage image2(":/03_Texture/image/TestImage2.jpg");
+    image2 = image2.convertToFormat(QImage::Format_RGB888);
+    createTexture(image2, m_nTextureId2);
 }
 
 void TextureRenderWidget::resizeGL(int w, int h)
@@ -87,14 +95,16 @@ void TextureRenderWidget::paintGL()
     // 使用shader
     m_pShaderProgram->bind();
 
+    // 设置0号纹理
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, m_nCoordAttrLocationId);
+    glBindTexture(GL_TEXTURE_2D, m_nTextureId);
     glUniform1i(m_nCoordLocationId, 0);
-
-    //glBindBuffer(GL_ARRAY_BUFFER, m_nVBOId);
-//    // 绘制
-//    glDrawArrays(GL_POLYGON, 0, 4);
-    //glBindBuffer(GL_ARRAY_BUFFER, 0);
+    // 设置1号纹理
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, m_nTextureId2);
+    glUniform1i(m_nCoordLocationId2, 1);
+    // 设置混色的参数
+    glUniform1f(m_nMixNumLocationId, m_mixNumber);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_nIBOId);
     // 绘制
@@ -198,11 +208,22 @@ bool TextureRenderWidget::isFill(void)
     return m_isFill;
 }
 
-// 添加纹理
-void TextureRenderWidget::createTexture(const QImage& image)
+void TextureRenderWidget::setMixNumber(float number)
 {
-    glGenTextures(1, &m_nTextureId);
-    glBindTexture(GL_TEXTURE_2D, m_nTextureId);
+    m_mixNumber = number;
+    this->update();
+}
+
+float TextureRenderWidget::getMixNumber(void)
+{
+    return m_mixNumber;
+}
+
+// 添加纹理
+void TextureRenderWidget::createTexture(const QImage& image, GLuint& textureid)
+{
+    glGenTextures(1, &textureid);
+    glBindTexture(GL_TEXTURE_2D, textureid);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -214,7 +235,7 @@ void TextureRenderWidget::createTexture(const QImage& image)
     glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
 
     // 设置纹理数据
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image.width(), image.height(), 0, GL_RGB, GL_UNSIGNED_BYTE, image.constBits());
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image.width(), image.height(), 0, GL_RGB, GL_UNSIGNED_BYTE, image.bits());
 
     glBindTexture(GL_TEXTURE_2D, 0);
 }
