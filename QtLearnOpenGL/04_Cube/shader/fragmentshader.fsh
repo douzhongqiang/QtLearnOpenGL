@@ -1,4 +1,4 @@
-varying vec4 M_Color;
+varying vec3 M_Normal;
 varying vec2 M_TexCoord;
 
 uniform sampler2D texture1;

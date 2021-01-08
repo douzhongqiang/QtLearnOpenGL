@@ -3,6 +3,7 @@
 #include "01_HelloTriangle/HelloTriangle.h"
 #include "02_IBOAndPolygonMode/IBOAndPolygonMode.h"
 #include "03_Texture/TextureWidget.h"
+#include "04_Cube/CubeWidget.h"
 #include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -36,5 +37,8 @@ void MainWindow::initUI(void)
 
     TextureWidget* pW3 = new TextureWidget;
     m_pLeftControl->addWidget(pW3, tr("03.Texture"));
+
+    CubeWidget* pW4 = new CubeWidget;
+    m_pLeftControl->addWidget(pW4, tr("04.Cube"));
 }
 

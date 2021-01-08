@@ -30,6 +30,8 @@ SOURCES += \
     02_IBOAndPolygonMode/IBOAndPolygonModeWidget.cpp \
     03_Texture/TextureRenderWidget.cpp \
     03_Texture/TextureWidget.cpp \
+    04_Cube/CubeRenderWidget.cpp \
+    04_Cube/CubeWidget.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -39,6 +41,8 @@ HEADERS += \
     02_IBOAndPolygonMode/IBOAndPolygonModeWidget.h \
     03_Texture/TextureRenderWidget.h \
     03_Texture/TextureWidget.h \
+    04_Cube/CubeRenderWidget.h \
+    04_Cube/CubeWidget.h \
     mainwindow.h
 
 # Default rules for deployment.
