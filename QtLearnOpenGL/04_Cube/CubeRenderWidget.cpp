@@ -249,6 +249,17 @@ float CubeRenderWidget::getMixNumber(void)
     return m_mixNumber;
 }
 
+// 设置旋转方向
+void CubeRenderWidget::setRotationDirection(const QVector3D& vec)
+{
+
+}
+
+QVector3D CubeRenderWidget::getRotationDirection(void)
+{
+
+}
+
 // 添加纹理
 void CubeRenderWidget::createTexture(const QImage& image, GLuint& textureid)
 {

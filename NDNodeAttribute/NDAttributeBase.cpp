@@ -6,6 +6,7 @@
 #include "NDStringAttribute.h"
 #include "NDNodeBase.h"
 #include "NDNodeManager.h"
+#include "NDVec3Attribute.h"
 #include "Utils.h"
 #include <QColor>
 
@@ -126,6 +127,11 @@ NDAttributeBase* NDAttributeBase::createAttribute(const QString& name, Attribute
         attribute = new NDColorAttribute;
         break;
     }
+    case t_vec3:
+    {
+        attribute = new NDVec3Attribute;
+        break;
+    }
     default:
         break;
     }
@@ -163,6 +169,8 @@ QString NDAttributeBase::getTypeName(void)
         return "Color";
     case t_postion2d:
         return "Postion2D";
+    case t_vec3:
+        return "vec3";
     }
 
     return "";

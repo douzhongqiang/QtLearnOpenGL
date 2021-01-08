@@ -5,6 +5,7 @@
 
 class CubeRenderWidget;
 class UICustomDoubleControl;
+class UICustomVec3Control;
 class CubeWidget : public QWidget
 {
     Q_OBJECT
@@ -16,6 +17,7 @@ public:
 private:
     CubeRenderWidget* m_pRenderWidget = nullptr;
     UICustomDoubleControl* m_pMinNumberControl = nullptr;
+    UICustomVec3Control* m_pVecControl = nullptr;
 
 private slots:
     void onValueChanged(qreal value, bool cmd);

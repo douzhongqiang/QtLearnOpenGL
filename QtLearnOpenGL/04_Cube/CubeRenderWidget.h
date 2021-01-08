@@ -40,6 +40,10 @@ public:
     void setMixNumber(float number);
     float getMixNumber(void);
 
+    // 设置旋转方向
+    void setRotationDirection(const QVector3D& vec);
+    QVector3D getRotationDirection(void);
+
 protected:
     void initializeGL() override;
     void resizeGL(int w, int h) override;

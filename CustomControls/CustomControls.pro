@@ -45,6 +45,7 @@ SOURCES += \
     CustomCombineControl/UICustomSwitchControl.cpp \
     CustomCombineControl/UICustomTextEditTagControl.cpp \
     CustomCombineControl/UICustomTimeEditControl.cpp \
+    CustomCombineControl/UICustomVec3Control.cpp \
     UICurtomLeftBarControl/UICustomLeftItemWidget.cpp \
     UICurtomLeftBarControl/UICustomLeftTabsControl.cpp \
     UICurtomLeftBarControl/UICustomLeftWidget.cpp \
@@ -65,7 +66,8 @@ SOURCES += \
     UICustomSingleControl/UICustomPostionWidget.cpp \
     UICustomSingleControl/UICustomSwitchWidget.cpp \
     UICustomSingleControl/UICustomTextEdit.cpp \
-    UICustomSingleControl/UICustomTimeEdit.cpp
+    UICustomSingleControl/UICustomTimeEdit.cpp \
+    UICustomSingleControl/UICustomVec3Widget.cpp
 
 HEADERS += \
         CustomCombineControl/UICustomColorControl.h \
@@ -82,6 +84,7 @@ HEADERS += \
         CustomCombineControl/UICustomSwitchControl.h \
         CustomCombineControl/UICustomTextEditTagControl.h \
         CustomCombineControl/UICustomTimeEditControl.h \
+        CustomCombineControl/UICustomVec3Control.h \
         UICurtomLeftBarControl/UICustomLefTabsControl.h \
         UICurtomLeftBarControl/UICustomLeftItemWidget.h \
         UICurtomLeftBarControl/UICustomLeftWidget.h \
@@ -103,6 +106,7 @@ HEADERS += \
         UICustomSingleControl/UICustomSwitchWidget.h \
         UICustomSingleControl/UICustomTextEdit.h \
         UICustomSingleControl/UICustomTimeEdit.h \
+        UICustomSingleControl/UICustomVec3Widget.h \
         customcontrols_global.h 
 
 unix {

@@ -1,6 +1,7 @@
 #include "CubeWidget.h"
 #include "CubeRenderWidget.h"
 #include "CustomCombineControl/UICustomDoubleControl.h"
+#include "CustomCombineControl/UICustomVec3Control.h"
 #include <QVBoxLayout>
 #include <QPushButton>
 
@@ -21,6 +22,11 @@ CubeWidget::CubeWidget(QWidget* parent)
     m_pMinNumberControl->setCurrentValue(m_pRenderWidget->getMixNumber());
     QObject::connect(m_pMinNumberControl, &UICustomDoubleControl::valueChanged, this, &CubeWidget::onValueChanged);
     pLayout->addWidget(m_pMinNumberControl);
+
+    m_pVecControl = new UICustomVec3Control;
+    m_pVecControl->setTagText(tr("Rotation Direction: "));
+    pLayout->addWidget(m_pVecControl);
+//    m_pVecControl->setValue()
 }
 
 CubeWidget::~CubeWidget()

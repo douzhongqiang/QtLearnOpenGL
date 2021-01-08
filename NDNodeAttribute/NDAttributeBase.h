@@ -19,7 +19,9 @@ public:
         t_string,           // 字符串类型
         t_stringList,       // 字符串数组
         t_color,            // 颜色
-        t_postion2d         // 2D坐标类型
+        t_postion2d,        // 2D坐标类型
+
+        t_vec3              // vec3
     };
 
 public:

@@ -42,7 +42,8 @@ SOURCES += \
         NDPostionAttribute.cpp \
         NDRealAttribute.cpp \
         NDStringAttribute.cpp \
-        NDTextNode.cpp
+        NDTextNode.cpp \
+        NDVec3Attribute.cpp
 
 HEADERS += \
         NDAttributeBase.h \
@@ -57,6 +58,7 @@ HEADERS += \
         NDRealAttribute.h \
         NDStringAttribute.h \
         NDTextNode.h \
+        NDVec3Attribute.h \
         ndnodeattribute_global.h 
 
 unix {

@@ -41,6 +41,7 @@ SOURCES += \
         UIAttrFloatControl.cpp \
         UIAttrIntControl.cpp \
         UIAttrTextControl.cpp \
+        UIAttrVec3Control.cpp \
         UINodeAttrControl.cpp
 
 HEADERS += \
@@ -49,6 +50,7 @@ HEADERS += \
         UIAttrFloatControl.h \
         UIAttrIntControl.h \
         UIAttrTextControl.h \
+        UIAttrVec3Control.h \
         UINodeAttrControl.h \
         nodeattributecontrol_global.h 
 
