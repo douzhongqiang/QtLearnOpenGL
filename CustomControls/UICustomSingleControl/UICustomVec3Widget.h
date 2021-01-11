@@ -23,6 +23,9 @@ public:
     // 设置Margin
     void setSpinBoxMargin(const QMargins& margins);
 
+    // 设置取值范围
+    void setRange(float minValue, float maxValue);
+
 private:
     QVector3D m_value;
 

@@ -4,6 +4,8 @@
 #include "02_IBOAndPolygonMode/IBOAndPolygonMode.h"
 #include "03_Texture/TextureWidget.h"
 #include "04_Cube/CubeWidget.h"
+#include "05_Cubes/CubesWidget.h"
+#include "06_Camera/CameraWidget.h"
 #include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -40,5 +42,11 @@ void MainWindow::initUI(void)
 
     CubeWidget* pW4 = new CubeWidget;
     m_pLeftControl->addWidget(pW4, tr("04.Cube"));
+
+    CubesWidget* pW5 = new CubesWidget;
+    m_pLeftControl->addWidget(pW5, tr("05.Cubes"));
+
+    CameraWidget* pW6 = new CameraWidget;
+    m_pLeftControl->addWidget(pW6, tr("06.Camera"));
 }
 

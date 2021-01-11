@@ -32,6 +32,15 @@ SOURCES += \
     03_Texture/TextureWidget.cpp \
     04_Cube/CubeRenderWidget.cpp \
     04_Cube/CubeWidget.cpp \
+    05_Cubes/CubesRenderWidget.cpp \
+    05_Cubes/CubesWidget.cpp \
+    06_Camera/CameraRenderWidget.cpp \
+    06_Camera/CameraWidget.cpp \
+    OpenGLEngine/CAttributePoint.cpp \
+    OpenGLEngine/COpenGLRender.cpp \
+    OpenGLEngine/COpenGLTexture.cpp \
+    OpenGLEngine/COpenGLVertexArray.cpp \
+    OpenGLEngine/COpenGLVertexObject.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -43,6 +52,15 @@ HEADERS += \
     03_Texture/TextureWidget.h \
     04_Cube/CubeRenderWidget.h \
     04_Cube/CubeWidget.h \
+    05_Cubes/CubesRenderWidget.h \
+    05_Cubes/CubesWidget.h \
+    06_Camera/CameraRenderWidget.h \
+    06_Camera/CameraWidget.h \
+    OpenGLEngine/CAttributePoint.h \
+    OpenGLEngine/COpenGLRender.h \
+    OpenGLEngine/COpenGLTexture.h \
+    OpenGLEngine/COpenGLVertexArray.h \
+    OpenGLEngine/COpenGLVertexObject.h \
     mainwindow.h
 
 # Default rules for deployment.

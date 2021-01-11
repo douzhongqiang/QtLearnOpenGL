@@ -4,6 +4,7 @@
 
 CubeRenderWidget::CubeRenderWidget(QWidget* parent)
     :QOpenGLWidget(parent)
+    , m_rotateVec(0.5f, 1.0f, 0.0f)
 {
 
 }
@@ -252,12 +253,25 @@ float CubeRenderWidget::getMixNumber(void)
 // 设置旋转方向
 void CubeRenderWidget::setRotationDirection(const QVector3D& vec)
 {
-
+    m_rotateVec = vec;
+    this->update();
 }
 
 QVector3D CubeRenderWidget::getRotationDirection(void)
 {
+    return m_rotateVec;
+}
 
+// 获取/设置速度
+void CubeRenderWidget::setSpeed(int speed)
+{
+    m_nSpeed = speed;
+    this->update();
+}
+
+int CubeRenderWidget::getSpeed(void)
+{
+    return m_nSpeed;
 }
 
 // 添加纹理
@@ -378,12 +392,11 @@ void CubeRenderWidget::initTimer(void)
 
 void CubeRenderWidget::onTimeout(void)
 {
-    m_angle += 8;
+    m_angle += m_nSpeed;
     m_MMat.setToIdentity();
     m_MMat.translate(QVector3D(0, 0, -5));
 
-    QVector3D vec(0.5f, 1.0f, 0.0f);
-    m_MMat.rotate(m_angle, vec);
+    m_MMat.rotate(m_angle, m_rotateVec);
 
     this->update();
 }

@@ -11,7 +11,6 @@ UICustomVec3Control::UICustomVec3Control(QWidget* parent)
     this->setHeight(30);
 
     m_pVec3Widget->setSpinBoxSpacing(2);
-    m_pVec3Widget->setSpinBoxMargin(QMargins(2, 2, 2, 2));
 
     QObject::connect(m_pVec3Widget, &UICustomVec3Widget::valueChanged, this, &UICustomVec3Control::valueChanged);
 }
@@ -30,4 +29,9 @@ void UICustomVec3Control::setValue(const QVector3D& vec)
 QVector3D UICustomVec3Control::getValue(void)
 {
     return m_pVec3Widget->getValue();
+}
+
+void UICustomVec3Control::setRange(float minValue, float maxValue)
+{
+    m_pVec3Widget->setRange(minValue, maxValue);
 }

@@ -11,15 +11,15 @@ UICustomVec3Widget::UICustomVec3Widget(QWidget* parent)
 
     // 初始化控件
     m_pDoubleSpinBoxX = new UICustomDoubleSpinBox;
-    m_pDoubleSpinBoxX->setRange(0, 1.0);
+    m_pDoubleSpinBoxX->setRange(-1.0, 1.0);
     m_pDoubleSpinBoxX->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
     m_pDoubleSpinBoxY = new UICustomDoubleSpinBox;
-    m_pDoubleSpinBoxY->setRange(0, 1.0);
+    m_pDoubleSpinBoxY->setRange(-1.0, 1.0);
     m_pDoubleSpinBoxY->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
     m_pDoubleSpinBoxZ = new UICustomDoubleSpinBox;
-    m_pDoubleSpinBoxZ->setRange(0, 1.0);
+    m_pDoubleSpinBoxZ->setRange(-1.0, 1.0);
     m_pDoubleSpinBoxZ->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
     m_pMainLayout->addWidget(m_pDoubleSpinBoxX);
@@ -28,6 +28,10 @@ UICustomVec3Widget::UICustomVec3Widget(QWidget* parent)
 
     updateDisplay();
     QObject::connect(m_pDoubleSpinBoxX, SIGNAL(valueChanged(double)), \
+                     this, SLOT(onDoubleSpinBoxValueChanged(double)));
+    QObject::connect(m_pDoubleSpinBoxY, SIGNAL(valueChanged(double)), \
+                     this, SLOT(onDoubleSpinBoxValueChanged(double)));
+    QObject::connect(m_pDoubleSpinBoxZ, SIGNAL(valueChanged(double)), \
                      this, SLOT(onDoubleSpinBoxValueChanged(double)));
 }
 
@@ -48,14 +52,21 @@ void UICustomVec3Widget::setSpinBoxMargin(const QMargins& margins)
     m_pMainLayout->setContentsMargins(margins);
 }
 
+void UICustomVec3Widget::setRange(float minValue, float maxValue)
+{
+    m_pDoubleSpinBoxX->setRange(minValue, maxValue);
+    m_pDoubleSpinBoxY->setRange(minValue, maxValue);
+    m_pDoubleSpinBoxZ->setRange(minValue, maxValue);
+}
+
 // 设置和获取数值
 void UICustomVec3Widget::setValue(const QVector3D& vec)
 {
-    updateDisplay();
-
     if (m_value != vec)
     {
         m_value = vec;
+        updateDisplay();
+
         emit valueChanged(m_value);
     }
 }
