@@ -36,6 +36,8 @@ SOURCES += \
     05_Cubes/CubesWidget.cpp \
     06_Camera/CameraRenderWidget.cpp \
     06_Camera/CameraWidget.cpp \
+    07_CameraRoam/CameraRoamRenderWidget.cpp \
+    07_CameraRoam/CameraRoamWidget.cpp \
     OpenGLEngine/CAttributePoint.cpp \
     OpenGLEngine/COpenGLRender.cpp \
     OpenGLEngine/COpenGLTexture.cpp \
@@ -56,6 +58,8 @@ HEADERS += \
     05_Cubes/CubesWidget.h \
     06_Camera/CameraRenderWidget.h \
     06_Camera/CameraWidget.h \
+    07_CameraRoam/CameraRoamRenderWidget.h \
+    07_CameraRoam/CameraRoamWidget.h \
     OpenGLEngine/CAttributePoint.h \
     OpenGLEngine/COpenGLRender.h \
     OpenGLEngine/COpenGLTexture.h \
