@@ -8,6 +8,7 @@
 
 class COpenGLTexture;
 class COpenGLVertexObject;
+class COpenGLCamera;
 class COpenGLRender : public QObject
 {
     Q_OBJECT
@@ -39,12 +40,17 @@ public:
     // 渲染顶点数据
     void activeVertex(void);
 
+    // 设置相机
+    void setCamera(COpenGLCamera* pCamera);
+
 private:
     QVector<COpenGLTexture*> m_textures;
     QOpenGLFunctions* m_pFunction = nullptr;
 
     QVector<COpenGLVertexObject*> m_pVertexObjects;
     QOpenGLShaderProgram* m_pShaderProgram = nullptr;
+
+    COpenGLCamera* m_pCamera = nullptr;
 };
 
 #endif

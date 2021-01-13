@@ -3,6 +3,7 @@
 #include "OpenGLEngine/COpenGLRender.h"
 #include "OpenGLEngine/COpenGLVertexObject.h"
 #include "OpenGLEngine/CAttributePoint.h"
+#include "OpenGLEngine/COpenGLCamera.h"
 #include "Utils.h"
 #include <QtMath>
 #include <QDebug>
@@ -52,6 +53,12 @@ void LightBaseRenderWidget::initializeGL()
         m_pVertexObject = new COpenGLVertexObject(f, this);
     m_pRender->addVertexDataObject(m_pVertexObject);
 
+    // 设置相机
+    if (!m_pCamera)
+        m_pCamera = new COpenGLCamera(f, this);
+    m_pCamera->setCameraShaderName("V", "P");
+    m_pRender->setCamera(m_pCamera);
+
     // 获取位置和颜色的locationID
     m_pVertexObject->setName("pos", "texCoord", "normal");
     // 创建顶点属性数据
@@ -98,15 +105,15 @@ void LightBaseRenderWidget::paintGL()
     // 設置眼睛的位置
     m_pShaderProgram->setUniformValue("M_ViewPostion", m_cameraPos);
 
-    // 设置Camera
-    m_VMat.setToIdentity();
-    m_VMat.lookAt(m_cameraPos, m_cameraPos + m_cameraFront, m_cameraUp);
-    m_pShaderProgram->setUniformValue("V", m_VMat);
+//    // 设置Camera
+//    m_VMat.setToIdentity();
+//    m_VMat.lookAt(m_cameraPos, m_cameraPos + m_cameraFront, m_cameraUp);
+//    m_pShaderProgram->setUniformValue("V", m_VMat);
 
-    // 设置投影矩阵
-    m_PMat.setToIdentity();
-    m_PMat.perspective(m_persAngle, this->width() * 1.0 / this->height(), 0.1f, 100.0f);
-    m_pShaderProgram->setUniformValue("P", m_PMat);
+//    // 设置投影矩阵
+//    m_PMat.setToIdentity();
+//    m_PMat.perspective(m_persAngle, this->width() * 1.0 / this->height(), 0.1f, 100.0f);
+//    m_pShaderProgram->setUniformValue("P", m_PMat);
 
     // 绘制光源
     // =============================================================
@@ -150,33 +157,8 @@ void LightBaseRenderWidget::paintGL()
 
 void LightBaseRenderWidget::keyPressEvent(QKeyEvent* event)
 {
-    float speed = 0.5;
-    if (event->key() == Qt::Key_W || event->key() == Qt::Key_Up)
-    {
-        m_cameraPos += speed * m_cameraFront;
-
-        emit cameraPostionChanged(m_cameraPos);
-    }
-    else if (event->key() == Qt::Key_S || event->key() == Qt::Key_Down)
-    {
-        m_cameraPos -= speed * m_cameraFront;
-
-        emit cameraPostionChanged(m_cameraPos);
-    }
-    else if (event->key() == Qt::Key_A || event->key() == Qt::Key_Left)
-    {
-        QVector3D rightVec = QVector3D::crossProduct(m_cameraFront, m_cameraUp).normalized();
-        m_cameraPos -= speed * rightVec;
-
-        emit cameraPostionChanged(m_cameraPos);
-    }
-    else if (event->key() == Qt::Key_D || event->key() == Qt::Key_Right)
-    {
-        QVector3D rightVec = QVector3D::crossProduct(m_cameraFront, m_cameraUp).normalized();
-        m_cameraPos += speed * rightVec;
-
-        emit cameraPostionChanged(m_cameraPos);
-    }
+    if (m_pCamera)
+        m_pCamera->keyPressEvent(event);
 
     this->update();
     return QOpenGLWidget::keyPressEvent(event);
@@ -184,48 +166,16 @@ void LightBaseRenderWidget::keyPressEvent(QKeyEvent* event)
 
 void LightBaseRenderWidget::mousePressEvent(QMouseEvent* event)
 {
-    m_bPressed = true;
-    m_startPos = event->pos();
+    if (m_pCamera)
+        m_pCamera->mousePressEvent(event);
+
     return QOpenGLWidget::mousePressEvent(event);
 }
 
 void LightBaseRenderWidget::mouseMoveEvent(QMouseEvent* event)
 {
-    if (!m_bPressed)
-        return QOpenGLWidget::mouseMoveEvent(event);
-
-    static bool isFirst = true;
-    if (isFirst)
-    {
-        isFirst = false;
-
-    }
-
-    float xoffset = event->x() - m_startPos.x();
-    float yoffset = m_startPos.y() - event->y();
-    m_startPos = event->pos();
-    qDebug() << xoffset << ", " << yoffset;
-
-    float sensitivity = 0.05f;
-    xoffset *= sensitivity;
-    yoffset *= sensitivity;
-
-    m_yaw   += xoffset;
-    m_pitch += yoffset;
-
-//    if(m_pitch > 89.0f)
-//      m_pitch =  89.0f;
-//    if(m_yaw < -89.0f)
-//      m_yaw = -89.0f;
-
-    QVector3D front;
-    front.setX(qCos(qDegreesToRadians(m_yaw)) * qCos(qDegreesToRadians(m_pitch)));
-    front.setY(qSin(qDegreesToRadians(m_pitch)));
-    front.setZ(qSin(qDegreesToRadians(m_yaw)) * qCos(qDegreesToRadians(m_pitch)));
-//    qDebug() << front.x() << front.y() << front.z();
-
-    m_cameraFront = front.normalized();
-    emit cameraFrontChanged(m_cameraFront);
+    if (m_pCamera)
+        m_pCamera->mouseMoveEvent(event);
     this->update();
 
     return QOpenGLWidget::mouseMoveEvent(event);
@@ -233,20 +183,17 @@ void LightBaseRenderWidget::mouseMoveEvent(QMouseEvent* event)
 
 void LightBaseRenderWidget::mouseReleaseEvent(QMouseEvent* event)
 {
-    m_bPressed = false;
+    if (m_pCamera)
+        m_pCamera->mouseReleaseEvent(event);
+
     return QOpenGLWidget::mouseReleaseEvent(event);
 }
 
 void LightBaseRenderWidget::wheelEvent(QWheelEvent *event)
 {
-    float interval = -event->delta() / 100.0;
-    m_persAngle += interval;
-    if (m_persAngle < 1.0f)
-        m_persAngle = 1.0f;
-    if (m_persAngle > 45.0f)
-        m_persAngle = 45.0f;
+    if (m_pCamera)
+        m_pCamera->wheelEvent(event);
 
-    emit projMatrixAngleChanged(m_persAngle);
     this->update();
     return QOpenGLWidget::wheelEvent(event);
 }

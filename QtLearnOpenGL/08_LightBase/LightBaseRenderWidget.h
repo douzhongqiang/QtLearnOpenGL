@@ -14,6 +14,7 @@
 class COpenGLTexture;
 class COpenGLRender;
 class COpenGLVertexObject;
+class COpenGLCamera;
 class LightBaseRenderWidget : public QOpenGLWidget, public QOpenGLFunctions_2_0
 {
     Q_OBJECT
@@ -104,6 +105,8 @@ private:
     QColor m_cObjectColor;          // 物体的颜色
     QColor m_cLightColor;           // 光的颜色
     QVector3D m_lightPostion;       // 光源的位置
+
+    COpenGLCamera* m_pCamera = nullptr;
 
 signals:
     void cameraPostionChanged(const QVector3D& cameraPos);

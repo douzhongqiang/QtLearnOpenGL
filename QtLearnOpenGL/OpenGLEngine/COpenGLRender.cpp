@@ -1,6 +1,7 @@
 #include "COpenGLRender.h"
 #include "COpenGLTexture.h"
 #include "COpenGLVertexObject.h"
+#include "COpenGLCamera.h"
 
 COpenGLRender::COpenGLRender(QOpenGLFunctions* function, QObject* parent)
     :QObject (parent)
@@ -86,6 +87,9 @@ void COpenGLRender::init(void)
 
 void COpenGLRender::render(void)
 {
+    if (m_pCamera)
+        m_pCamera->activeCamera();
+
     // 设置纹理
     activeTexture();
 
@@ -96,4 +100,11 @@ void COpenGLRender::render(void)
 void COpenGLRender::resize(int width, int height)
 {
     m_pFunction->glViewport(0, 0, width, height);
+}
+
+// 设置相机
+void COpenGLRender::setCamera(COpenGLCamera* pCamera)
+{
+    m_pCamera = pCamera;
+    m_pCamera->setShaderProgram(m_pShaderProgram);
 }

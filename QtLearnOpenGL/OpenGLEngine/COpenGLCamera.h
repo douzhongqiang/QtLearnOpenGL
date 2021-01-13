@@ -21,7 +21,7 @@ public:
     ~COpenGLCamera();
 
     void setViewport(int width, int height);
-    void setViewRange(float near, float far);
+    void setViewRange(float nNear, float nFar);
 
     // 设置
     void setShaderProgram(QOpenGLShaderProgram* pProgram);
@@ -43,6 +43,10 @@ public:
     QVector3D getCameraPostion(void);
     QVector3D getCameraCameraFront(void);
     QVector3D getCameraCameraUp(void);
+
+    // 设置投影矩阵相关
+    void setPersAngle(float angle);
+    float getPerAngle(void);
 
     void activeCamera(void);
 
@@ -73,6 +77,7 @@ private:
     float m_nFar = 100.0f;
 
     void reSetProjectMatrix(void);
+    void reSetViewMatrix(void);
 
 signals:
     void cameraPostionChanged(const QVector3D& cameraPos);

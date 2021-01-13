@@ -138,29 +138,46 @@ QVector3D COpenGLCamera::getCameraCameraUp(void)
     return m_cameraUp;
 }
 
-void COpenGLCamera::reSetProjectMatrix(void)
+// 设置投影矩阵相关
+void COpenGLCamera::setPersAngle(float angle)
 {
+    m_persAngle = angle;
+}
 
+float COpenGLCamera::getPerAngle(void)
+{
+    return m_persAngle;
 }
 
 void COpenGLCamera::setViewport(int width, int height)
 {
     m_nViewportWidth = width;
     m_nViewportHeight = height;
-
-    activeCamera();
 }
 
-void COpenGLCamera::setViewRange(float near, float far)
+void COpenGLCamera::setViewRange(float nNear, float nFar)
 {
-    m_nNear = near;
-    m_nFar = far;
+    m_nNear = nNear;
+    m_nFar = nFar;
+}
 
-    activeCamera();
+void COpenGLCamera::reSetProjectMatrix(void)
+{
+    m_PMat.setToIdentity();
+    m_PMat.perspective(m_persAngle, m_nViewportWidth * 1.0 / m_nViewportHeight, m_nNear, m_nFar);
+}
+
+void COpenGLCamera::reSetViewMatrix(void)
+{
+    m_VMat.setToIdentity();
+    m_VMat.lookAt(m_cameraPos, m_cameraPos + m_cameraFront, m_cameraUp);
 }
 
 void COpenGLCamera::activeCamera(void)
 {
-    m_PMat.setToIdentity();
-    m_PMat.perspective(m_persAngle, m_nViewportWidth * 1.0 / m_nViewportHeight, m_nNear, m_nFar);
+    reSetProjectMatrix();
+    reSetViewMatrix();
+
+    m_pProgram->setUniformValue(m_viewMatName.toLocal8Bit().data(), m_VMat);
+    m_pProgram->setUniformValue(m_projectMatName.toLocal8Bit().data(), m_PMat);
 }
