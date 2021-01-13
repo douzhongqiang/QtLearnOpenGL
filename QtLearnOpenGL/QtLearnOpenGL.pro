@@ -41,6 +41,7 @@ SOURCES += \
     08_LightBase/LightBaseRenderWidget.cpp \
     08_LightBase/LightBaseWidget.cpp \
     OpenGLEngine/CAttributePoint.cpp \
+    OpenGLEngine/COpenGLCamera.cpp \
     OpenGLEngine/COpenGLRender.cpp \
     OpenGLEngine/COpenGLTexture.cpp \
     OpenGLEngine/COpenGLVertexArray.cpp \
@@ -65,6 +66,7 @@ HEADERS += \
     08_LightBase/LightBaseRenderWidget.h \
     08_LightBase/LightBaseWidget.h \
     OpenGLEngine/CAttributePoint.h \
+    OpenGLEngine/COpenGLCamera.h \
     OpenGLEngine/COpenGLRender.h \
     OpenGLEngine/COpenGLTexture.h \
     OpenGLEngine/COpenGLVertexArray.h \
