@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       -= gui
+QT       += core gui
 
 TARGET = Utils
 TEMPLATE = lib

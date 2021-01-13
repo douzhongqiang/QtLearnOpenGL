@@ -7,6 +7,7 @@
 #include "05_Cubes/CubesWidget.h"
 #include "06_Camera/CameraWidget.h"
 #include "07_CameraRoam/CameraRoamWidget.h"
+#include "08_LightBase/LightBaseWidget.h"
 #include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -52,5 +53,8 @@ void MainWindow::initUI(void)
 
     CameraRoamWidget* pW7 = new CameraRoamWidget;
     m_pLeftControl->addWidget(pW7, tr("07.CameraRoam"));
+
+    LightBaseWidget* pW8 = new LightBaseWidget;
+    m_pLeftControl->addWidget(pW8, tr("08.Light Base"));
 }
 

@@ -33,3 +33,26 @@ bool Utils::isEqual(qreal number1, qreal number2)
 
     return false;
 }
+
+// 颜色转换
+QVector3D Utils::color2Vec3(const QColor& color)
+{
+    QVector3D vec3;
+
+    vec3.setX(color.redF());
+    vec3.setY(color.greenF());
+    vec3.setZ(color.blueF());
+
+    return vec3;
+}
+
+QColor Utils::vec32Color(const QVector3D& vec3)
+{
+    QColor color;
+
+    color.setRedF(vec3.x());
+    color.setGreenF(vec3.y());
+    color.setBlueF(vec3.z());
+
+    return color;
+}

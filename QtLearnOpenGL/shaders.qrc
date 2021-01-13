@@ -12,5 +12,7 @@
         <file>04_Cube/image/TestImage2.jpg</file>
         <file>04_Cube/shader/fragmentshader.fsh</file>
         <file>04_Cube/shader/vertexshader.vsh</file>
+        <file>08_LightBase/shader/fragmentshader.fsh</file>
+        <file>08_LightBase/shader/vertexshader.vsh</file>
     </qresource>
 </RCC>
