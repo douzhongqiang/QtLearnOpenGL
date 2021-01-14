@@ -40,6 +40,9 @@ SOURCES += \
     07_CameraRoam/CameraRoamWidget.cpp \
     08_LightBase/LightBaseRenderWidget.cpp \
     08_LightBase/LightBaseWidget.cpp \
+    09_Material/MaterialNode.cpp \
+    09_Material/MaterialRenderWidget.cpp \
+    09_Material/MaterialWidget.cpp \
     OpenGLEngine/CAttributePoint.cpp \
     OpenGLEngine/COpenGLCamera.cpp \
     OpenGLEngine/COpenGLRender.cpp \
@@ -65,6 +68,9 @@ HEADERS += \
     07_CameraRoam/CameraRoamWidget.h \
     08_LightBase/LightBaseRenderWidget.h \
     08_LightBase/LightBaseWidget.h \
+    09_Material/MaterialNode.h \
+    09_Material/MaterialRenderWidget.h \
+    09_Material/MaterialWidget.h \
     OpenGLEngine/CAttributePoint.h \
     OpenGLEngine/COpenGLCamera.h \
     OpenGLEngine/COpenGLRender.h \

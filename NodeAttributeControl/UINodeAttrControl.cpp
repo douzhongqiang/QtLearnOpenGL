@@ -4,6 +4,7 @@
 #include "UIAttrFloatControl.h"
 #include "UIAttrIntControl.h"
 #include "UIAttrBoolControl.h"
+#include "UIAttrVec3Control.h"
 #include "NDAttributeBase.h"
 #include "NDAttributeGroup.h"
 #include "CustomCombineControl/UICustomGroupControl.h"
@@ -75,6 +76,10 @@ QWidget* UINodeAttrControl::createAttributeControl(NDAttributeBase* attribute)
     case NDAttributeBase::t_bool:
     {
         return new UIAttrBoolControl(attribute);
+    }
+    case NDAttributeBase::t_vec3:
+    {
+        return new UIAttrVec3Control(attribute);
     }
     default:
         break;
