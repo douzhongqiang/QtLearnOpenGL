@@ -12,12 +12,9 @@
 
 LightBaseRenderWidget::LightBaseRenderWidget(QWidget* parent)
     :QOpenGLWidget(parent)
-    , m_cameraPos(0.0f, 0.0f,  10.0f)
-    , m_cameraFront(0.0f, 0.0f, -1.0f)
-    , m_cameraUp(0.0f, 1.0f,  0.0f)
     , m_cObjectColor(200, 100, 100)
     , m_cLightColor(255, 255, 255)
-    , m_lightPostion(1.5f, 1.5f, 4.0f)
+    , m_lightPostion(1.2f, 0.5f, 2.0f)
 {
     this->setFocusPolicy(Qt::ClickFocus);
     this->setMouseTracking(true);
@@ -58,6 +55,7 @@ void LightBaseRenderWidget::initializeGL()
         m_pCamera = new COpenGLCamera(f, this);
     m_pCamera->setCameraShaderName("V", "P");
     m_pRender->setCamera(m_pCamera);
+    m_pCamera->setCameraPostion(QVector3D(0.0f, 0.0f, 10.0f));
 
     // 获取位置和颜色的locationID
     m_pVertexObject->setName("pos", "texCoord", "normal");
@@ -75,10 +73,7 @@ void LightBaseRenderWidget::initializeGL()
 
 void LightBaseRenderWidget::resizeGL(int w, int h)
 {
-    this->glViewport(0, 0, w, h);
-
-    m_PMat.setToIdentity();
-    m_PMat.perspective(m_persAngle, this->width() * 1.0 / this->height(), 0.1f, 100.0f);
+    m_pRender->resize(w, h);
     this->update();
 
     return QOpenGLWidget::resizeGL(w, h);
@@ -86,7 +81,7 @@ void LightBaseRenderWidget::resizeGL(int w, int h)
 
 void LightBaseRenderWidget::paintGL()
 {
-    glClearColor(0.0f / 255.0f, 0.0f / 255.0f, 0.0f / 255.0f, 1.0f);
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     if (m_isFill)
@@ -103,17 +98,11 @@ void LightBaseRenderWidget::paintGL()
     // 设置光的位置
     m_pShaderProgram->setUniformValue("M_LightPostion", m_lightPostion);
     // 設置眼睛的位置
-    m_pShaderProgram->setUniformValue("M_ViewPostion", m_cameraPos);
-
-//    // 设置Camera
-//    m_VMat.setToIdentity();
-//    m_VMat.lookAt(m_cameraPos, m_cameraPos + m_cameraFront, m_cameraUp);
-//    m_pShaderProgram->setUniformValue("V", m_VMat);
-
-//    // 设置投影矩阵
-//    m_PMat.setToIdentity();
-//    m_PMat.perspective(m_persAngle, this->width() * 1.0 / this->height(), 0.1f, 100.0f);
-//    m_pShaderProgram->setUniformValue("P", m_PMat);
+    if (m_pCamera)
+    {
+        QVector3D cameraPos = m_pCamera->getCameraPostion();
+        m_pShaderProgram->setUniformValue("M_ViewPostion", cameraPos);
+    }
 
     // 绘制光源
     // =============================================================
@@ -124,9 +113,7 @@ void LightBaseRenderWidget::paintGL()
     m_MMat.setToIdentity();
     m_MMat.translate(m_lightPostion);
 
-//    float angle = 20.0f * 1;
-//    m_MMat.rotate(angle, QVector3D(1.0f, 0.3f, 0.5f));
-    m_MMat.scale(QVector3D(0.1f, 0.1f, 0.1f));
+    m_MMat.scale(QVector3D(0.05f, 0.05f, 0.05f));
 
     // 设置矩阵
     m_pShaderProgram->setUniformValue("M", m_MMat);
@@ -142,9 +129,7 @@ void LightBaseRenderWidget::paintGL()
 
     m_MMat.setToIdentity();
     m_MMat.translate(m_transPos[0]);
-
-    float angle = 20.0f * 1;
-    m_MMat.rotate(angle, QVector3D(1.0f, 0.3f, 0.5f));
+    m_MMat.rotate(30, QVector3D(0.0f, 1.0f, 0.0f));
 
     // 设置矩阵
     m_pShaderProgram->setUniformValue("M", m_MMat);
@@ -240,49 +225,40 @@ bool LightBaseRenderWidget::isFill(void)
     return m_isFill;
 }
 
-void LightBaseRenderWidget::setMixNumber(float number)
+// 设置/获取物体的颜色
+void LightBaseRenderWidget::setObjectColor(const QColor& color)
 {
-    m_mixNumber = number;
+    m_cObjectColor = color;
     this->update();
 }
 
-float LightBaseRenderWidget::getMixNumber(void)
+QColor LightBaseRenderWidget::getObjectColor(void)
 {
-    return m_mixNumber;
+    return m_cObjectColor;
 }
 
-QVector3D LightBaseRenderWidget::getCameraPostion(void)
+// 设置/获取光的颜色
+void LightBaseRenderWidget::setLightColor(const QColor& color)
 {
-    return m_cameraPos;
-}
-
-void LightBaseRenderWidget::setCameraPostion(const QVector3D& vec)
-{
-    m_cameraPos = vec;
+    m_cLightColor = color;
     this->update();
 }
 
-QVector3D LightBaseRenderWidget::getCameraFront(void)
+QColor LightBaseRenderWidget::getLightColor(void)
 {
-    return m_cameraFront;
+    return m_cLightColor;
 }
 
-void LightBaseRenderWidget::setCameraFront(const QVector3D& vec)
+// 设置/获取光的位置
+void LightBaseRenderWidget::setLightPostion(const QVector3D& pos)
 {
-    m_cameraFront = vec;
+    m_lightPostion = pos;
     this->update();
 }
 
-// 获取投影矩阵的角度
-float LightBaseRenderWidget::getProjMatrixAngle(void)
+QVector3D LightBaseRenderWidget::getLightPostion(void)
 {
-    return m_persAngle;
-}
-
-void LightBaseRenderWidget::setProjMatrixAngle(float angle)
-{
-    m_persAngle = angle;
-    this->update();
+    return m_lightPostion;
 }
 
 void LightBaseRenderWidget::initModelData(void)

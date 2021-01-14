@@ -6,6 +6,8 @@
 class LightBaseRenderWidget;
 class UICustomVec3Control;
 class UICustomDoubleControl;
+class UICustomColorControl;
+
 class LightBaseWidget : public QWidget
 {
     Q_OBJECT
@@ -17,18 +19,14 @@ public:
 private:
     LightBaseRenderWidget* m_pRenderWidget = nullptr;
 
-    UICustomVec3Control* m_pPosVec3Control = nullptr;
-    UICustomVec3Control* m_pFrontVec3Control = nullptr;
-    UICustomDoubleControl* m_pPerspAngleControl = nullptr;
+    UICustomVec3Control* m_pLightPostionControl = nullptr;
+    UICustomColorControl* m_pLightColorControl = nullptr;
+    UICustomColorControl* m_pObjectColorControl = nullptr;
 
 private slots:
-    void onCameraPostionChanged(const QVector3D& vec);
-    void onCameraFrontChanged(const QVector3D& vec);
-    void onProjMatrixAngleChanged(float angle);
-
-    void onCameraPostionControlValueChanged(const QVector3D& vec);
-    void onCameraFrontControlValueChanged(const QVector3D& vec);
-    void onProjMatrixAngleControlValueChanged(qreal value, bool cmd);
+    void onObjectColorChanged(const QColor& color, bool cmd);
+    void onLightColorChanged(const QColor& color, bool cmd);
+    void onLightPostionChanged(const QVector3D& vec);
 };
 
 #endif

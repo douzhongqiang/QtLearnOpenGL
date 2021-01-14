@@ -3,9 +3,9 @@
 
 COpenGLCamera::COpenGLCamera(QOpenGLFunctions* function, QObject* parent)
     :QObject(parent)
-    , m_cameraPos(0.0f, 0.0f,  10.0f)
+    , m_cameraPos(0.0f, 0.0f, 10.0f)
     , m_cameraFront(0.0f, 0.0f, -1.0f)
-    , m_cameraUp(0.0f, 1.0f,  0.0f)
+    , m_cameraUp(0.0f, 1.0f, 0.0f)
 {
 
 }

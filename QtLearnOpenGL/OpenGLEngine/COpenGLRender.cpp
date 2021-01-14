@@ -100,6 +100,9 @@ void COpenGLRender::render(void)
 void COpenGLRender::resize(int width, int height)
 {
     m_pFunction->glViewport(0, 0, width, height);
+
+    if (m_pCamera)
+        m_pCamera->setViewport(width, height);
 }
 
 // 设置相机

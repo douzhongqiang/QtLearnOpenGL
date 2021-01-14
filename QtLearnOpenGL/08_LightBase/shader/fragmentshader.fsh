@@ -14,9 +14,6 @@ uniform vec3 M_ViewPostion;
 
 void main(void)
 {
-    //gl_FragColor = mix(texture2D(texture1, M_TexCoord * vec2(1.0, -1.0)), texture2D(texture2, M_TexCoord * vec2(1.0, -1.0)), mixNumber);
-    //gl_FragColor = vec4(M_ObjecColor, 1.0);
-
     // 环境光
     float ambientStrength = 0.1;
     vec3 ambient = ambientStrength * M_LightColor;

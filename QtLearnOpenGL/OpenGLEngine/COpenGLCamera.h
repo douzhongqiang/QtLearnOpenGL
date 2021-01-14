@@ -61,7 +61,7 @@ private:
     float m_yaw = -90.0f;               // 偏航角，鼠标的X坐标的偏移量
     float m_pitch = 0.0f;               // 俯仰角，鼠标的Y坐标的偏移量
 
-    float m_persAngle = 30.0f;          // 角度
+    float m_persAngle = 45.0f;          // 角度
 
     QMatrix4x4 m_VMat;
     QMatrix4x4 m_PMat;

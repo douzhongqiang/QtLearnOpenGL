@@ -16,7 +16,7 @@ void main(void)
 {
     gl_Position = P * V * M * vec4(pos, 1.0);
 
-    M_Normal = mat3(transpose(inverse(M))) * normal;
+    M_Normal = mat3(transpose(inverse(M))) * normalize(normal);
     M_TexCoord = texCoord;
     M_ObjectPos = vec3(M * vec4(pos, 1.0));
 }
