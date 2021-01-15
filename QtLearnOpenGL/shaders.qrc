@@ -16,5 +16,8 @@
         <file>08_LightBase/shader/vertexshader.vsh</file>
         <file>09_Material/shader/fragmentshader.fsh</file>
         <file>09_Material/shader/vertexshader.vsh</file>
+        <file>10_LightingMaps/shader/fragmentshader.fsh</file>
+        <file>10_LightingMaps/shader/vertexshader.vsh</file>
+        <file>10_LightingMaps/image/container2.png</file>
     </qresource>
 </RCC>

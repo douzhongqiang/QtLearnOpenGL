@@ -4,6 +4,7 @@
 COpenGLVertexObject::COpenGLVertexObject(QOpenGLFunctions* function, QObject* parent)
     :QObject(parent)
     , m_pFunction(function)
+    , m_type(t_Quads)
 {
     m_pVertexArray = new COpenGLVertexArray(m_pFunction, this);
 }
@@ -41,11 +42,21 @@ void COpenGLVertexObject::create(void)
     m_pVertexArray->unbind();
 }
 
+void COpenGLVertexObject::setType(ObjectType type)
+{
+    m_type = type;
+}
+
 void COpenGLVertexObject::renderSelf(void)
 {
     m_pVertexArray->bind();
+
+    GLenum type = GL_QUADS;
+    if (m_type == t_Triangle)
+        type = GL_TRIANGLES;
+
     // 绘制
-    m_pFunction->glDrawArrays(GL_QUADS, 0, m_points.size());
+    m_pFunction->glDrawArrays(type, 0, m_points.size());
 
     m_pVertexArray->unbind();
 }

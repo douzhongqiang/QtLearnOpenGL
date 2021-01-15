@@ -10,6 +10,12 @@ class COpenGLVertexArray;
 class COpenGLVertexObject : public QObject
 {
     Q_OBJECT
+public:
+    enum ObjectType
+    {
+        t_Triangle,
+        t_Quads
+    };
 
 public:
     COpenGLVertexObject(QOpenGLFunctions* function, QObject* parent = nullptr);
@@ -23,6 +29,8 @@ public:
     void getName(QString& posName, QString& coordName, QString& normalName);
 
     void create(void);
+
+    void setType(ObjectType type);
 
     void renderSelf(void);
 
@@ -40,6 +48,8 @@ private:
     QString m_posName;
     QString m_coordName;
     QString m_normalName;
+
+    ObjectType m_type;
 };
 
 #endif

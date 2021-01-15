@@ -51,7 +51,7 @@ void CameraRoamRenderWidget::initializeGL()
     // 创建第一个纹理
     m_pTexture1->create();
     m_pTexture1->setImage(":/03_Texture/image/TestImage1.jpg");
-    m_pTexture2->setName("texture1");
+    m_pTexture1->setName("texture1");
 
     // 创建第二个纹理
     m_pTexture2->create();

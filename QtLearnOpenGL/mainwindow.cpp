@@ -9,6 +9,7 @@
 #include "07_CameraRoam/CameraRoamWidget.h"
 #include "08_LightBase/LightBaseWidget.h"
 #include "09_Material/MaterialWidget.h"
+#include "10_LightingMaps/LightMapWidget.h"
 #include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -60,5 +61,8 @@ void MainWindow::initUI(void)
 
     MaterialWidget* pW9 = new MaterialWidget;
     m_pLeftControl->addWidget(pW9, tr("09.Material"));
+
+    LightMapWidget* pW10 = new LightMapWidget;
+    m_pLeftControl->addWidget(pW10, tr("10.Lighting Maps"));
 }
 

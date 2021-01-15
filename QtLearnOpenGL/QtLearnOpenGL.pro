@@ -43,6 +43,9 @@ SOURCES += \
     09_Material/MaterialNode.cpp \
     09_Material/MaterialRenderWidget.cpp \
     09_Material/MaterialWidget.cpp \
+    10_LightingMaps/LightMapNode.cpp \
+    10_LightingMaps/LightMapRenderWidget.cpp \
+    10_LightingMaps/LightMapWidget.cpp \
     OpenGLEngine/CAttributePoint.cpp \
     OpenGLEngine/COpenGLCamera.cpp \
     OpenGLEngine/COpenGLRender.cpp \
@@ -71,6 +74,9 @@ HEADERS += \
     09_Material/MaterialNode.h \
     09_Material/MaterialRenderWidget.h \
     09_Material/MaterialWidget.h \
+    10_LightingMaps/LightMapNode.h \
+    10_LightingMaps/LightMapRenderWidget.h \
+    10_LightingMaps/LightMapWidget.h \
     OpenGLEngine/CAttributePoint.h \
     OpenGLEngine/COpenGLCamera.h \
     OpenGLEngine/COpenGLRender.h \
