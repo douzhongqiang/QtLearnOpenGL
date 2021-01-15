@@ -22,9 +22,9 @@ class LightMapRenderWidget : public QOpenGLWidget, public QOpenGLFunctions_2_0
 public:
     struct ObjectMaterial
     {
-        QVector3D ambientColor;         // 环境光颜色 - 物体的颜色
-        QVector3D diffuesColor;         // 漫反射 - 物体的颜色
-        QVector3D specularColor;        // 镜面反射颜色
+//        QVector3D ambientColor;         // 环境光颜色 - 物体的颜色
+//        QVector3D diffuesColor;         // 漫反射 - 物体的颜色
+//        QVector3D specularColor;        // 镜面反射颜色
 
         float shininess = 32.0f;        // 界面反射系数
     };
@@ -103,6 +103,8 @@ private:
 
     // 漫反射贴图
     COpenGLTexture* m_diffuseTexture = nullptr;
+    // 镜面反射贴图
+    COpenGLTexture* m_specularTexture = nullptr;
 
 private:
     COpenGLCamera* m_pCamera = nullptr;

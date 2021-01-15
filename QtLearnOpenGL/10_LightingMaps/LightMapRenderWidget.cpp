@@ -52,6 +52,13 @@ void LightMapRenderWidget::initializeGL()
     m_diffuseTexture->setImage(QImage(":/10_LightingMaps/image/container2.png"));
     m_diffuseTexture->setName("objectMaterial.diffuse");
 
+    m_specularTexture = new COpenGLTexture(f, this);
+    m_pRender->addTexture(m_specularTexture);
+    m_specularTexture->create();
+    m_specularTexture->setImage(QImage(":/10_LightingMaps/image/container2_specular.png"));
+//    m_specularTexture->setImage(QImage(":/10_LightingMaps/image/lighting_maps_specular_color.png"));
+    m_specularTexture->setName("objectMaterial.specular");
+
     // 设置节点数据
     if (!m_pVertexObject)
         m_pVertexObject = new COpenGLVertexObject(f, this);
@@ -114,7 +121,7 @@ void LightMapRenderWidget::paintGL()
     // 设置物体的材质
 //    m_pShaderProgram->setUniformValue("objectMaterial.ambient", m_objectMaterial.ambientColor);
 //    m_pShaderProgram->setUniformValue("objectMaterial.diffuse", m_objectMaterial.diffuesColor);
-    m_pShaderProgram->setUniformValue("objectMaterial.specular", m_objectMaterial.specularColor);
+//    m_pShaderProgram->setUniformValue("objectMaterial.specular", m_objectMaterial.specularColor);
     m_pShaderProgram->setUniformValue("objectMaterial.shininess", m_objectMaterial.shininess);
 
     m_MMat.setToIdentity();
@@ -241,9 +248,9 @@ LightMapRenderWidget::LightInfo LightMapRenderWidget::getLightInfo(void)
 
 void LightMapRenderWidget::initObjectMaterial(void)
 {
-    m_objectMaterial.ambientColor = QVector3D(0.0f, 0.1f, 0.06f);
-    m_objectMaterial.diffuesColor = QVector3D(0.0f, 0.50980392f, 0.50980392f);
-    m_objectMaterial.specularColor = QVector3D(0.50196078f, 0.50196078f, 0.50196078f);
+//    m_objectMaterial.ambientColor = QVector3D(0.0f, 0.1f, 0.06f);
+//    m_objectMaterial.diffuesColor = QVector3D(0.0f, 0.50980392f, 0.50980392f);
+//    m_objectMaterial.specularColor = QVector3D(0.50196078f, 0.50196078f, 0.50196078f);
     m_objectMaterial.shininess = 32.0f;
 
     this->update();

@@ -19,5 +19,7 @@
         <file>10_LightingMaps/shader/fragmentshader.fsh</file>
         <file>10_LightingMaps/shader/vertexshader.vsh</file>
         <file>10_LightingMaps/image/container2.png</file>
+        <file>10_LightingMaps/image/container2_specular.png</file>
+        <file>10_LightingMaps/image/lighting_maps_specular_color.png</file>
     </qresource>
 </RCC>

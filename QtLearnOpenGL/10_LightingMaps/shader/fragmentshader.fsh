@@ -10,7 +10,7 @@ uniform vec3 M_ViewPostion;
 struct Material
 {
     sampler2D diffuse;  // 漫反射贴图
-    vec3 specular;      // 镜面反射
+    sampler2D specular;      // 镜面反射
     float shininess;    // 镜面发射系数
 };
 
@@ -41,7 +41,7 @@ void main(void)
     vec3 viewDir = normalize(M_ViewPostion - M_ObjectPos);
     vec3 reflectDir = reflect(-lightDir, M_Normal);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), objectMaterial.shininess);
-    vec3 specular = spec * lightMaterial.specular * objectMaterial.specular;
+    vec3 specular = spec * lightMaterial.specular * vec3(texture2D(objectMaterial.specular, M_TexCoord));
 
     gl_FragColor = vec4(ambient + diffuse + specular, 1.0);
 }

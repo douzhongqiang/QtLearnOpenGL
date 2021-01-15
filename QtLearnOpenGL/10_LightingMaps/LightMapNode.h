@@ -26,9 +26,9 @@ private:
     void initAttribute(void);
 
     // 物体材质属性
-    NDColorAttribute* m_pAmbientColorAttr = nullptr;
-    NDColorAttribute* m_pDiffuseColorAttr = nullptr;
-    NDColorAttribute* m_pSpecularColorAttr = nullptr;
+//    NDColorAttribute* m_pAmbientColorAttr = nullptr;
+//    NDColorAttribute* m_pDiffuseColorAttr = nullptr;
+//    NDColorAttribute* m_pSpecularColorAttr = nullptr;
     NDRealAttribute* m_pShininessAtr = nullptr;
 
     // 光的材质属性
