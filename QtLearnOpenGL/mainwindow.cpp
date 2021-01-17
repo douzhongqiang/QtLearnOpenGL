@@ -10,6 +10,7 @@
 #include "08_LightBase/LightBaseWidget.h"
 #include "09_Material/MaterialWidget.h"
 #include "10_LightingMaps/LightMapWidget.h"
+#include "11_LightCasters/LightCasterWidget.h"
 #include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -64,5 +65,8 @@ void MainWindow::initUI(void)
 
     LightMapWidget* pW10 = new LightMapWidget;
     m_pLeftControl->addWidget(pW10, tr("10.Lighting Maps"));
+
+    LightCasterWidget* pW11 = new LightCasterWidget;
+    m_pLeftControl->addWidget(pW11, tr("11.Lighting Caster"));
 }
 

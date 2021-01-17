@@ -21,5 +21,12 @@
         <file>10_LightingMaps/image/container2.png</file>
         <file>10_LightingMaps/image/container2_specular.png</file>
         <file>10_LightingMaps/image/lighting_maps_specular_color.png</file>
+        <file>10_LightingMaps/image/uqahruewcx.jpeg</file>
+        <file>11_LightCasters/shader/fragmentshader.fsh</file>
+        <file>11_LightCasters/shader/vertexshader.vsh</file>
+        <file>11_LightCasters/shader/PointLightFragmentShader.fsh</file>
+        <file>11_LightCasters/shader/PointLightVertexShader.vsh</file>
+        <file>11_LightCasters/shader/SpotLightFragmentShader.fsh</file>
+        <file>11_LightCasters/shader/SpotLightVertexShader.vsh</file>
     </qresource>
 </RCC>

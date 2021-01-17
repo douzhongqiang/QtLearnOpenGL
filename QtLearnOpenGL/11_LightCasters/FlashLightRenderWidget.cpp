@@ -1,4 +1,4 @@
-#include "LightMapRenderWidget.h"
+#include "FlashLightRenderWidget.h"
 #include "OpenGLEngine/COpenGLTexture.h"
 #include "OpenGLEngine/COpenGLRender.h"
 #include "OpenGLEngine/COpenGLVertexObject.h"
@@ -10,7 +10,7 @@
 #include <QKeyEvent>
 #include <QWheelEvent>
 
-LightMapRenderWidget::LightMapRenderWidget(QWidget* parent)
+FlashLightRenderWidget::FlashLightRenderWidget(QWidget* parent)
     :QOpenGLWidget(parent)
 {
     this->setFocusPolicy(Qt::ClickFocus);
@@ -20,12 +20,12 @@ LightMapRenderWidget::LightMapRenderWidget(QWidget* parent)
     initLightInfo();
 }
 
-LightMapRenderWidget::~LightMapRenderWidget()
+FlashLightRenderWidget::~FlashLightRenderWidget()
 {
     qDebug() << __FUNCTION__;
 }
 
-void LightMapRenderWidget::initializeGL()
+void FlashLightRenderWidget::initializeGL()
 {
     this->initializeOpenGLFunctions();
 
@@ -67,7 +67,11 @@ void LightMapRenderWidget::initializeGL()
 
     // 设置相机
     if (!m_pCamera)
+    {
         m_pCamera = new COpenGLCamera(f, this);
+        QObject::connect(m_pCamera, &COpenGLCamera::cameraPostionChanged, this, &FlashLightRenderWidget::onCameraPostionChanged);
+        QObject::connect(m_pCamera, &COpenGLCamera::cameraFrontChanged, this, &FlashLightRenderWidget::onCameraFrontChanged);
+    }
     m_pCamera->setCameraShaderName("V", "P");
     m_pRender->setCamera(m_pCamera);
     m_pCamera->setCameraPostion(QVector3D(0.0f, 0.0f, 5.0f));
@@ -82,7 +86,7 @@ void LightMapRenderWidget::initializeGL()
     m_MMat.translate(QVector3D(0, 0, -20));
 }
 
-void LightMapRenderWidget::resizeGL(int w, int h)
+void FlashLightRenderWidget::resizeGL(int w, int h)
 {
     m_pRender->resize(w, h);
     this->update();
@@ -90,7 +94,7 @@ void LightMapRenderWidget::resizeGL(int w, int h)
     return QOpenGLWidget::resizeGL(w, h);
 }
 
-void LightMapRenderWidget::paintGL()
+void FlashLightRenderWidget::paintGL()
 {
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -104,7 +108,11 @@ void LightMapRenderWidget::paintGL()
     m_pShaderProgram->bind();
 
     // 设置光的信息
-    m_pShaderProgram->setUniformValue("lightMaterial.lightPos", m_light.lightPos);
+    m_pShaderProgram->setUniformValue("lightMaterial.lightPos", m_pCamera->getCameraPostion());
+    m_pShaderProgram->setUniformValue("lightMaterial.direction", m_pCamera->getCameraCameraFront());
+    m_pShaderProgram->setUniformValue("lightMaterial.cutoff", (float)qCos(qDegreesToRadians(m_light.cutout)));
+    m_pShaderProgram->setUniformValue("lightMaterial.outerCutoff", (float)qCos(qDegreesToRadians(m_light.outerCutoff)));
+    // 光的材质信息
     m_pShaderProgram->setUniformValue("lightMaterial.ambient", m_light.ambientColor);
     m_pShaderProgram->setUniformValue("lightMaterial.diffuse", m_light.diffuesColor);
     m_pShaderProgram->setUniformValue("lightMaterial.specular", m_light.specularColor);
@@ -125,20 +133,25 @@ void LightMapRenderWidget::paintGL()
 //    m_pShaderProgram->setUniformValue("objectMaterial.specular", m_objectMaterial.specularColor);
     m_pShaderProgram->setUniformValue("objectMaterial.shininess", m_objectMaterial.shininess);
 
-    m_MMat.setToIdentity();
-    m_MMat.translate(m_transPos[0]);
-    m_MMat.rotate(30, QVector3D(0.0f, 1.0f, 0.0f));
+    for (int i=0; i<m_transPos.size(); ++i)
+    {
+        m_MMat.setToIdentity();
+        m_MMat.translate(m_transPos[i]);
 
-    // 设置矩阵
-    m_pShaderProgram->setUniformValue("M", m_MMat);
+        float angle = 20.0f * i;
+        m_MMat.rotate(angle, QVector3D(1.0f, 0.3f, 0.5f));
 
-    m_pRender->render();
+        // 设置矩阵
+        m_pShaderProgram->setUniformValue("M", m_MMat);
+
+        m_pRender->render();
+    }
     // =============================================================
 
     m_pShaderProgram->release();
 }
 
-void LightMapRenderWidget::keyPressEvent(QKeyEvent* event)
+void FlashLightRenderWidget::keyPressEvent(QKeyEvent* event)
 {
     if (m_pCamera)
         m_pCamera->keyPressEvent(event);
@@ -147,7 +160,7 @@ void LightMapRenderWidget::keyPressEvent(QKeyEvent* event)
     return QOpenGLWidget::keyPressEvent(event);
 }
 
-void LightMapRenderWidget::mousePressEvent(QMouseEvent* event)
+void FlashLightRenderWidget::mousePressEvent(QMouseEvent* event)
 {
     if (m_pCamera)
         m_pCamera->mousePressEvent(event);
@@ -155,7 +168,7 @@ void LightMapRenderWidget::mousePressEvent(QMouseEvent* event)
     return QOpenGLWidget::mousePressEvent(event);
 }
 
-void LightMapRenderWidget::mouseMoveEvent(QMouseEvent* event)
+void FlashLightRenderWidget::mouseMoveEvent(QMouseEvent* event)
 {
     if (m_pCamera)
         m_pCamera->mouseMoveEvent(event);
@@ -164,7 +177,7 @@ void LightMapRenderWidget::mouseMoveEvent(QMouseEvent* event)
     return QOpenGLWidget::mouseMoveEvent(event);
 }
 
-void LightMapRenderWidget::mouseReleaseEvent(QMouseEvent* event)
+void FlashLightRenderWidget::mouseReleaseEvent(QMouseEvent* event)
 {
     if (m_pCamera)
         m_pCamera->mouseReleaseEvent(event);
@@ -172,7 +185,7 @@ void LightMapRenderWidget::mouseReleaseEvent(QMouseEvent* event)
     return QOpenGLWidget::mouseReleaseEvent(event);
 }
 
-void LightMapRenderWidget::wheelEvent(QWheelEvent *event)
+void FlashLightRenderWidget::wheelEvent(QWheelEvent *event)
 {
     if (m_pCamera)
         m_pCamera->wheelEvent(event);
@@ -181,12 +194,12 @@ void LightMapRenderWidget::wheelEvent(QWheelEvent *event)
     return QOpenGLWidget::wheelEvent(event);
 }
 
-bool LightMapRenderWidget::initShaderProgram(void)
+bool FlashLightRenderWidget::initShaderProgram(void)
 {
     m_pShaderProgram = new QOpenGLShaderProgram(this);
 
     // 加载顶点着色器
-    QString vertexShaderStr(":/10_LightingMaps/shader/vertexshader.vsh");
+    QString vertexShaderStr(":/11_LightCasters/shader/SpotLightVertexShader.vsh");
     m_pVertexShader = new QOpenGLShader(QOpenGLShader::Vertex, this);
     bool result = m_pVertexShader->compileSourceFile(vertexShaderStr);
     if (!result)
@@ -196,7 +209,7 @@ bool LightMapRenderWidget::initShaderProgram(void)
     }
 
     // 加载片段着色器
-    QString fragmentShaderStr(":/10_LightingMaps/shader/fragmentshader.fsh");
+    QString fragmentShaderStr(":/11_LightCasters/shader/SpotLightFragmentShader.fsh");
     m_pFragmentShader = new QOpenGLShader(QOpenGLShader::Fragment, this);
     result = m_pFragmentShader->compileSourceFile(fragmentShaderStr);
     if (!result)
@@ -212,42 +225,42 @@ bool LightMapRenderWidget::initShaderProgram(void)
     return m_pShaderProgram->link();
 }
 
-void LightMapRenderWidget::setFillStatus(bool isFill)
+void FlashLightRenderWidget::setFillStatus(bool isFill)
 {
     m_isFill = isFill;
     this->update();
 }
 
-bool LightMapRenderWidget::isFill(void)
+bool FlashLightRenderWidget::isFill(void)
 {
     return m_isFill;
 }
 
 // 设置/获取物体的材质
-void LightMapRenderWidget::setObjectMaterial(const ObjectMaterial& material)
+void FlashLightRenderWidget::setObjectMaterial(const ObjectMaterial& material)
 {
     m_objectMaterial = material;
     this->update();
 }
 
-LightMapRenderWidget::ObjectMaterial LightMapRenderWidget::getObjectMaterial(void)
+FlashLightRenderWidget::ObjectMaterial FlashLightRenderWidget::getObjectMaterial(void)
 {
     return m_objectMaterial;
 }
 
 // 设置/获取光的属性信息
-void LightMapRenderWidget::setLightInfo(const LightInfo& info)
+void FlashLightRenderWidget::setLightInfo(const LightInfo& info)
 {
     m_light = info;
     this->update();
 }
 
-LightMapRenderWidget::LightInfo LightMapRenderWidget::getLightInfo(void)
+FlashLightRenderWidget::LightInfo FlashLightRenderWidget::getLightInfo(void)
 {
     return m_light;
 }
 
-void LightMapRenderWidget::initObjectMaterial(void)
+void FlashLightRenderWidget::initObjectMaterial(void)
 {
 //    m_objectMaterial.ambientColor = QVector3D(0.0f, 0.1f, 0.06f);
 //    m_objectMaterial.diffuesColor = QVector3D(0.0f, 0.50980392f, 0.50980392f);
@@ -257,9 +270,13 @@ void LightMapRenderWidget::initObjectMaterial(void)
     this->update();
 }
 
-void LightMapRenderWidget::initLightInfo(void)
+void FlashLightRenderWidget::initLightInfo(void)
 {
-    m_light.lightPos = QVector3D(1.2f, 0.5f, 2.0f);
+    m_light.lightPostion = QVector3D(0.0f, 0.0f, 2.0f);
+    m_light.direction = QVector3D(0.0f, 0.0f, -1.0f);
+    m_light.cutout = 12.5f;
+    m_light.outerCutoff = 17.5f;
+
     m_light.ambientColor = QVector3D(0.2f, 0.2f, 0.2f);
     m_light.diffuesColor = QVector3D(0.5f, 0.5f, 0.5f);
     m_light.specularColor = QVector3D(1.0f, 1.0f, 1.0f);
@@ -267,7 +284,7 @@ void LightMapRenderWidget::initLightInfo(void)
     this->update();
 }
 
-void LightMapRenderWidget::initModelData(void)
+void FlashLightRenderWidget::initModelData(void)
 {
 
     CAttributePointArray arrays;
@@ -341,9 +358,21 @@ void LightMapRenderWidget::initModelData(void)
     m_pVertexObject->setPoints(arrays);
     m_pVertexObject->setType(COpenGLVertexObject::t_Triangle);
 
-    m_transPos << QVector3D( 0.0f,  0.0f,  0.0f) << QVector3D( 12.0f,  5.0f, -15.0f) \
-               << QVector3D( -11.5f, -2.2f, -2.5f) << QVector3D( -13.8f, -8.0f, -12.3f) \
-               << QVector3D( -1.3f,  5.0f, -1.5f) << QVector3D( 2.4f, -6.4f, -3.5f) \
-               << QVector3D( -1.7f,  8.0f, -7.5f) << QVector3D( 11.3f, -2.0f, -2.5f) \
-               << QVector3D( 11.5f,  2.0f, -2.5f) << QVector3D( 1.5f,  0.2f, -1.5f) ;
+    m_transPos << QVector3D( 0.0f,  0.0f,  0.0f) << QVector3D( 2.0f,  5.0f, -15.0f) \
+               << QVector3D( -1.5f, -2.2f, -2.5f) << QVector3D( -3.8f, -2.0f, -12.3f) \
+               << QVector3D( 2.4f, -0.4f, -3.5f) << QVector3D( -1.7f,  3.0f, -7.5f) \
+               << QVector3D( 1.3f, -2.0f, -2.5f) << QVector3D( 1.5f,  2.0f, -2.5f) \
+               << QVector3D( 1.5f,  0.2f, -1.5f) << QVector3D( -1.3f,  1.0f, -1.5f) ;
+}
+
+void FlashLightRenderWidget::onCameraPostionChanged(const QVector3D& cameraPos)
+{
+    m_light.lightPostion = cameraPos;
+    emit cameraInfoChanged();
+}
+
+void FlashLightRenderWidget::onCameraFrontChanged(const QVector3D& front)
+{
+    m_light.direction = front;
+    emit cameraInfoChanged();
 }

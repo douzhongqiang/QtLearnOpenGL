@@ -46,6 +46,12 @@ SOURCES += \
     10_LightingMaps/LightMapNode.cpp \
     10_LightingMaps/LightMapRenderWidget.cpp \
     10_LightingMaps/LightMapWidget.cpp \
+    11_LightCasters/FlashLightRenderWidget.cpp \
+    11_LightCasters/LightCasterNode.cpp \
+    11_LightCasters/DirectionLightRenderWidget.cpp \
+    11_LightCasters/LightCasterWidget.cpp \
+    11_LightCasters/PointLightRenderWidget.cpp \
+    11_LightCasters/SpotLightRenderWidget.cpp \
     OpenGLEngine/CAttributePoint.cpp \
     OpenGLEngine/COpenGLCamera.cpp \
     OpenGLEngine/COpenGLRender.cpp \
@@ -77,6 +83,12 @@ HEADERS += \
     10_LightingMaps/LightMapNode.h \
     10_LightingMaps/LightMapRenderWidget.h \
     10_LightingMaps/LightMapWidget.h \
+    11_LightCasters/FlashLightRenderWidget.h \
+    11_LightCasters/LightCasterNode.h \
+    11_LightCasters/DirectionLightRenderWidget.h \
+    11_LightCasters/LightCasterWidget.h \
+    11_LightCasters/PointLightRenderWidget.h \
+    11_LightCasters/SpotLightRenderWidget.h \
     OpenGLEngine/CAttributePoint.h \
     OpenGLEngine/COpenGLCamera.h \
     OpenGLEngine/COpenGLRender.h \

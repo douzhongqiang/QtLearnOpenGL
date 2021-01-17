@@ -1,4 +1,4 @@
-#include "LightMapRenderWidget.h"
+#include "PointLightRenderWidget.h"
 #include "OpenGLEngine/COpenGLTexture.h"
 #include "OpenGLEngine/COpenGLRender.h"
 #include "OpenGLEngine/COpenGLVertexObject.h"
@@ -10,7 +10,7 @@
 #include <QKeyEvent>
 #include <QWheelEvent>
 
-LightMapRenderWidget::LightMapRenderWidget(QWidget* parent)
+PointLightRenderWidget::PointLightRenderWidget(QWidget* parent)
     :QOpenGLWidget(parent)
 {
     this->setFocusPolicy(Qt::ClickFocus);
@@ -20,12 +20,12 @@ LightMapRenderWidget::LightMapRenderWidget(QWidget* parent)
     initLightInfo();
 }
 
-LightMapRenderWidget::~LightMapRenderWidget()
+PointLightRenderWidget::~PointLightRenderWidget()
 {
     qDebug() << __FUNCTION__;
 }
 
-void LightMapRenderWidget::initializeGL()
+void PointLightRenderWidget::initializeGL()
 {
     this->initializeOpenGLFunctions();
 
@@ -82,7 +82,7 @@ void LightMapRenderWidget::initializeGL()
     m_MMat.translate(QVector3D(0, 0, -20));
 }
 
-void LightMapRenderWidget::resizeGL(int w, int h)
+void PointLightRenderWidget::resizeGL(int w, int h)
 {
     m_pRender->resize(w, h);
     this->update();
@@ -90,7 +90,7 @@ void LightMapRenderWidget::resizeGL(int w, int h)
     return QOpenGLWidget::resizeGL(w, h);
 }
 
-void LightMapRenderWidget::paintGL()
+void PointLightRenderWidget::paintGL()
 {
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -104,10 +104,15 @@ void LightMapRenderWidget::paintGL()
     m_pShaderProgram->bind();
 
     // 设置光的信息
-    m_pShaderProgram->setUniformValue("lightMaterial.lightPos", m_light.lightPos);
+    m_pShaderProgram->setUniformValue("lightMaterial.lightPos", m_light.lightPostion);
+    // 光的材质信息
     m_pShaderProgram->setUniformValue("lightMaterial.ambient", m_light.ambientColor);
     m_pShaderProgram->setUniformValue("lightMaterial.diffuse", m_light.diffuesColor);
     m_pShaderProgram->setUniformValue("lightMaterial.specular", m_light.specularColor);
+    // 光的衰减系数
+    m_pShaderProgram->setUniformValue("lightMaterial.constant", m_light.constant);
+    m_pShaderProgram->setUniformValue("lightMaterial.linear", m_light.linear);
+    m_pShaderProgram->setUniformValue("lightMaterial.quadratic", m_light.quadratic);
 
     // 設置眼睛的位置
     if (m_pCamera)
@@ -125,20 +130,25 @@ void LightMapRenderWidget::paintGL()
 //    m_pShaderProgram->setUniformValue("objectMaterial.specular", m_objectMaterial.specularColor);
     m_pShaderProgram->setUniformValue("objectMaterial.shininess", m_objectMaterial.shininess);
 
-    m_MMat.setToIdentity();
-    m_MMat.translate(m_transPos[0]);
-    m_MMat.rotate(30, QVector3D(0.0f, 1.0f, 0.0f));
+    for (int i=0; i<m_transPos.size(); ++i)
+    {
+        m_MMat.setToIdentity();
+        m_MMat.translate(m_transPos[i]);
 
-    // 设置矩阵
-    m_pShaderProgram->setUniformValue("M", m_MMat);
+        float angle = 20.0f * i;
+        m_MMat.rotate(angle, QVector3D(1.0f, 0.3f, 0.5f));
 
-    m_pRender->render();
+        // 设置矩阵
+        m_pShaderProgram->setUniformValue("M", m_MMat);
+
+        m_pRender->render();
+    }
     // =============================================================
 
     m_pShaderProgram->release();
 }
 
-void LightMapRenderWidget::keyPressEvent(QKeyEvent* event)
+void PointLightRenderWidget::keyPressEvent(QKeyEvent* event)
 {
     if (m_pCamera)
         m_pCamera->keyPressEvent(event);
@@ -147,7 +157,7 @@ void LightMapRenderWidget::keyPressEvent(QKeyEvent* event)
     return QOpenGLWidget::keyPressEvent(event);
 }
 
-void LightMapRenderWidget::mousePressEvent(QMouseEvent* event)
+void PointLightRenderWidget::mousePressEvent(QMouseEvent* event)
 {
     if (m_pCamera)
         m_pCamera->mousePressEvent(event);
@@ -155,7 +165,7 @@ void LightMapRenderWidget::mousePressEvent(QMouseEvent* event)
     return QOpenGLWidget::mousePressEvent(event);
 }
 
-void LightMapRenderWidget::mouseMoveEvent(QMouseEvent* event)
+void PointLightRenderWidget::mouseMoveEvent(QMouseEvent* event)
 {
     if (m_pCamera)
         m_pCamera->mouseMoveEvent(event);
@@ -164,7 +174,7 @@ void LightMapRenderWidget::mouseMoveEvent(QMouseEvent* event)
     return QOpenGLWidget::mouseMoveEvent(event);
 }
 
-void LightMapRenderWidget::mouseReleaseEvent(QMouseEvent* event)
+void PointLightRenderWidget::mouseReleaseEvent(QMouseEvent* event)
 {
     if (m_pCamera)
         m_pCamera->mouseReleaseEvent(event);
@@ -172,7 +182,7 @@ void LightMapRenderWidget::mouseReleaseEvent(QMouseEvent* event)
     return QOpenGLWidget::mouseReleaseEvent(event);
 }
 
-void LightMapRenderWidget::wheelEvent(QWheelEvent *event)
+void PointLightRenderWidget::wheelEvent(QWheelEvent *event)
 {
     if (m_pCamera)
         m_pCamera->wheelEvent(event);
@@ -181,12 +191,12 @@ void LightMapRenderWidget::wheelEvent(QWheelEvent *event)
     return QOpenGLWidget::wheelEvent(event);
 }
 
-bool LightMapRenderWidget::initShaderProgram(void)
+bool PointLightRenderWidget::initShaderProgram(void)
 {
     m_pShaderProgram = new QOpenGLShaderProgram(this);
 
     // 加载顶点着色器
-    QString vertexShaderStr(":/10_LightingMaps/shader/vertexshader.vsh");
+    QString vertexShaderStr(":/11_LightCasters/shader/PointLightVertexShader.vsh");
     m_pVertexShader = new QOpenGLShader(QOpenGLShader::Vertex, this);
     bool result = m_pVertexShader->compileSourceFile(vertexShaderStr);
     if (!result)
@@ -196,7 +206,7 @@ bool LightMapRenderWidget::initShaderProgram(void)
     }
 
     // 加载片段着色器
-    QString fragmentShaderStr(":/10_LightingMaps/shader/fragmentshader.fsh");
+    QString fragmentShaderStr(":/11_LightCasters/shader/PointLightFragmentShader.fsh");
     m_pFragmentShader = new QOpenGLShader(QOpenGLShader::Fragment, this);
     result = m_pFragmentShader->compileSourceFile(fragmentShaderStr);
     if (!result)
@@ -212,42 +222,47 @@ bool LightMapRenderWidget::initShaderProgram(void)
     return m_pShaderProgram->link();
 }
 
-void LightMapRenderWidget::setFillStatus(bool isFill)
+void PointLightRenderWidget::setFillStatus(bool isFill)
 {
     m_isFill = isFill;
     this->update();
 }
 
-bool LightMapRenderWidget::isFill(void)
+bool PointLightRenderWidget::isFill(void)
 {
     return m_isFill;
 }
 
 // 设置/获取物体的材质
-void LightMapRenderWidget::setObjectMaterial(const ObjectMaterial& material)
+void PointLightRenderWidget::setObjectMaterial(const ObjectMaterial& material)
 {
     m_objectMaterial = material;
     this->update();
 }
 
-LightMapRenderWidget::ObjectMaterial LightMapRenderWidget::getObjectMaterial(void)
+PointLightRenderWidget::ObjectMaterial PointLightRenderWidget::getObjectMaterial(void)
 {
     return m_objectMaterial;
 }
 
 // 设置/获取光的属性信息
-void LightMapRenderWidget::setLightInfo(const LightInfo& info)
+void PointLightRenderWidget::setLightInfo(const LightInfo& info)
 {
     m_light = info;
+
+    m_light.constant = 1.0f;
+    m_light.linear = 0.09f;
+    m_light.quadratic = 0.032f;
+
     this->update();
 }
 
-LightMapRenderWidget::LightInfo LightMapRenderWidget::getLightInfo(void)
+PointLightRenderWidget::LightInfo PointLightRenderWidget::getLightInfo(void)
 {
     return m_light;
 }
 
-void LightMapRenderWidget::initObjectMaterial(void)
+void PointLightRenderWidget::initObjectMaterial(void)
 {
 //    m_objectMaterial.ambientColor = QVector3D(0.0f, 0.1f, 0.06f);
 //    m_objectMaterial.diffuesColor = QVector3D(0.0f, 0.50980392f, 0.50980392f);
@@ -257,17 +272,22 @@ void LightMapRenderWidget::initObjectMaterial(void)
     this->update();
 }
 
-void LightMapRenderWidget::initLightInfo(void)
+void PointLightRenderWidget::initLightInfo(void)
 {
-    m_light.lightPos = QVector3D(1.2f, 0.5f, 2.0f);
+    m_light.lightPostion = QVector3D(2.6f, 0.0f, -0.5f);
+
     m_light.ambientColor = QVector3D(0.2f, 0.2f, 0.2f);
     m_light.diffuesColor = QVector3D(0.5f, 0.5f, 0.5f);
     m_light.specularColor = QVector3D(1.0f, 1.0f, 1.0f);
 
+    m_light.constant = 1.0f;
+    m_light.linear = 0.09f;
+    m_light.quadratic = 0.032f;
+
     this->update();
 }
 
-void LightMapRenderWidget::initModelData(void)
+void PointLightRenderWidget::initModelData(void)
 {
 
     CAttributePointArray arrays;
@@ -341,9 +361,9 @@ void LightMapRenderWidget::initModelData(void)
     m_pVertexObject->setPoints(arrays);
     m_pVertexObject->setType(COpenGLVertexObject::t_Triangle);
 
-    m_transPos << QVector3D( 0.0f,  0.0f,  0.0f) << QVector3D( 12.0f,  5.0f, -15.0f) \
-               << QVector3D( -11.5f, -2.2f, -2.5f) << QVector3D( -13.8f, -8.0f, -12.3f) \
-               << QVector3D( -1.3f,  5.0f, -1.5f) << QVector3D( 2.4f, -6.4f, -3.5f) \
-               << QVector3D( -1.7f,  8.0f, -7.5f) << QVector3D( 11.3f, -2.0f, -2.5f) \
-               << QVector3D( 11.5f,  2.0f, -2.5f) << QVector3D( 1.5f,  0.2f, -1.5f) ;
+    m_transPos << QVector3D( 0.0f,  0.0f,  0.0f) << QVector3D( 2.0f,  5.0f, -15.0f) \
+               << QVector3D( -1.5f, -2.2f, -2.5f) << QVector3D( -3.8f, -2.0f, -12.3f) \
+               << QVector3D( 2.4f, -0.4f, -3.5f) << QVector3D( -1.7f,  3.0f, -7.5f) \
+               << QVector3D( 1.3f, -2.0f, -2.5f) << QVector3D( 1.5f,  2.0f, -2.5f) \
+               << QVector3D( 1.5f,  0.2f, -1.5f) << QVector3D( -1.3f,  1.0f, -1.5f) ;
 }
