@@ -1,5 +1,6 @@
 #include "COpenGLVertexObject.h"
 #include "COpenGLVertexArray.h"
+#include "COpenGLElementArray.h"
 
 COpenGLVertexObject::COpenGLVertexObject(QOpenGLFunctions* function, QObject* parent)
     :QObject(parent)
@@ -19,12 +20,56 @@ void COpenGLVertexObject::setPoints(const CAttributePointArray& points)
     m_points = points;
 }
 
+void COpenGLVertexObject::setIndices(const QVector<unsigned int> indices)
+{
+    m_indices = indices;
+    if (m_pElementArray == nullptr && m_indices.size() > 0)
+        m_pElementArray = new COpenGLElementArray(m_pFunction, this);
+}
+
 void COpenGLVertexObject::setProgram(QOpenGLShaderProgram* pProgram)
 {
     m_pProgram = pProgram;
 }
 
 void COpenGLVertexObject::create(void)
+{
+    if (m_pElementArray)
+    {
+        std::function<void(void)> func = std::bind(&COpenGLVertexObject::createVBO, this);
+        m_pElementArray->setCallbackFunction(func);
+
+        m_pElementArray->create(m_indices.data(), m_indices.size() * sizeof(int));
+
+        return;
+    }
+
+    createVBO();
+}
+
+void COpenGLVertexObject::bind(void)
+{
+    if (m_pElementArray)
+    {
+        m_pElementArray->bind();
+        return;
+    }
+
+    m_pVertexArray->bind();
+}
+
+void COpenGLVertexObject::unbind(void)
+{
+    if (m_pElementArray)
+    {
+        m_pElementArray->unbind();
+        return;
+    }
+
+    m_pVertexArray->unbind();
+}
+
+void COpenGLVertexObject::createVBO(void)
 {
     m_pVertexArray->create(m_points.data(), m_points.size() * sizeof(CAttributePoint));
     m_pVertexArray->bind();
@@ -47,18 +92,23 @@ void COpenGLVertexObject::setType(ObjectType type)
     m_type = type;
 }
 
-void COpenGLVertexObject::renderSelf(void)
+void COpenGLVertexObject::renderSelf(bool needBind)
 {
-    m_pVertexArray->bind();
+    if (needBind)
+        this->bind();
 
     GLenum type = GL_QUADS;
     if (m_type == t_Triangle)
         type = GL_TRIANGLES;
 
     // 绘制
-    m_pFunction->glDrawArrays(type, 0, m_points.size());
+    if (m_pElementArray)
+        m_pFunction->glDrawElements(type, m_indices.size(), GL_UNSIGNED_INT, 0);
+    else
+        m_pFunction->glDrawArrays(type, 0, m_points.size());
 
-    m_pVertexArray->unbind();
+    if (needBind)
+        this->unbind();
 }
 
 // 设置和获取名字

@@ -11,6 +11,13 @@ class COpenGLTexture : public QObject
     Q_OBJECT
 
 public:
+    enum TextureType
+    {
+        t_diffuse,
+        t_specular
+    };
+
+public:
     COpenGLTexture(QOpenGLFunctions* function, QObject* parent = nullptr);
     ~COpenGLTexture();
 
@@ -27,13 +34,24 @@ public:
     void setName(const QString& name);
     QString getName(void);
 
+    void setType(TextureType type);
+    TextureType getType(void);
+
     // 获取ID
     GLuint getId(void);
+
+    // 获取图片的路径
+    QString getImagePath(void);
+
+    void activeTexture(int textureId);
 
 private:
     QOpenGLFunctions* m_pFunction = nullptr;
     GLuint m_id;
     QString m_name;
+    QString m_imagePath;
+
+    TextureType m_type;
 };
 
 #endif

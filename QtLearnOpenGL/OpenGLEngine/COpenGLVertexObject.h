@@ -7,6 +7,7 @@
 #include "CAttributePoint.h"
 
 class COpenGLVertexArray;
+class COpenGLElementArray;
 class COpenGLVertexObject : public QObject
 {
     Q_OBJECT
@@ -22,6 +23,7 @@ public:
     ~COpenGLVertexObject();
 
     void setPoints(const CAttributePointArray& points);
+    void setIndices(const QVector<unsigned int> indices);
     void setProgram(QOpenGLShaderProgram* pProgram);
 
     // 设置和获取名字
@@ -29,17 +31,22 @@ public:
     void getName(QString& posName, QString& coordName, QString& normalName);
 
     void create(void);
+    void bind(void);
+    void unbind(void);
 
     void setType(ObjectType type);
 
-    void renderSelf(void);
+    void renderSelf(bool needBind = true);
 
 private:
     QOpenGLFunctions* m_pFunction = nullptr;
 
     CAttributePointArray m_points;
     COpenGLVertexArray* m_pVertexArray = nullptr;
+    COpenGLElementArray* m_pElementArray = nullptr;
     QOpenGLShaderProgram* m_pProgram = nullptr;
+
+    QVector<unsigned int> m_indices;
 
     GLint m_nPosAttrLocationId;
     GLint m_nCoordAttrLocationId;
@@ -50,6 +57,8 @@ private:
     QString m_normalName;
 
     ObjectType m_type;
+
+    void createVBO(void);
 };
 
 #endif

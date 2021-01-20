@@ -33,10 +33,10 @@ void IBOAndPolygonModeWidget::initializeGL()
     // 创建IBO数据
     GLuint indices[] = {0, 1, 3, 1, 2, 3};
 
-    // 创建VBO
-    glGenBuffers(1, &m_nVBOId);
     // 创建IBO
     glGenBuffers(1, &m_nIBOId);
+    // 创建VBO
+    glGenBuffers(1, &m_nVBOId);
 
     // 初始化VBO
     glBindBuffer(GL_ARRAY_BUFFER, m_nVBOId);

@@ -28,5 +28,7 @@
         <file>11_LightCasters/shader/PointLightVertexShader.vsh</file>
         <file>11_LightCasters/shader/SpotLightFragmentShader.fsh</file>
         <file>11_LightCasters/shader/SpotLightVertexShader.vsh</file>
+        <file>13_Model/shader/fragmentshader.fsh</file>
+        <file>13_Model/shader/vertexshader.vsh</file>
     </qresource>
 </RCC>

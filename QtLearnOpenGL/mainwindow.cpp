@@ -11,6 +11,7 @@
 #include "09_Material/MaterialWidget.h"
 #include "10_LightingMaps/LightMapWidget.h"
 #include "11_LightCasters/LightCasterWidget.h"
+#include "13_Model/ModelWidget.h"
 #include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -68,5 +69,8 @@ void MainWindow::initUI(void)
 
     LightCasterWidget* pW11 = new LightCasterWidget;
     m_pLeftControl->addWidget(pW11, tr("11.Lighting Caster"));
+
+    ModelWidget* pW13 = new ModelWidget;
+    m_pLeftControl->addWidget(pW13, tr("13.Model"));
 }
 

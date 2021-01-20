@@ -50,6 +50,9 @@ public:
 
     void activeCamera(void);
 
+    QMatrix4x4 getVMatrix(void);
+    QMatrix4x4 getPMatrix(void);
+
 private:
     QString m_viewMatName;
     QString m_projectMatName;

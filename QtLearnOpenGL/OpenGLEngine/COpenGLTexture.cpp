@@ -58,6 +58,7 @@ void COpenGLTexture::setImage(const QImage& image)
 
 void COpenGLTexture::setImage(const QString& image)
 {
+    m_imagePath = image;
     QImage tempImage;
     if (!tempImage.load(image))
         return;
@@ -76,8 +77,24 @@ QString COpenGLTexture::getName(void)
     return m_name;
 }
 
+void COpenGLTexture::setType(TextureType type)
+{
+    m_type = type;
+}
+
+COpenGLTexture::TextureType COpenGLTexture::getType(void)
+{
+    return m_type;
+}
+
 // 获取ID
 GLuint COpenGLTexture::getId(void)
 {
     return m_id;
+}
+
+// 获取图片的路径
+QString COpenGLTexture::getImagePath(void)
+{
+    return m_imagePath;
 }

@@ -16,7 +16,7 @@ class COpenGLTexture;
 class COpenGLRender;
 class COpenGLVertexObject;
 class COpenGLCamera;
-class DirectionLightRenderWidget : public QOpenGLWidget, public QOpenGLFunctions_2_0
+class DirectionLightRenderWidget : public QOpenGLWidget, public QOpenGLFunctions_3_3_Core
 {
     Q_OBJECT
 

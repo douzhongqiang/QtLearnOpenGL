@@ -173,6 +173,16 @@ void COpenGLCamera::reSetViewMatrix(void)
     m_VMat.lookAt(m_cameraPos, m_cameraPos + m_cameraFront, m_cameraUp);
 }
 
+QMatrix4x4 COpenGLCamera::getVMatrix(void)
+{
+    return m_VMat;
+}
+
+QMatrix4x4 COpenGLCamera::getPMatrix(void)
+{
+    return m_PMat;
+}
+
 void COpenGLCamera::activeCamera(void)
 {
     reSetProjectMatrix();
