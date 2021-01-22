@@ -11,7 +11,7 @@
 #include "OpenGLEngine/COpenGLTexture.h"
 #include "OpenGLEngine/CAttributePoint.h"
 
-class COpenGLMesh : public QObject, public QOpenGLFunctions_3_3_Core
+class COpenGLMesh : public QObject
 {
     Q_OBJECT
 

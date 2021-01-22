@@ -66,6 +66,8 @@ SOURCES += \
     13_Model/ModelAttrNode.cpp \
     13_Model/ModelRenderWidget.cpp \
     13_Model/ModelWidget.cpp \
+    14_DepthTest/DepthTestRenderWidget.cpp \
+    14_DepthTest/DepthTestWidget.cpp \
     OpenGLEngine/CAttributePoint.cpp \
     OpenGLEngine/COpenGLCamera.cpp \
     OpenGLEngine/COpenGLElementArray.cpp \
@@ -109,6 +111,8 @@ HEADERS += \
     13_Model/ModelAttrNode.h \
     13_Model/ModelRenderWidget.h \
     13_Model/ModelWidget.h \
+    14_DepthTest/DepthTestRenderWidget.h \
+    14_DepthTest/DepthTestWidget.h \
     OpenGLEngine/CAttributePoint.h \
     OpenGLEngine/COpenGLCamera.h \
     OpenGLEngine/COpenGLElementArray.h \

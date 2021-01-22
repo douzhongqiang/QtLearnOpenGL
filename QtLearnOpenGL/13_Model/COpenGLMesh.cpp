@@ -33,11 +33,12 @@ void COpenGLMesh::addTexture(COpenGLTexture* texture)
 
 void COpenGLMesh::setupMesh(void)
 {
-    this->initializeOpenGLFunctions();
-    this->glGenVertexArrays(1, &m_VAO);
-    this->glBindVertexArray(m_VAO);
+    QOpenGLFunctions_3_3_Core* pFunc = QOpenGLContext::currentContext()->versionFunctions<QOpenGLFunctions_3_3_Core>();
+    pFunc->initializeOpenGLFunctions();
+    pFunc->glGenVertexArrays(1, &m_VAO);
+    pFunc->glBindVertexArray(m_VAO);
     m_pObject->create();
-    this->glBindVertexArray(0);
+    pFunc->glBindVertexArray(0);
 
     // 设置纹理
     int diffuseIndex = 0;
@@ -76,10 +77,11 @@ void COpenGLMesh::draw(void)
 {
     activeTexture();
 
+    QOpenGLFunctions_3_3_Core* pFunc = QOpenGLContext::currentContext()->versionFunctions<QOpenGLFunctions_3_3_Core>();
     // 绘制
-    this->glBindVertexArray(m_VAO);
+    pFunc->glBindVertexArray(m_VAO);
     m_pObject->renderSelf(true);
-    this->glBindVertexArray(0);
+    pFunc->glBindVertexArray(0);
 
 //    m_pFunction->glActiveTexture(GL_TEXTURE0);
 }
