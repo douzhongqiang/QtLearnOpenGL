@@ -85,3 +85,8 @@ void COpenGLMesh::draw(void)
 
 //    m_pFunction->glActiveTexture(GL_TEXTURE0);
 }
+
+void COpenGLMesh::setObjectType(COpenGLVertexObject::ObjectType type)
+{
+    m_pObject->setType(type);
+}

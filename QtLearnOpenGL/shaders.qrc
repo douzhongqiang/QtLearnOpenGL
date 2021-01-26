@@ -30,5 +30,11 @@
         <file>11_LightCasters/shader/SpotLightVertexShader.vsh</file>
         <file>13_Model/shader/fragmentshader.fsh</file>
         <file>13_Model/shader/vertexshader.vsh</file>
+        <file>14_DepthTest/image/container2.png</file>
+        <file>14_DepthTest/image/container2_specular.png</file>
+        <file>14_DepthTest/image/marble.jpg</file>
+        <file>14_DepthTest/image/metal.png</file>
+        <file>14_DepthTest/shader/fragmentshader.fsh</file>
+        <file>14_DepthTest/shader/vertexshader.vsh</file>
     </qresource>
 </RCC>

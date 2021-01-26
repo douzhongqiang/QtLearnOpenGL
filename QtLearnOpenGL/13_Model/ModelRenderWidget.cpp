@@ -4,8 +4,8 @@
 #include "OpenGLEngine/COpenGLVertexObject.h"
 #include "OpenGLEngine/CAttributePoint.h"
 #include "OpenGLEngine/COpenGLCamera.h"
-#include "COpenGLModel.h"
-#include "COpenGLMesh.h"
+#include "OpenGLEngine/COpenGLModel.h"
+#include "OpenGLEngine/COpenGLMesh.h"
 #include "Utils.h"
 #include <QtMath>
 #include <QDebug>

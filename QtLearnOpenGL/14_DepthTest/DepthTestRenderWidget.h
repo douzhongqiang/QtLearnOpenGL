@@ -71,8 +71,17 @@ private:
 private:
     COpenGLCamera* m_pCamera = nullptr;
     COpenGLMesh* m_pMesh = nullptr;
+    COpenGLMesh* m_pMeshFloor = nullptr;
 
+    void initBox(QOpenGLFunctions* f);
     void initModelData(void);
+
+    // 地板
+    void initFloor(QOpenGLFunctions* f);
+    void initModelData2(void);      // 設置地板的数据
+    void drawFloor(void);
+
+    void initModelData3(void);
 
 private:
     // 旋转

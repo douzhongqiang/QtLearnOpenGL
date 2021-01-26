@@ -61,8 +61,6 @@ SOURCES += \
     11_LightCasters/LightCasterWidget.cpp \
     11_LightCasters/PointLightRenderWidget.cpp \
     11_LightCasters/SpotLightRenderWidget.cpp \
-    13_Model/COpenGLMesh.cpp \
-    13_Model/COpenGLModel.cpp \
     13_Model/ModelAttrNode.cpp \
     13_Model/ModelRenderWidget.cpp \
     13_Model/ModelWidget.cpp \
@@ -71,6 +69,8 @@ SOURCES += \
     OpenGLEngine/CAttributePoint.cpp \
     OpenGLEngine/COpenGLCamera.cpp \
     OpenGLEngine/COpenGLElementArray.cpp \
+    OpenGLEngine/COpenGLMesh.cpp \
+    OpenGLEngine/COpenGLModel.cpp \
     OpenGLEngine/COpenGLRender.cpp \
     OpenGLEngine/COpenGLTexture.cpp \
     OpenGLEngine/COpenGLVertexArray.cpp \
@@ -106,8 +106,6 @@ HEADERS += \
     11_LightCasters/LightCasterWidget.h \
     11_LightCasters/PointLightRenderWidget.h \
     11_LightCasters/SpotLightRenderWidget.h \
-    13_Model/COpenGLMesh.h \
-    13_Model/COpenGLModel.h \
     13_Model/ModelAttrNode.h \
     13_Model/ModelRenderWidget.h \
     13_Model/ModelWidget.h \
@@ -116,6 +114,8 @@ HEADERS += \
     OpenGLEngine/CAttributePoint.h \
     OpenGLEngine/COpenGLCamera.h \
     OpenGLEngine/COpenGLElementArray.h \
+    OpenGLEngine/COpenGLMesh.h \
+    OpenGLEngine/COpenGLModel.h \
     OpenGLEngine/COpenGLRender.h \
     OpenGLEngine/COpenGLTexture.h \
     OpenGLEngine/COpenGLVertexArray.h \

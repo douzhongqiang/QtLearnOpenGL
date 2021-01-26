@@ -22,6 +22,7 @@ public:
     void setPoints(const CAttributePointArray& points);
     void setIndices(const QVector<unsigned int> indices);
     void addTexture(COpenGLTexture* texture);
+    void setObjectType(COpenGLVertexObject::ObjectType type);
 
     void setupMesh(void);
 
