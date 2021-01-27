@@ -523,7 +523,7 @@ void DepthTestRenderWidget::initFloor(QOpenGLFunctions* f)
     m_pMeshFloor->addTexture(pMeshTexture2);
 
     // 設置地板的顶点数据
-    initModelData3();
+    initModelData2();
 }
 
 void DepthTestRenderWidget::drawFloor(void)
@@ -531,9 +531,6 @@ void DepthTestRenderWidget::drawFloor(void)
     QMatrix4x4 mat;
     mat.scale(10.0f, 10.0f, 10.0f);
     m_pShaderProgram->setUniformValue("M", mat);
-
-    QMatrix4x4 vnMat = mat.inverted().transposed();
-    m_pShaderProgram->setUniformValue("VN", vnMat);
 
     m_pMeshFloor->draw();
 }

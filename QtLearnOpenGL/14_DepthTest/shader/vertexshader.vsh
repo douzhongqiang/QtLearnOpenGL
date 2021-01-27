@@ -11,12 +11,11 @@ varying vec3 M_ObjectPos;
 uniform mat4 M;
 uniform mat4 V;
 uniform mat4 P;
-uniform mat4 VN;
 
 void main(void)
 {
-    //    M_Normal = mat3(transpose(inverse(M))) * normalize(normal);
-    M_Normal = mat3(VN) * normalize(normal);
+    vec3 tempVec = mat3(transpose(inverse(M))) * normalize(normal);
+    M_Normal = normalize(tempVec);
     M_TexCoord = texCoord * vec2(1.0, -1.0);
     M_ObjectPos = vec3(M * vec4(pos, 1.0));
 
