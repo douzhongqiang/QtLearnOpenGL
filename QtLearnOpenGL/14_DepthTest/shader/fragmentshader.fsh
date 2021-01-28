@@ -27,21 +27,42 @@ struct Light
 uniform Material objectMaterial;        // 物体的材质
 uniform Light lightMaterial;            // 光的信息
 
+// 是否显示场景
+uniform bool M_isShowDepthTest;
+
+// 将非线性的深度值转成线性的值
+float LinearizeDepth(float depth)
+{
+    float near = 0.1;
+    float far = 100.0;
+    float z = depth * 2.0 - 1.0;
+
+    return (2.0 * near * far) / (far + near - z * (far - near));
+}
+
 void main(void)
 {
-    // 环境光
-    vec3 ambient = lightMaterial.ambient * vec3(texture2D(objectMaterial.diffuse, M_TexCoord));
+    if (!M_isShowDepthTest)
+    {
+        // 环境光
+        vec3 ambient = lightMaterial.ambient * vec3(texture2D(objectMaterial.diffuse, M_TexCoord));
 
-    // 漫反射
-    vec3 lightDir = normalize(-lightMaterial.direction);
-    float diff = max(dot(M_Normal, lightDir), 0);
-    vec3 diffuse = diff * lightMaterial.diffuse * vec3(texture2D(objectMaterial.diffuse, M_TexCoord));
+        // 漫反射
+        vec3 lightDir = normalize(lightMaterial.direction - M_ObjectPos);
+        float diff = max(dot(M_Normal, lightDir), 0);
+        vec3 diffuse = diff * lightMaterial.diffuse * vec3(texture2D(objectMaterial.diffuse, M_TexCoord));
 
-    // 鏡面反射
-    vec3 viewDir = normalize(M_ViewPostion - M_ObjectPos);
-    vec3 reflectDir = reflect(-lightDir, M_Normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), objectMaterial.shininess);
-    vec3 specular = spec * lightMaterial.specular * vec3(texture2D(objectMaterial.specular, M_TexCoord));
+        // 鏡面反射
+        vec3 viewDir = normalize(M_ViewPostion - M_ObjectPos);
+        vec3 reflectDir = normalize(reflect(-lightDir, M_Normal));
+        float spec = pow(max(dot(viewDir, reflectDir), 0.0), objectMaterial.shininess);
+        vec3 specular = spec * lightMaterial.specular * vec3(texture2D(objectMaterial.specular, M_TexCoord));
 
-    gl_FragColor = vec4(ambient + diffuse + specular, 1.0);
+        gl_FragColor = vec4(ambient + diffuse + specular, 1.0);
+    }
+    else
+    {
+        float depth = LinearizeDepth(gl_FragCoord.z);
+        gl_FragColor = vec4(vec3(depth), 1.0);
+    }
 }

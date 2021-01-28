@@ -30,9 +30,8 @@ void DepthTestRenderWidget::initializeGL()
     this->initializeOpenGLFunctions();
 
     // 初始化GPU程序
-    bool result = initShaderProgram();
-    if (!result)
-        return;
+    initShaderProgram();
+    initLightShaderProgram();
 
     glEnable(GL_DEPTH_TEST);
 
@@ -46,9 +45,11 @@ void DepthTestRenderWidget::initializeGL()
         m_pCamera = new COpenGLCamera(f, this);
     m_pCamera->setCameraShaderName("V", "P");
     m_pCamera->setCameraPostion(QVector3D(0.0f, 0.0f, 5.0f));
-    m_pCamera->setShaderProgram(m_pShaderProgram);
+    QObject::connect(m_pCamera, &COpenGLCamera::cameraPostionChanged, this, &DepthTestRenderWidget::attributeInfoChanged);
+    QObject::connect(m_pCamera, &COpenGLCamera::cameraFrontChanged, this, &DepthTestRenderWidget::attributeInfoChanged);
 
-
+    initLight(f);
+    initBox(f);
     initFloor(f);
 
     initTimer();
@@ -56,6 +57,7 @@ void DepthTestRenderWidget::initializeGL()
 
 void DepthTestRenderWidget::resizeGL(int w, int h)
 {
+    this->glViewport(0, 0, w, h);
     m_pCamera->setViewport(w, h);
     this->update();
 
@@ -64,6 +66,10 @@ void DepthTestRenderWidget::resizeGL(int w, int h)
 
 void DepthTestRenderWidget::paintGL()
 {
+    // 开启深度测试
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+
     glClearColor(100.0f / 255.0f, 100.0f / 255.0f, 100.0f / 255.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -72,8 +78,16 @@ void DepthTestRenderWidget::paintGL()
     else
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
+
+    // 绘制灯光
+    m_pCamera->activeCamera(m_pLightShaderProgram);
+    drawLight();
+
     // 使用shader
     m_pShaderProgram->bind();
+
+    // 设置当前显示的内容
+    m_pShaderProgram->setUniformValue("M_isShowDepthTest", m_bShowDepthTest);
 
     // 设置光的信息
     m_pShaderProgram->setUniformValue("lightMaterial.direction", m_light.lightPos);
@@ -90,19 +104,15 @@ void DepthTestRenderWidget::paintGL()
     }
 
     // 设置视图矩阵和投影矩阵
-    m_pCamera->activeCamera();
+    m_pCamera->activeCamera(m_pShaderProgram);
 
-    m_MMat.setToIdentity();
-//    m_MMat.translate(QVector3D(0.0f, -2.0f, 0.0f));
-//    m_MMat.translate(QVector3D(0.0f, 0.0f, -2.0f));
-//    m_MMat.rotate(m_angle, QVector3D(1.0f, 0.0f, 0.0f));
-//    m_MMat.scale(3.0f, 3.0f, 3.0f);
-
-    // 设置模型矩阵
-//    m_pShaderProgram->setUniformValue("M", m_MMat);
+    // 绘制盒子
+    drawBox(QVector3D(0.0f, -1.5f, 0.0f));
+    drawBox(QVector3D(2.0f, -1.5f, 2.0f));
 
     // 绘制地板
     drawFloor();
+
 
     m_pShaderProgram->release();
 }
@@ -152,8 +162,6 @@ void DepthTestRenderWidget::wheelEvent(QWheelEvent *event)
 
 bool DepthTestRenderWidget::initShaderProgram(void)
 {
-    m_pShaderProgram = new QOpenGLShaderProgram(this);
-
     // 加载顶点着色器
     QString vertexShaderStr(":/14_DepthTest/shader/vertexshader.vsh");
     m_pVertexShader = new QOpenGLShader(QOpenGLShader::Vertex, this);
@@ -181,6 +189,38 @@ bool DepthTestRenderWidget::initShaderProgram(void)
     return m_pShaderProgram->link();
 }
 
+bool DepthTestRenderWidget::initLightShaderProgram(void)
+{
+    // 加载顶点着色器
+    QString vertexShaderStr(":/14_DepthTest/shader/vertexshader.vsh");
+    QOpenGLShader* pVertexShader = new QOpenGLShader(QOpenGLShader::Vertex, this);
+    bool result = pVertexShader->compileSourceFile(vertexShaderStr);
+    if (!result)
+    {
+        qDebug() << m_pVertexShader->log();
+        pVertexShader->deleteLater();
+        return false;
+    }
+
+    // 加载片段着色器
+    QString fragmentShaderStr(":/14_DepthTest/shader/lightfragmentShader.fsh");
+    QOpenGLShader* pFragmentShader = new QOpenGLShader(QOpenGLShader::Fragment, this);
+    result = pFragmentShader->compileSourceFile(fragmentShaderStr);
+    if (!result)
+    {
+        qDebug() << m_pFragmentShader->log();
+        pFragmentShader->deleteLater();
+        pVertexShader->deleteLater();
+        return false;
+    }
+
+    // 创建ShaderProgram
+    m_pLightShaderProgram = new QOpenGLShaderProgram(this);
+    m_pLightShaderProgram->addShader(pVertexShader);
+    m_pLightShaderProgram->addShader(pFragmentShader);
+    return m_pLightShaderProgram->link();
+}
+
 void DepthTestRenderWidget::setFillStatus(bool isFill)
 {
     m_isFill = isFill;
@@ -204,15 +244,73 @@ DepthTestRenderWidget::LightInfo DepthTestRenderWidget::getLightInfo(void)
     return m_light;
 }
 
+void DepthTestRenderWidget::setCameraPostion(const QVector3D& postion)
+{
+    m_pCamera->setCameraPostion(postion);
+}
+
+QVector3D DepthTestRenderWidget::getCameraPostion(void)
+{
+    return m_pCamera->getCameraPostion();
+}
+
+void DepthTestRenderWidget::setCameraFront(const QVector3D& front)
+{
+    m_pCamera->setCameraFront(front);
+}
+
+QVector3D DepthTestRenderWidget::getCameraFront(void)
+{
+    return m_pCamera->getCameraFront();
+}
+
+// 设置是否显示为深度测试结果
+void DepthTestRenderWidget::setDepthTestVisible(bool isVisible)
+{
+    m_bShowDepthTest = isVisible;
+    this->update();
+}
+
+bool DepthTestRenderWidget::isDepthTestVisible(void)
+{
+    return m_bShowDepthTest;
+}
+
 void DepthTestRenderWidget::initLightInfo(void)
 {
-    m_light.lightPos = QVector3D(0.0f, 0.0f, -1.0f);
+    m_light.lightPos = QVector3D(1.0f, -0.5f, 1.5f);
 
-    m_light.ambientColor = QVector3D(0.2f, 0.2f, 0.2f);
-    m_light.diffuesColor = QVector3D(0.5f, 0.5f, 0.5f);
+    m_light.ambientColor = QVector3D(0.3f, 0.3f, 0.3f);
+    m_light.diffuesColor = QVector3D(0.6f, 0.6f, 0.6f);
     m_light.specularColor = QVector3D(1.0f, 1.0f, 1.0f);
 
     this->update();
+}
+
+void DepthTestRenderWidget::initLight(QOpenGLFunctions* f)
+{
+    m_pLightMesh = new COpenGLMesh(f, m_pLightShaderProgram, this);
+    initModelData(m_pLightMesh);
+}
+
+void DepthTestRenderWidget::drawLight(void)
+{
+    m_pLightShaderProgram->bind();
+
+    // 设置模型矩阵
+    QMatrix4x4 mat;
+    mat.translate(m_light.lightPos);
+    mat.scale(0.1f);
+    m_pLightShaderProgram->setUniformValue("M", mat);
+
+    // 设置V和P Matrix
+    m_pLightShaderProgram->setUniformValue("V", m_pCamera->getVMatrix());
+    m_pLightShaderProgram->setUniformValue("P", m_pCamera->getPMatrix());
+
+    // 绘制网格
+    m_pLightMesh->draw();
+
+    m_pLightShaderProgram->release();
 }
 
 void DepthTestRenderWidget::initBox(QOpenGLFunctions* f)
@@ -221,7 +319,7 @@ void DepthTestRenderWidget::initBox(QOpenGLFunctions* f)
 
     COpenGLTexture* pMeshTexture = new COpenGLTexture(f, this);
     pMeshTexture->create();
-    pMeshTexture->setImage(":/10_LightingMaps/image/container2.png");
+    pMeshTexture->setImage(":/14_DepthTest/image/marble.jpg");
     pMeshTexture->setType(COpenGLTexture::t_diffuse);
     m_pMesh->addTexture(pMeshTexture);
 
@@ -231,10 +329,10 @@ void DepthTestRenderWidget::initBox(QOpenGLFunctions* f)
     pMeshTexture2->setType(COpenGLTexture::t_specular);
     m_pMesh->addTexture(pMeshTexture2);
 
-    initModelData();
+    initModelData(m_pMesh);
 }
 
-void DepthTestRenderWidget::initModelData(void)
+void DepthTestRenderWidget::initModelData(COpenGLMesh* pMesh)
 {
     CAttributePointArray arrays;
 
@@ -307,71 +405,80 @@ void DepthTestRenderWidget::initModelData(void)
 
         vecs << i;
     }
-    m_pMesh->setPoints(arrays);
-    m_pMesh->setIndices(vecs);
+    pMesh->setPoints(arrays);
+    pMesh->setIndices(vecs);
 
-    m_pMesh->setupMesh();
+    pMesh->setupMesh();
+}
+
+void DepthTestRenderWidget::drawBox(const QVector3D& pos)
+{
+    QMatrix4x4 mat;
+    mat.translate(pos);
+    m_pShaderProgram->setUniformValue("M", mat);
+
+    m_pMesh->draw();
 }
 
 void DepthTestRenderWidget::initModelData2(void)
 {
     CAttributePointArray arrays;
 
-//    float vertices[] = {
-//            // positions          // normals           // texture coords
-//            -0.5f,  0.0f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
-//             0.5f,  0.0f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-//             0.5f,  0.0f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
-
-//             0.5f,  0.0f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-//            -0.5f,  0.0f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
-//            -0.5f,  0.0f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f
-//        };
-
     float vertices[] = {
             // positions          // normals           // texture coords
-            -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
-             0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
-             0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-             0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-            -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+            -0.5f,  0.0f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+             0.5f,  0.0f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+             0.5f,  0.0f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
 
-            -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
-             0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
-             0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
-             0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
-            -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
-            -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
-
-            -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-            -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
-            -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-            -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-            -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
-            -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-
-             0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-             0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
-             0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-             0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-             0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
-             0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-
-            -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
-             0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
-             0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
-             0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
-            -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
-
-            -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
-             0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
-             0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-             0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-            -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
-            -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
+             0.5f,  0.0f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+            -0.5f,  0.0f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+            -0.5f,  0.0f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f
         };
+
+//    float vertices[] = {
+//            // positions          // normals           // texture coords
+//            -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+//             0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
+//             0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+//             0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+//            -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
+//            -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+
+//            -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+//             0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
+//             0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+//             0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+//            -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
+//            -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+
+//            -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+//            -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+//            -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+//            -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+//            -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+//            -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+
+//             0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+//             0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+//             0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+//             0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+//             0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+//             0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+
+//            -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+//             0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
+//             0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+//             0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+//            -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
+//            -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+
+//            -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+//             0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
+//             0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+//             0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+//            -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
+//            -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
+//        };
 
 
     int interval = 8;
@@ -512,15 +619,9 @@ void DepthTestRenderWidget::initFloor(QOpenGLFunctions* f)
     // 添加地板紋理
     COpenGLTexture* pMeshTexture = new COpenGLTexture(f, this);
     pMeshTexture->create();
-    pMeshTexture->setImage(":/14_DepthTest/image/container2.png");
+    pMeshTexture->setImage(":/14_DepthTest/image/metal.png");
     pMeshTexture->setType(COpenGLTexture::t_diffuse);
     m_pMeshFloor->addTexture(pMeshTexture);
-
-    COpenGLTexture* pMeshTexture2 = new COpenGLTexture(f, this);
-    pMeshTexture2->create();
-    pMeshTexture2->setImage(":/10_LightingMaps/image/container2_specular.png");
-    pMeshTexture2->setType(COpenGLTexture::t_specular);
-    m_pMeshFloor->addTexture(pMeshTexture2);
 
     // 設置地板的顶点数据
     initModelData2();
@@ -529,6 +630,7 @@ void DepthTestRenderWidget::initFloor(QOpenGLFunctions* f)
 void DepthTestRenderWidget::drawFloor(void)
 {
     QMatrix4x4 mat;
+    mat.translate(QVector3D(0.0f, -2.0f, 0.0f));
     mat.scale(10.0f, 10.0f, 10.0f);
     m_pShaderProgram->setUniformValue("M", mat);
 

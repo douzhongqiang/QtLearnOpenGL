@@ -40,6 +40,16 @@ public:
     void setLightInfo(const LightInfo& info);
     LightInfo getLightInfo(void);
 
+    void setCameraPostion(const QVector3D& postion);
+    QVector3D getCameraPostion(void);
+
+    void setCameraFront(const QVector3D& front);
+    QVector3D getCameraFront(void);
+
+    // 设置是否显示为深度测试结果
+    void setDepthTestVisible(bool isVisible);
+    bool isDepthTestVisible(void);
+
 protected:
     void initializeGL() override;
     void resizeGL(int w, int h) override;
@@ -53,9 +63,11 @@ protected:
 
 private:
     bool initShaderProgram(void);
+    bool initLightShaderProgram(void);
 
     GLuint m_shaderProgramId;
     QOpenGLShaderProgram* m_pShaderProgram = nullptr;
+    QOpenGLShaderProgram* m_pLightShaderProgram = nullptr;
     QOpenGLShader* m_pVertexShader = nullptr;
     QOpenGLShader* m_pFragmentShader = nullptr;
 
@@ -72,9 +84,16 @@ private:
     COpenGLCamera* m_pCamera = nullptr;
     COpenGLMesh* m_pMesh = nullptr;
     COpenGLMesh* m_pMeshFloor = nullptr;
+    COpenGLMesh* m_pLightMesh = nullptr;
 
+    // 灯
+    void initLight(QOpenGLFunctions* f);
+    void drawLight(void);
+
+    // 盒子
     void initBox(QOpenGLFunctions* f);
-    void initModelData(void);
+    void initModelData(COpenGLMesh* pMesh);
+    void drawBox(const QVector3D& pos);
 
     // 地板
     void initFloor(QOpenGLFunctions* f);
@@ -89,6 +108,11 @@ private:
     void initTimer(void);
     void onTimeout(void);
     int m_angle = 0;
+
+    bool m_bShowDepthTest = false;
+
+signals:
+    void attributeInfoChanged(void);
 };
 
 #endif

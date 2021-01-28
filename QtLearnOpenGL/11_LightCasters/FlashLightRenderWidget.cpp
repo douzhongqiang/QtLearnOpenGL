@@ -109,7 +109,7 @@ void FlashLightRenderWidget::paintGL()
 
     // 设置光的信息
     m_pShaderProgram->setUniformValue("lightMaterial.lightPos", m_pCamera->getCameraPostion());
-    m_pShaderProgram->setUniformValue("lightMaterial.direction", m_pCamera->getCameraCameraFront());
+    m_pShaderProgram->setUniformValue("lightMaterial.direction", m_pCamera->getCameraFront());
     m_pShaderProgram->setUniformValue("lightMaterial.cutoff", (float)qCos(qDegreesToRadians(m_light.cutout)));
     m_pShaderProgram->setUniformValue("lightMaterial.outerCutoff", (float)qCos(qDegreesToRadians(m_light.outerCutoff)));
     // 光的材质信息

@@ -83,7 +83,7 @@ void COpenGLMesh::draw(void)
     m_pObject->renderSelf(true);
     pFunc->glBindVertexArray(0);
 
-//    m_pFunction->glActiveTexture(GL_TEXTURE0);
+    m_pFunction->glActiveTexture(GL_TEXTURE0);
 }
 
 void COpenGLMesh::setObjectType(COpenGLVertexObject::ObjectType type)

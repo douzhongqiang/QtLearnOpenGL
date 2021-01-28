@@ -2,6 +2,7 @@
 #include "DepthTestRenderWidget.h"
 #include "NDAttributeBase.h"
 #include "UINodeAttrControl.h"
+#include "DepthTestAttrNode.h"
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QSplitter>
@@ -20,6 +21,17 @@ DepthTestWidget::DepthTestWidget(QWidget* parent)
     // 添加渲染界面
     QWidget* pRenderWidget = createRenderWidget();
     pSpliter->addWidget(pRenderWidget);
+
+    // 添加节点属性
+    m_pDepthTestAttrNode = new DepthTestAttrNode(this);
+    QWidget* pW = UINodeAttrControl::createNodeWidget(m_pDepthTestAttrNode);
+    pW->setMaximumWidth(450);
+    pSpliter->addWidget(pW);
+
+    // 初始化节点
+    m_pDepthTestAttrNode->setLightInfo(m_pRenderWidget->getLightInfo());
+
+    QObject::connect(m_pDepthTestAttrNode, &DepthTestAttrNode::attributeValueChanged, this, &DepthTestWidget::onAttributeChanged);
 }
 
 DepthTestWidget::~DepthTestWidget()
@@ -36,8 +48,40 @@ QWidget* DepthTestWidget::createRenderWidget(void)
 
     // 添加渲染界面
     m_pRenderWidget = new DepthTestRenderWidget;
+    QObject::connect(m_pRenderWidget, &DepthTestRenderWidget::attributeInfoChanged, this, &DepthTestWidget::onAttributeInfoChanged);
     m_pRenderWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     pLayout->addWidget(m_pRenderWidget);
 
+    m_pButton = new QPushButton(tr("Show DepthTest"));
+    pLayout->addWidget(m_pButton);
+    QObject::connect(m_pButton, &QPushButton::clicked, this, &DepthTestWidget::onClickedDepthTest);
+
     return pWidget;
+}
+
+void DepthTestWidget::onClickedDepthTest(void)
+{
+    bool isVisible = m_pRenderWidget->isDepthTestVisible();
+    if (isVisible)
+        m_pButton->setText(tr("Show Scene"));
+    else
+        m_pButton->setText(tr("Show DepthTest"));
+
+    m_pRenderWidget->setDepthTestVisible(!isVisible);
+}
+
+void DepthTestWidget::onAttributeChanged(const QVariant& variant, bool isCmd)
+{
+    m_pRenderWidget->setLightInfo(m_pDepthTestAttrNode->getLightInfo());
+
+    m_pRenderWidget->setCameraPostion(m_pDepthTestAttrNode->getCameraPostion());
+    m_pRenderWidget->setCameraFront(m_pDepthTestAttrNode->getCameraFront());
+}
+
+void DepthTestWidget::onAttributeInfoChanged(void)
+{
+    m_pDepthTestAttrNode->setLightInfo(m_pRenderWidget->getLightInfo());
+
+    m_pDepthTestAttrNode->setCameraPostion(m_pRenderWidget->getCameraPostion());
+    m_pDepthTestAttrNode->setCameraFront(m_pRenderWidget->getCameraFront());
 }

@@ -41,14 +41,15 @@ public:
     void setc(const QVector3D& cameraUp);
 
     QVector3D getCameraPostion(void);
-    QVector3D getCameraCameraFront(void);
-    QVector3D getCameraCameraUp(void);
+    QVector3D getCameraFront(void);
+    QVector3D getCameraUp(void);
 
     // 设置投影矩阵相关
     void setPersAngle(float angle);
     float getPerAngle(void);
 
     void activeCamera(void);
+    void activeCamera(QOpenGLShaderProgram* pProgram);
 
     QMatrix4x4 getVMatrix(void);
     QMatrix4x4 getPMatrix(void);

@@ -128,12 +128,12 @@ QVector3D COpenGLCamera::getCameraPostion(void)
     return m_cameraPos;
 }
 
-QVector3D COpenGLCamera::getCameraCameraFront(void)
+QVector3D COpenGLCamera::getCameraFront(void)
 {
     return m_cameraFront;
 }
 
-QVector3D COpenGLCamera::getCameraCameraUp(void)
+QVector3D COpenGLCamera::getCameraUp(void)
 {
     return m_cameraUp;
 }
@@ -188,6 +188,21 @@ void COpenGLCamera::activeCamera(void)
     reSetProjectMatrix();
     reSetViewMatrix();
 
-    m_pProgram->setUniformValue(m_viewMatName.toLocal8Bit().data(), m_VMat);
-    m_pProgram->setUniformValue(m_projectMatName.toLocal8Bit().data(), m_PMat);
+    if (m_pProgram)
+    {
+        m_pProgram->setUniformValue(m_viewMatName.toLocal8Bit().data(), m_VMat);
+        m_pProgram->setUniformValue(m_projectMatName.toLocal8Bit().data(), m_PMat);
+    }
+}
+
+void COpenGLCamera::activeCamera(QOpenGLShaderProgram* pProgram)
+{
+    reSetProjectMatrix();
+    reSetViewMatrix();
+
+    if (pProgram)
+    {
+        pProgram->setUniformValue(m_viewMatName.toLocal8Bit().data(), m_VMat);
+        pProgram->setUniformValue(m_projectMatName.toLocal8Bit().data(), m_PMat);
+    }
 }
