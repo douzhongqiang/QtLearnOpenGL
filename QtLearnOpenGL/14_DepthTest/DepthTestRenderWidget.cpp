@@ -44,7 +44,7 @@ void DepthTestRenderWidget::initializeGL()
     if (!m_pCamera)
         m_pCamera = new COpenGLCamera(f, this);
     m_pCamera->setCameraShaderName("V", "P");
-    m_pCamera->setCameraPostion(QVector3D(0.0f, 0.0f, 5.0f));
+    m_pCamera->setCameraPostion(QVector3D(0.0f, -1.0f, 7.0f));
     QObject::connect(m_pCamera, &COpenGLCamera::cameraPostionChanged, this, &DepthTestRenderWidget::attributeInfoChanged);
     QObject::connect(m_pCamera, &COpenGLCamera::cameraFrontChanged, this, &DepthTestRenderWidget::attributeInfoChanged);
 
