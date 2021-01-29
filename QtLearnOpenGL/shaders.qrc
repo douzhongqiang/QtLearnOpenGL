@@ -37,5 +37,6 @@
         <file>14_DepthTest/shader/fragmentshader.fsh</file>
         <file>14_DepthTest/shader/vertexshader.vsh</file>
         <file>14_DepthTest/shader/lightfragmentShader.fsh</file>
+        <file>15_StencilTest/shader/lightfragmentShader.fsh</file>
     </qresource>
 </RCC>

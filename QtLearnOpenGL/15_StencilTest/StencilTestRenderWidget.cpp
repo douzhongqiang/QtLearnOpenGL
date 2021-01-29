@@ -73,13 +73,10 @@ void StencilTestRenderWidget::paintGL()
     // 启用蒙版测试
     glEnable(GL_STENCIL_TEST);
     glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-//    glStencilFunc(GL_KEEP, GL_KEEP, GL_REPLACE);
     glStencilFunc(GL_ALWAYS, 1, 0xFF);
 
     glClearColor(100.0f / 255.0f, 100.0f / 255.0f, 100.0f / 255.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
-    glStencilMask(0xFF);
 
     if (m_isFill)
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -113,6 +110,7 @@ void StencilTestRenderWidget::paintGL()
     // 设置视图矩阵和投影矩阵
     m_pCamera->activeCamera(m_pShaderProgram);
 
+    glStencilMask(0x00);
     // 绘制地板
     drawFloor();
 
@@ -128,7 +126,6 @@ void StencilTestRenderWidget::paintGL()
     glDisable(GL_DEPTH_TEST);
     drawScaledTwoBox();
     glStencilMask(0xFF);
-    glStencilFunc(GL_ALWAYS, 0, 0xFF);
     glEnable(GL_DEPTH_TEST);
 }
 
@@ -218,7 +215,7 @@ bool StencilTestRenderWidget::initLightShaderProgram(void)
     }
 
     // 加载片段着色器
-    QString fragmentShaderStr(":/14_DepthTest/shader/lightfragmentShader.fsh");
+    QString fragmentShaderStr(":/15_StencilTest/shader/lightfragmentShader.fsh");
     QOpenGLShader* pFragmentShader = new QOpenGLShader(QOpenGLShader::Fragment, this);
     result = pFragmentShader->compileSourceFile(fragmentShaderStr);
     if (!result)
@@ -317,6 +314,7 @@ void StencilTestRenderWidget::drawLight(void)
     mat.translate(m_light.lightPos);
     mat.scale(0.1f);
     m_pLightShaderProgram->setUniformValue("M", mat);
+    m_pLightShaderProgram->setUniformValue("M_Color", QVector3D(1.0f, 1.0f, 1.0f));
 
     // 设置V和P Matrix
     m_pLightShaderProgram->setUniformValue("V", m_pCamera->getVMatrix());
@@ -441,8 +439,9 @@ void StencilTestRenderWidget::drawScaledBox(const QVector3D& pos)
 {
     QMatrix4x4 mat;
     mat.translate(pos);
-    mat.scale(1.1f);
+    mat.scale(1.015f);
     m_pLightShaderProgram->setUniformValue("M", mat);
+    m_pLightShaderProgram->setUniformValue("M_Color", QVector3D(0.78, 0.48, 0.17));
 
     m_pTwoBoxMesh->draw();
 }
