@@ -13,7 +13,7 @@
 #include "11_LightCasters/LightCasterWidget.h"
 #include "13_Model/ModelWidget.h"
 #include "14_DepthTest/DepthTestWidget.h"
-#include "14_DepthTest/DepthTestWidget.h"
+#include "15_StencilTest/StencilTestWidget.h"
 #include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -77,5 +77,8 @@ void MainWindow::initUI(void)
 
     DepthTestWidget* pW14 = new DepthTestWidget;
     m_pLeftControl->addWidget(pW14, tr("14.DepthTest"));
+
+    StencilTestWidget* pW15 = new StencilTestWidget;
+    m_pLeftControl->addWidget(pW15, tr("15.StencilTest"));
 }
 

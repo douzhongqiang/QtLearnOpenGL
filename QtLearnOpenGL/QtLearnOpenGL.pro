@@ -67,6 +67,9 @@ SOURCES += \
     14_DepthTest/DepthTestAttrNode.cpp \
     14_DepthTest/DepthTestRenderWidget.cpp \
     14_DepthTest/DepthTestWidget.cpp \
+    15_StencilTest/StencilTestAttrNode.cpp \
+    15_StencilTest/StencilTestRenderWidget.cpp \
+    15_StencilTest/StencilTestWidget.cpp \
     OpenGLEngine/CAttributePoint.cpp \
     OpenGLEngine/COpenGLCamera.cpp \
     OpenGLEngine/COpenGLElementArray.cpp \
@@ -113,6 +116,9 @@ HEADERS += \
     14_DepthTest/DepthTestAttrNode.h \
     14_DepthTest/DepthTestRenderWidget.h \
     14_DepthTest/DepthTestWidget.h \
+    15_StencilTest/StencilTestAttrNode.h \
+    15_StencilTest/StencilTestRenderWidget.h \
+    15_StencilTest/StencilTestWidget.h \
     OpenGLEngine/CAttributePoint.h \
     OpenGLEngine/COpenGLCamera.h \
     OpenGLEngine/COpenGLElementArray.h \
