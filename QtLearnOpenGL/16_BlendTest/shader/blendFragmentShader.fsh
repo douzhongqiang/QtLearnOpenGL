@@ -15,7 +15,7 @@ uniform Material objectMaterial;        // 物体的材质
 void main(void)
 {
     vec4 currentColor = texture2D(objectMaterial.diffuse, M_TexCoord);
-    if (currentColor.a < 0.1)
+    if (currentColor.a < 0.0001)
         discard;
 
     gl_FragColor = texture2D(objectMaterial.diffuse, M_TexCoord);

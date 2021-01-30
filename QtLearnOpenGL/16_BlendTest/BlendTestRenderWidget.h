@@ -123,6 +123,8 @@ private:
 
     bool m_bShowDepthTest = false;
 
+    QVector<QVector3D> m_grassPosVec;
+
 signals:
     void attributeInfoChanged(void);
 };

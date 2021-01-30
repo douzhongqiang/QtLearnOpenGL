@@ -719,6 +719,12 @@ void BlendTestRenderWidget::initGrass(QOpenGLFunctions* f)
     m_pGrassMesh->addTexture(pMeshTexture);
 
     initGrassModelData(m_pGrassMesh);
+
+    m_grassPosVec << QVector3D(2.5f,  -1.5f, -2.6f);
+    m_grassPosVec << QVector3D(-1.3f,  -1.5f, -2.3f);
+    m_grassPosVec << QVector3D(0.5f, -1.5f, 1.0f);
+    m_grassPosVec << QVector3D(0.0f,  -1.5f,  2.7f);
+    m_grassPosVec << QVector3D(1.5f,  -1.5f,  3.0f);
 }
 
 void BlendTestRenderWidget::initGrassModelData(COpenGLMesh* pMesh)
@@ -767,20 +773,14 @@ void BlendTestRenderWidget::initGrassModelData(COpenGLMesh* pMesh)
 
 void BlendTestRenderWidget::drawGrass(void)
 {
-    QVector<QVector3D> grassPosVec;
-    grassPosVec << QVector3D(0.5f, -1.5f, 1.0f);
-    grassPosVec << QVector3D(1.5f,  -1.5f,  3.0f);
-    grassPosVec << QVector3D(0.0f,  -1.5f,  2.7f);
-    grassPosVec << QVector3D(-1.3f,  -1.5f, -2.3f);
-    grassPosVec << QVector3D(2.5f,  -1.5f, -2.6f);
-
     m_pGrassShaderProgram->bind();
 
     // 设置V和P Matrix
     m_pGrassShaderProgram->setUniformValue("V", m_pCamera->getVMatrix());
     m_pGrassShaderProgram->setUniformValue("P", m_pCamera->getPMatrix());
 
-    for (auto iter = grassPosVec.begin(); iter != grassPosVec.end(); ++iter)
+    // 需要根据距离眼睛位置的距离排序
+    for (auto iter = m_grassPosVec.begin(); iter != m_grassPosVec.end(); ++iter)
     {
         // 设置草的位置
         QMatrix4x4 mat;
