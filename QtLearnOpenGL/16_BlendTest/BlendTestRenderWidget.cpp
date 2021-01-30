@@ -699,7 +699,7 @@ void BlendTestRenderWidget::drawFloor(void)
 {
     QMatrix4x4 mat;
     mat.translate(QVector3D(0.0f, -2.0f, 0.0f));
-    mat.scale(10.0f, 10.0f, 10.0f);
+    mat.scale(15.0f, 15.0f, 15.0f);
     m_pShaderProgram->setUniformValue("M", mat);
 
     m_pMeshFloor->draw();
@@ -711,7 +711,9 @@ void BlendTestRenderWidget::initGrass(QOpenGLFunctions* f)
     m_pGrassMesh = new COpenGLMesh(f, m_pGrassShaderProgram, this);
 
     COpenGLTexture* pMeshTexture = new COpenGLTexture(f, this);
+    pMeshTexture->setFilterType(COpenGLTexture::t_nearest);
     pMeshTexture->create();
+//    pMeshTexture->setImage(":/16_BlendTest/image/grass.png");
     pMeshTexture->setImage(":/16_BlendTest/image/blending_transparent_window.png");
     pMeshTexture->setType(COpenGLTexture::t_diffuse);
     m_pGrassMesh->addTexture(pMeshTexture);

@@ -4,6 +4,7 @@
 COpenGLTexture::COpenGLTexture(QOpenGLFunctions* function, QObject* parent)
     :QObject(parent)
     , m_pFunction(function)
+    , m_filterType(t_linear)
 {
 
 }
@@ -21,8 +22,13 @@ void COpenGLTexture::create(void)
 
     m_pFunction->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     m_pFunction->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    m_pFunction->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    m_pFunction->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    GLint filterType = GL_NEAREST;
+    if (m_filterType == t_linear)
+        filterType = GL_LINEAR;
+    m_pFunction->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filterType);
+    m_pFunction->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filterType);
+
     m_pFunction->glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     m_pFunction->glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
     m_pFunction->glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
@@ -85,6 +91,16 @@ void COpenGLTexture::setType(TextureType type)
 COpenGLTexture::TextureType COpenGLTexture::getType(void)
 {
     return m_type;
+}
+
+void COpenGLTexture::setFilterType(FilterType type)
+{
+    m_filterType = type;
+}
+
+COpenGLTexture::FilterType COpenGLTexture::getFilterType(void)
+{
+    return m_filterType;
 }
 
 // 获取ID

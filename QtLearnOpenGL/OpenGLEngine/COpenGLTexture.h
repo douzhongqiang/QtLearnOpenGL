@@ -17,6 +17,12 @@ public:
         t_specular
     };
 
+    enum FilterType
+    {
+        t_nearest,
+        t_linear
+    };
+
 public:
     COpenGLTexture(QOpenGLFunctions* function, QObject* parent = nullptr);
     ~COpenGLTexture();
@@ -37,6 +43,9 @@ public:
     void setType(TextureType type);
     TextureType getType(void);
 
+    void setFilterType(FilterType type);
+    FilterType getFilterType(void);
+
     // 获取ID
     GLuint getId(void);
 
@@ -52,6 +61,7 @@ private:
     QString m_imagePath;
 
     TextureType m_type;
+    FilterType m_filterType;
 };
 
 #endif
