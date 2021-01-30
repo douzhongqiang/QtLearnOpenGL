@@ -70,6 +70,9 @@ SOURCES += \
     15_StencilTest/StencilTestAttrNode.cpp \
     15_StencilTest/StencilTestRenderWidget.cpp \
     15_StencilTest/StencilTestWidget.cpp \
+    16_BlendTest/BlendTestAttrNode.cpp \
+    16_BlendTest/BlendTestRenderWidget.cpp \
+    16_BlendTest/BlendTestWidget.cpp \
     OpenGLEngine/CAttributePoint.cpp \
     OpenGLEngine/COpenGLCamera.cpp \
     OpenGLEngine/COpenGLElementArray.cpp \
@@ -119,6 +122,9 @@ HEADERS += \
     15_StencilTest/StencilTestAttrNode.h \
     15_StencilTest/StencilTestRenderWidget.h \
     15_StencilTest/StencilTestWidget.h \
+    16_BlendTest/BlendTestAttrNode.h \
+    16_BlendTest/BlendTestRenderWidget.h \
+    16_BlendTest/BlendTestWidget.h \
     OpenGLEngine/CAttributePoint.h \
     OpenGLEngine/COpenGLCamera.h \
     OpenGLEngine/COpenGLElementArray.h \

@@ -14,6 +14,7 @@
 #include "13_Model/ModelWidget.h"
 #include "14_DepthTest/DepthTestWidget.h"
 #include "15_StencilTest/StencilTestWidget.h"
+#include "16_BlendTest/BlendTestWidget.h"
 #include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -80,5 +81,8 @@ void MainWindow::initUI(void)
 
     StencilTestWidget* pW15 = new StencilTestWidget;
     m_pLeftControl->addWidget(pW15, tr("15.StencilTest"));
+
+    BlendTestWidget* pW16 = new BlendTestWidget;
+    m_pLeftControl->addWidget(pW16, tr("16.BlendTest"));
 }
 

@@ -38,5 +38,8 @@
         <file>14_DepthTest/shader/vertexshader.vsh</file>
         <file>14_DepthTest/shader/lightfragmentShader.fsh</file>
         <file>15_StencilTest/shader/lightfragmentShader.fsh</file>
+        <file>16_BlendTest/image/grass.png</file>
+        <file>16_BlendTest/shader/blendFragmentShader.fsh</file>
+        <file>16_BlendTest/image/blending_transparent_window.png</file>
     </qresource>
 </RCC>

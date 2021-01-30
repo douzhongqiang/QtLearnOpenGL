@@ -21,8 +21,8 @@ void COpenGLTexture::create(void)
 
     m_pFunction->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     m_pFunction->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    m_pFunction->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    m_pFunction->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    m_pFunction->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    m_pFunction->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     m_pFunction->glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     m_pFunction->glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
     m_pFunction->glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
@@ -48,10 +48,10 @@ void COpenGLTexture::setImage(const QImage& image)
     this->bind();
 
     QImage tempImage = image;
-    if (tempImage.format() != QImage::Format_RGB888)
-        tempImage = tempImage.convertToFormat(QImage::Format_RGB888);
+    if (tempImage.format() != QImage::Format_RGBA8888)
+        tempImage = tempImage.convertToFormat(QImage::Format_RGBA8888);
 
-    m_pFunction->glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tempImage.width(), tempImage.height(), 0, GL_RGB, GL_UNSIGNED_BYTE, tempImage.bits());
+    m_pFunction->glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tempImage.width(), tempImage.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, tempImage.bits());
 
     this->unbind();
 }

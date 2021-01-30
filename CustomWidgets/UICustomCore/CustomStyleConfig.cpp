@@ -13,8 +13,8 @@ CustomStyleConfig::CustomStyleConfig()
     ,m_cNormalHighLightColor(243, 125, 40)
 {
     QPalette pal;
-    pal.setBrush(QPalette::Background, QBrush(m_cNormalBgColor));
-    pal.setBrush(QPalette::Foreground, QBrush(m_cNormalTextColor));
+    pal.setBrush(QPalette::Window, QBrush(m_cNormalBgColor));
+    pal.setBrush(QPalette::WindowText, QBrush(m_cNormalTextColor));
 
     qApp->setPalette(pal);
 }
