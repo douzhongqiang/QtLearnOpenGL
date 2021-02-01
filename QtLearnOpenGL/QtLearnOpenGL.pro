@@ -73,6 +73,9 @@ SOURCES += \
     16_BlendTest/BlendTestAttrNode.cpp \
     16_BlendTest/BlendTestRenderWidget.cpp \
     16_BlendTest/BlendTestWidget.cpp \
+    17_InvertedImage/InvertedImageAttrNode.cpp \
+    17_InvertedImage/InvertedImageRenderWidget.cpp \
+    17_InvertedImage/InvertedImageWidget.cpp \
     OpenGLEngine/CAttributePoint.cpp \
     OpenGLEngine/COpenGLCamera.cpp \
     OpenGLEngine/COpenGLElementArray.cpp \
@@ -125,6 +128,9 @@ HEADERS += \
     16_BlendTest/BlendTestAttrNode.h \
     16_BlendTest/BlendTestRenderWidget.h \
     16_BlendTest/BlendTestWidget.h \
+    17_InvertedImage/InvertedImageAttrNode.h \
+    17_InvertedImage/InvertedImageRenderWidget.h \
+    17_InvertedImage/InvertedImageWidget.h \
     OpenGLEngine/CAttributePoint.h \
     OpenGLEngine/COpenGLCamera.h \
     OpenGLEngine/COpenGLElementArray.h \

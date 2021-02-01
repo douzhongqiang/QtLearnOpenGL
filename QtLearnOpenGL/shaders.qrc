@@ -41,5 +41,9 @@
         <file>16_BlendTest/image/grass.png</file>
         <file>16_BlendTest/shader/blendFragmentShader.fsh</file>
         <file>16_BlendTest/image/blending_transparent_window.png</file>
+        <file>17_InvertedImage/shader/blendFragmentShader.fsh</file>
+        <file>17_InvertedImage/shader/fragmentshader.fsh</file>
+        <file>17_InvertedImage/shader/lightfragmentShader.fsh</file>
+        <file>17_InvertedImage/shader/vertexshader.vsh</file>
     </qresource>
 </RCC>
