@@ -71,9 +71,7 @@ void InvertedImageRenderWidget::paintGL()
     // 开启深度测试
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
-    // 开始混合
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     // 开启蒙版测试
     glEnable(GL_STENCIL_TEST);
     glStencilOp(GL_KEEP, GL_REPLACE, GL_REPLACE);
@@ -95,10 +93,8 @@ void InvertedImageRenderWidget::paintGL()
     // 使用shader
     m_pShaderProgram->bind();
 
-    // 设置当前显示的内容
-    m_pShaderProgram->setUniformValue("M_isShowDepthTest", m_bShowDepthTest);
-
     // 设置光的信息
+    m_pShaderProgram->setUniformValue("lightMaterial.enabled", true);
     m_pShaderProgram->setUniformValue("lightMaterial.direction", m_light.lightPos);
     m_pShaderProgram->setUniformValue("lightMaterial.ambient", m_light.ambientColor);
     m_pShaderProgram->setUniformValue("lightMaterial.diffuse", m_light.diffuesColor);
@@ -128,8 +124,7 @@ void InvertedImageRenderWidget::paintGL()
     glDepthMask(GL_TRUE);
 
     // 绘制盒子的倒影
-    glBlendFunc(GL_DST_ALPHA, GL_ONE_MINUS_DST_ALPHA);
-    glStencilFunc(GL_EQUAL, 1, 0xFF);
+//    glStencilFunc(GL_EQUAL, 1, 0xFF);
     glStencilMask(0x00);
     drawInvertedBox();
     glStencilMask(0xFF);
@@ -372,7 +367,7 @@ void InvertedImageRenderWidget::initBox(QOpenGLFunctions* f)
 
     COpenGLTexture* pMeshTexture = new COpenGLTexture(f, this);
     pMeshTexture->create();
-    pMeshTexture->setImage(":/14_DepthTest/image/marble.jpg");
+    pMeshTexture->setImage(":/14_DepthTest/image/container2.png");
     pMeshTexture->setType(COpenGLTexture::t_diffuse);
     m_pMesh->addTexture(pMeshTexture);
 
@@ -487,6 +482,9 @@ void InvertedImageRenderWidget::drawScaledBox(const QVector3D& pos)
 
 void InvertedImageRenderWidget::drawTwoBox(void)
 {
+    m_pShaderProgram->setUniformValue("objectMaterial.usedTexture", true);
+    m_pShaderProgram->setUniformValue("objectFactor", QVector3D(1.0f, 1.0f, 1.0f));
+
     // 绘制盒子
     drawBox(QVector3D(0.0f, -1.5f, 0.0f));
     drawBox(QVector3D(2.0f, -1.5f, 2.0f));
@@ -494,6 +492,10 @@ void InvertedImageRenderWidget::drawTwoBox(void)
 
 void InvertedImageRenderWidget::drawInvertedBox(void)
 {
+    m_pShaderProgram->setUniformValue("lightMaterial.enabled", false);
+    m_pShaderProgram->setUniformValue("objectMaterial.usedTexture", true);
+    m_pShaderProgram->setUniformValue("objectFactor", QVector3D(0.3f, 0.3f, 0.3f));
+
     // 绘制盒子
     drawBox(QVector3D(0.0f, -2.5f, 0.0f));
     drawBox(QVector3D(2.0f, -2.5f, 2.0f));
@@ -707,13 +709,12 @@ void InvertedImageRenderWidget::initFloor(QOpenGLFunctions* f)
     m_pMeshFloor = new COpenGLMesh(f, m_pShaderProgram, this);
 
     // 添加地板紋理
-    COpenGLTexture* pMeshTexture = new COpenGLTexture(f, this);
-    pMeshTexture->setFilterType(COpenGLTexture::t_nearest);
-    pMeshTexture->create();
-    pMeshTexture->setImage(":/16_BlendTest/image/blending_transparent_window.png");
-//    pMeshTexture->setImage(":/16_BlendTest/image/grass.png");
-    pMeshTexture->setType(COpenGLTexture::t_diffuse);
-    m_pMeshFloor->addTexture(pMeshTexture);
+//    COpenGLTexture* pMeshTexture = new COpenGLTexture(f, this);
+//    pMeshTexture->setFilterType(COpenGLTexture::t_nearest);
+//    pMeshTexture->create();
+//    pMeshTexture->setImage(":/14_DepthTest/image/metal.png");
+//    pMeshTexture->setType(COpenGLTexture::t_diffuse);
+//    m_pMeshFloor->addTexture(pMeshTexture);
 
     // 設置地板的顶点数据
     initModelData2();
@@ -725,6 +726,15 @@ void InvertedImageRenderWidget::drawFloor(void)
     mat.translate(QVector3D(0.0f, -2.0f, 0.0f));
     mat.scale(15.0f, 15.0f, 15.0f);
     m_pShaderProgram->setUniformValue("M", mat);
+    m_pShaderProgram->setUniformValue("lightMaterial.enabled", true);
+
+//    QVector3D colorVec(0.0f / 255, 130.0f / 255, 130.0f / 255);
+//    QVector3D colorVec(128.0f / 255, 187.0f / 255, 253.0f / 255);
+    QVector3D colorVec(40.0f / 255, 40.0f / 255, 40.0f / 255);
+    m_pShaderProgram->setUniformValue("objectMaterial.ambientColor", colorVec);
+    m_pShaderProgram->setUniformValue("objectMaterial.diffuseColor", colorVec);
+    m_pShaderProgram->setUniformValue("objectFactor", QVector3D(1.0f, 1.0f, 1.0f));
+    m_pShaderProgram->setUniformValue("objectMaterial.usedTexture", false);
 
     m_pMeshFloor->draw();
 }
