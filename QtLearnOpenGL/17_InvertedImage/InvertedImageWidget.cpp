@@ -30,7 +30,7 @@ InvertedImageWidget::InvertedImageWidget(QWidget* parent)
 
     // 初始化节点
     m_pDepthTestAttrNode->setLightInfo(m_pRenderWidget->getLightInfo());
-    m_pDepthTestAttrNode->setCameraPostion(QVector3D(0.0f, -1.0f, 7.0f));
+    m_pDepthTestAttrNode->setCameraPostion(QVector3D(0.0f, -0.5f, 7.0f));
     m_pDepthTestAttrNode->setCameraFront(QVector3D(0.0f, 0.0f, -1.0f));
 
     QObject::connect(m_pDepthTestAttrNode, &InvertedImageAttrNode::attributeValueChanged, this, &InvertedImageWidget::onAttributeChanged);

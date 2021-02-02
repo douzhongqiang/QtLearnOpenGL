@@ -97,7 +97,7 @@ private:
     // 盒子
     void initBox(QOpenGLFunctions* f);
     void initModelData(COpenGLMesh* pMesh);
-    void drawBox(const QVector3D& pos);
+    void drawBox(const QVector3D& pos, bool isInverted = false);
     void drawScaledBox(const QVector3D& pos);
     void drawTwoBox(void);
     void drawScaledTwoBox(void);

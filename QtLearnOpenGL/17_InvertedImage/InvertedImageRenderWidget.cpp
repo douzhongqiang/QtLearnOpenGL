@@ -45,7 +45,7 @@ void InvertedImageRenderWidget::initializeGL()
     if (!m_pCamera)
         m_pCamera = new COpenGLCamera(f, this);
     m_pCamera->setCameraShaderName("V", "P");
-    m_pCamera->setCameraPostion(QVector3D(0.0f, -1.0f, 7.0f));
+    m_pCamera->setCameraPostion(QVector3D(0.0f, -0.5f, 7.0f));
     QObject::connect(m_pCamera, &COpenGLCamera::cameraPostionChanged, this, &InvertedImageRenderWidget::attributeInfoChanged);
     QObject::connect(m_pCamera, &COpenGLCamera::cameraFrontChanged, this, &InvertedImageRenderWidget::attributeInfoChanged);
 
@@ -367,7 +367,8 @@ void InvertedImageRenderWidget::initBox(QOpenGLFunctions* f)
 
     COpenGLTexture* pMeshTexture = new COpenGLTexture(f, this);
     pMeshTexture->create();
-    pMeshTexture->setImage(":/14_DepthTest/image/container2.png");
+//    pMeshTexture->setImage("TestTexture.jpg");
+    pMeshTexture->setImage(":/10_LightingMaps/image/uqahruewcx.jpeg");
     pMeshTexture->setType(COpenGLTexture::t_diffuse);
     m_pMesh->addTexture(pMeshTexture);
 
@@ -460,10 +461,13 @@ void InvertedImageRenderWidget::initModelData(COpenGLMesh* pMesh)
     pMesh->setupMesh();
 }
 
-void InvertedImageRenderWidget::drawBox(const QVector3D& pos)
+void InvertedImageRenderWidget::drawBox(const QVector3D& pos, bool isInverted)
 {
     QMatrix4x4 mat;
     mat.translate(pos);
+    mat.rotate(m_angle, QVector3D(0.0f, 1.0f, 0.0f));
+    if (isInverted)
+        mat.scale(1.0f, -1.0f, 1.0f);
     m_pShaderProgram->setUniformValue("M", mat);
 
     m_pMesh->draw();
@@ -494,11 +498,11 @@ void InvertedImageRenderWidget::drawInvertedBox(void)
 {
     m_pShaderProgram->setUniformValue("lightMaterial.enabled", false);
     m_pShaderProgram->setUniformValue("objectMaterial.usedTexture", true);
-    m_pShaderProgram->setUniformValue("objectFactor", QVector3D(0.3f, 0.3f, 0.3f));
+    m_pShaderProgram->setUniformValue("objectFactor", QVector3D(0.2f, 0.2f, 0.2f));
 
     // 绘制盒子
-    drawBox(QVector3D(0.0f, -2.5f, 0.0f));
-    drawBox(QVector3D(2.0f, -2.5f, 2.0f));
+    drawBox(QVector3D(0.0f, -2.5f, 0.0f), true);
+    drawBox(QVector3D(2.0f, -2.5f, 2.0f), true);
 }
 
 void InvertedImageRenderWidget::drawScaledTwoBox(void)
@@ -831,7 +835,7 @@ void InvertedImageRenderWidget::drawGrass(void)
 void InvertedImageRenderWidget::initTimer(void)
 {
     m_pTimer = new QTimer(this);
-    m_pTimer->setInterval(50);
+    m_pTimer->setInterval(30);
     QObject::connect(m_pTimer, &QTimer::timeout, this, &InvertedImageRenderWidget::onTimeout);
     m_pTimer->start();
 }
