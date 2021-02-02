@@ -734,7 +734,7 @@ void InvertedImageRenderWidget::drawFloor(void)
 
 //    QVector3D colorVec(0.0f / 255, 130.0f / 255, 130.0f / 255);
 //    QVector3D colorVec(128.0f / 255, 187.0f / 255, 253.0f / 255);
-    QVector3D colorVec(40.0f / 255, 40.0f / 255, 40.0f / 255);
+    QVector3D colorVec(50.0f / 255, 50.0f / 255, 50.0f / 255);
     m_pShaderProgram->setUniformValue("objectMaterial.ambientColor", colorVec);
     m_pShaderProgram->setUniformValue("objectMaterial.diffuseColor", colorVec);
     m_pShaderProgram->setUniformValue("objectFactor", QVector3D(1.0f, 1.0f, 1.0f));
