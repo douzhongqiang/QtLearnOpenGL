@@ -76,6 +76,9 @@ SOURCES += \
     17_InvertedImage/InvertedImageAttrNode.cpp \
     17_InvertedImage/InvertedImageRenderWidget.cpp \
     17_InvertedImage/InvertedImageWidget.cpp \
+    18_CullFace/CullFaceAttrNode.cpp \
+    18_CullFace/CullFaceRenderWidget.cpp \
+    18_CullFace/CullFaceWidget.cpp \
     OpenGLEngine/CAttributePoint.cpp \
     OpenGLEngine/COpenGLCamera.cpp \
     OpenGLEngine/COpenGLElementArray.cpp \
@@ -131,6 +134,9 @@ HEADERS += \
     17_InvertedImage/InvertedImageAttrNode.h \
     17_InvertedImage/InvertedImageRenderWidget.h \
     17_InvertedImage/InvertedImageWidget.h \
+    18_CullFace/CullFaceAttrNode.h \
+    18_CullFace/CullFaceRenderWidget.h \
+    18_CullFace/CullFaceWidget.h \
     OpenGLEngine/CAttributePoint.h \
     OpenGLEngine/COpenGLCamera.h \
     OpenGLEngine/COpenGLElementArray.h \

@@ -124,7 +124,7 @@ void InvertedImageRenderWidget::paintGL()
     glDepthMask(GL_TRUE);
 
     // 绘制盒子的倒影
-//    glStencilFunc(GL_EQUAL, 1, 0xFF);
+    glStencilFunc(GL_EQUAL, 1, 0xFF);
     glStencilMask(0x00);
     drawInvertedBox();
     glStencilMask(0xFF);

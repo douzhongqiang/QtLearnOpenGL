@@ -54,22 +54,7 @@ QWidget* InvertedImageWidget::createRenderWidget(void)
     m_pRenderWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     pLayout->addWidget(m_pRenderWidget);
 
-    m_pButton = new QPushButton(tr("Show DepthTest"));
-    pLayout->addWidget(m_pButton);
-    QObject::connect(m_pButton, &QPushButton::clicked, this, &InvertedImageWidget::onClickedDepthTest);
-
     return pWidget;
-}
-
-void InvertedImageWidget::onClickedDepthTest(void)
-{
-    bool isVisible = m_pRenderWidget->isDepthTestVisible();
-    if (isVisible)
-        m_pButton->setText(tr("Show Scene"));
-    else
-        m_pButton->setText(tr("Show DepthTest"));
-
-    m_pRenderWidget->setDepthTestVisible(!isVisible);
 }
 
 void InvertedImageWidget::onAttributeChanged(const QVariant& variant, bool isCmd)

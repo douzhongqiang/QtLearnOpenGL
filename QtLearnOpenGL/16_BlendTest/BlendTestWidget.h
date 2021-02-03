@@ -17,13 +17,11 @@ public:
 
 private:
     BlendTestRenderWidget* m_pRenderWidget = nullptr;
-    QPushButton* m_pButton = nullptr;
     BlendTestAttrNode* m_pDepthTestAttrNode = nullptr;
 
     QWidget* createRenderWidget(void);
 
 private slots:
-    void onClickedDepthTest(void);
     void onAttributeChanged(const QVariant& variant, bool isCmd);
     void onAttributeInfoChanged(void);
 };

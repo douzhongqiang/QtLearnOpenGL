@@ -16,6 +16,7 @@
 #include "15_StencilTest/StencilTestWidget.h"
 #include "16_BlendTest/BlendTestWidget.h"
 #include "17_InvertedImage/InvertedImageWidget.h"
+#include "18_CullFace/CullFaceWidget.h"
 #include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -88,5 +89,8 @@ void MainWindow::initUI(void)
 
     InvertedImageWidget* pW17 = new InvertedImageWidget;
     m_pLeftControl->addWidget(pW17, tr("17.Inverted Image"));
+
+    CullFaceWidget* pW18 = new CullFaceWidget;
+    m_pLeftControl->addWidget(pW18, tr("18.Cull Face"));
 }
 
