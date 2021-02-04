@@ -45,5 +45,7 @@
         <file>17_InvertedImage/shader/fragmentshader.fsh</file>
         <file>17_InvertedImage/shader/lightfragmentShader.fsh</file>
         <file>17_InvertedImage/shader/vertexshader.vsh</file>
+        <file>19_FrameBuffer/shader/fragmentshader.fsh</file>
+        <file>19_FrameBuffer/shader/vertexshader.vsh</file>
     </qresource>
 </RCC>

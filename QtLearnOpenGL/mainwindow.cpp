@@ -17,6 +17,7 @@
 #include "16_BlendTest/BlendTestWidget.h"
 #include "17_InvertedImage/InvertedImageWidget.h"
 #include "18_CullFace/CullFaceWidget.h"
+#include "19_FrameBuffer/FrameBufferWidget.h"
 #include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -92,5 +93,8 @@ void MainWindow::initUI(void)
 
     CullFaceWidget* pW18 = new CullFaceWidget;
     m_pLeftControl->addWidget(pW18, tr("18.Cull Face"));
+
+    FrameBufferWidget* pW19 = new FrameBufferWidget;
+    m_pLeftControl->addWidget(pW19, tr("19.Frame Buffer"));
 }
 

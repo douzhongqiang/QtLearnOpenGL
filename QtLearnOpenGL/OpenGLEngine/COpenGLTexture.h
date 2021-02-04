@@ -52,8 +52,6 @@ public:
     // 获取图片的路径
     QString getImagePath(void);
 
-    void activeTexture(int textureId);
-
 private:
     QOpenGLFunctions* m_pFunction = nullptr;
     GLuint m_id;

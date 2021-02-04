@@ -79,6 +79,10 @@ SOURCES += \
     18_CullFace/CullFaceAttrNode.cpp \
     18_CullFace/CullFaceRenderWidget.cpp \
     18_CullFace/CullFaceWidget.cpp \
+    19_FrameBuffer/COpenGLFrameBufferObject.cpp \
+    19_FrameBuffer/FrameBufferAttrNode.cpp \
+    19_FrameBuffer/FrameBufferRenderWidget.cpp \
+    19_FrameBuffer/FrameBufferWidget.cpp \
     OpenGLEngine/CAttributePoint.cpp \
     OpenGLEngine/COpenGLCamera.cpp \
     OpenGLEngine/COpenGLElementArray.cpp \
@@ -137,6 +141,10 @@ HEADERS += \
     18_CullFace/CullFaceAttrNode.h \
     18_CullFace/CullFaceRenderWidget.h \
     18_CullFace/CullFaceWidget.h \
+    19_FrameBuffer/COpenGLFrameBufferObject.h \
+    19_FrameBuffer/FrameBufferAttrNode.h \
+    19_FrameBuffer/FrameBufferRenderWidget.h \
+    19_FrameBuffer/FrameBufferWidget.h \
     OpenGLEngine/CAttributePoint.h \
     OpenGLEngine/COpenGLCamera.h \
     OpenGLEngine/COpenGLElementArray.h \
