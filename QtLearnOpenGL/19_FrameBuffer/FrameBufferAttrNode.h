@@ -40,6 +40,10 @@ public:
     void setFrontOrderType(FrameBufferRenderWidget::FrontFaceOrderType type);
     FrameBufferRenderWidget::FrontFaceOrderType getFrontOrderType(void);
 
+    // 设置/获取当前的后期处理效果
+    void setCurrentPostProcessType(FrameBufferRenderWidget::PostProcessType type);
+    FrameBufferRenderWidget::PostProcessType getCurrentPostProcessType(void);
+
 private:
     void initAttribute(void);
 
@@ -61,6 +65,9 @@ private:
     NDString2Attribute* m_pCullFaceTypeAttr = nullptr;
     NDString2Attribute* m_pFrontFaceTypeAttr = nullptr;
     NDAttributeGroup* getCullFaceAttrGroup(void);
+
+    // 后期处理属性
+    NDString2Attribute* m_pPostProcessTypeAttr = nullptr;
 
 signals:
     void attributeValueChanged(const QVariant& color, bool cmd);

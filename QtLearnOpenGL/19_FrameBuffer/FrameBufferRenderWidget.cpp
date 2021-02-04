@@ -80,9 +80,53 @@ void FrameBufferRenderWidget::paintGL()
 {
     // 绘制当前FBO
     m_pCurrentFBOShaderProgram->bind();
+
+    processPostProcessType(m_postProcessType, m_pCurrentFBOShaderProgram);
     drawCurrentFBO();
     drawCurrentFBO2();
+
     m_pCurrentFBOShaderProgram->release();
+}
+
+void FrameBufferRenderWidget::processPostProcessType(PostProcessType type, QOpenGLShaderProgram* pShaderProgram)
+{
+    if ((int)type <= (int)t_GraysCale)
+        pShaderProgram->setUniformValue("M_Type", (int)type);
+    else
+        pShaderProgram->setUniformValue("M_Type", 3);
+
+    switch (type)
+    {
+    case t_Sharpen:
+    {
+        float matValue[] = {2.0f, 2.0f, 2.0f, \
+                            2.0f, -15.0f, 2.0f, \
+                            2.0f, 2.0f, 2.0f};
+        QMatrix3x3 kernelMat(matValue);
+        m_pCurrentFBOShaderProgram->setUniformValue("M_kernel", kernelMat);
+        break;
+    }
+    case t_Blur:
+    {
+        float matValue[] = {1.0f / 16.0f, 2.0f / 16.0f, 1.0f / 16.0f, \
+                            2.0f / 16.0f, 4.0f / 16.0f, 2.0f / 16.0f, \
+                            1.0f / 16.0f, 2.0f / 16.0f, 1.0f / 16.0f};
+        QMatrix3x3 kernelMat(matValue);
+        m_pCurrentFBOShaderProgram->setUniformValue("M_kernel", kernelMat);
+        break;
+    }
+    case t_EdgeDetection:
+    {
+        float matValue[] = {1.0f, 1.0f, 1.0f, \
+                            1.0f, -8.0f, 1.0f, \
+                            1.0f, 1.0f, 1.0f};
+        QMatrix3x3 kernelMat(matValue);
+        m_pCurrentFBOShaderProgram->setUniformValue("M_kernel", kernelMat);
+        break;
+    }
+    default:
+        break;
+    }
 }
 
 // 绘制整个场景
@@ -411,6 +455,18 @@ void FrameBufferRenderWidget::setDepthTestVisible(bool isVisible)
 bool FrameBufferRenderWidget::isDepthTestVisible(void)
 {
     return m_bShowDepthTest;
+}
+
+// 设置/获取当前的后期处理效果
+void FrameBufferRenderWidget::setCurrentPostProcessType(PostProcessType type)
+{
+    m_postProcessType = type;
+    this->update();
+}
+
+FrameBufferRenderWidget::PostProcessType FrameBufferRenderWidget::getCurrentPostProcessType(void)
+{
+    return m_postProcessType;
 }
 
 void FrameBufferRenderWidget::initLightInfo(void)

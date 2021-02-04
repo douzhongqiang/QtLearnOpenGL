@@ -68,6 +68,9 @@ void FrameBufferWidget::onAttributeChanged(const QVariant& variant, bool isCmd)
     m_pRenderWidget->setCullFaceEnabled(m_pDepthTestAttrNode->isCullFaceEnabled());
     m_pRenderWidget->setCullFaceType(m_pDepthTestAttrNode->getCullFaceType());
     m_pRenderWidget->setFrontOrderType(m_pDepthTestAttrNode->getFrontOrderType());
+
+    // 设置后期处理属性
+    m_pRenderWidget->setCurrentPostProcessType(m_pDepthTestAttrNode->getCurrentPostProcessType());
 }
 
 void FrameBufferWidget::onAttributeInfoChanged(void)
@@ -81,4 +84,7 @@ void FrameBufferWidget::onAttributeInfoChanged(void)
     m_pDepthTestAttrNode->setCullFaceEnabled(m_pRenderWidget->isCullFaceEnabled());
     m_pDepthTestAttrNode->setCullFaceType(m_pRenderWidget->getCullFaceType());
     m_pDepthTestAttrNode->setFrontOrderType(m_pRenderWidget->getFrontOrderType());
+
+    // 设置后期处理属性
+    m_pDepthTestAttrNode->setCurrentPostProcessType(m_pRenderWidget->getCurrentPostProcessType());
 }

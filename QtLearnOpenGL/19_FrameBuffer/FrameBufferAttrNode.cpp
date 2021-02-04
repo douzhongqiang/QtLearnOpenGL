@@ -78,6 +78,27 @@ void FrameBufferAttrNode::initAttribute(void)
 
     // 添加面剔除属性组
     this->addAttributeGroup(this->getCullFaceAttrGroup());
+
+    // 添加后期处理属性
+    NDAttributeGroup* pPostProcessAttrGroup = new NDAttributeGroup;
+    pPostProcessAttrGroup->setName("PostProcess");
+    pPostProcessAttrGroup->setDisplayName(tr("Post Process"));
+    this->addAttributeGroup(pPostProcessAttrGroup);
+
+    m_pPostProcessTypeAttr = new NDString2Attribute;
+    m_pPostProcessTypeAttr->setName("PostProcessType");
+    m_pPostProcessTypeAttr->setDisplayName(tr("Post Process Type: "));
+    QList<QPair<QString, QVariant>> postProcessTypeStringList;
+    postProcessTypeStringList << QPair<QString, QVariant>("Normal", 0) \
+            << QPair<QString, QVariant>("Inversion", 1) \
+            << QPair<QString, QVariant>("GraysCale", 2) \
+            << QPair<QString, QVariant>("Sharpen", 3) \
+            << QPair<QString, QVariant>("Blur", 3) \
+            << QPair<QString, QVariant>("EdgeDetection", 3);
+    m_pPostProcessTypeAttr->setStringList(postProcessTypeStringList);
+    m_pPostProcessTypeAttr->setCurrentSelectedIndex(2);
+    pPostProcessAttrGroup->addAttribute(m_pPostProcessTypeAttr);
+    QObject::connect(m_pPostProcessTypeAttr, &NDBoolAttribute::valueChanged, this, &FrameBufferAttrNode::attributeValueChanged);
 }
 
 NDAttributeGroup* FrameBufferAttrNode::getCullFaceAttrGroup(void)
@@ -203,4 +224,15 @@ void FrameBufferAttrNode::setFrontOrderType(FrameBufferRenderWidget::FrontFaceOr
 FrameBufferRenderWidget::FrontFaceOrderType FrameBufferAttrNode::getFrontOrderType(void)
 {
     return (FrameBufferRenderWidget::FrontFaceOrderType)m_pFrontFaceTypeAttr->getCurrentSelectedIndex();
+}
+
+// 设置/获取当前的后期处理效果
+void FrameBufferAttrNode::setCurrentPostProcessType(FrameBufferRenderWidget::PostProcessType type)
+{
+    m_pPostProcessTypeAttr->setCurrentSelectedIndex((int)type);
+}
+
+FrameBufferRenderWidget::PostProcessType FrameBufferAttrNode::getCurrentPostProcessType(void)
+{
+    return (FrameBufferRenderWidget::PostProcessType)m_pPostProcessTypeAttr->getCurrentSelectedIndex();
 }

@@ -42,6 +42,17 @@ public:
         t_CW        // 顺时针
     };
 
+    // 后期处理类型
+    enum PostProcessType
+    {
+        t_Normal,
+        t_Inversion,        // 反相
+        t_GraysCale,        // 灰度
+        t_Sharpen,          // 锐化
+        t_Blur,             // 模糊
+        t_EdgeDetection     // 边缘检测
+    };
+
 public:
     FrameBufferRenderWidget(QWidget* parent = nullptr);
     ~FrameBufferRenderWidget();
@@ -63,6 +74,10 @@ public:
     // 设置是否显示为深度测试结果
     void setDepthTestVisible(bool isVisible);
     bool isDepthTestVisible(void);
+
+    // 设置/获取当前的后期处理效果
+    void setCurrentPostProcessType(PostProcessType type);
+    PostProcessType getCurrentPostProcessType(void);
 
     // ========================= 面剔除相关 ==================================================
 public:
@@ -168,6 +183,8 @@ private:
 private:
     // FBO相关
     COpenGLFrameBufferObject* m_pFBO = nullptr;
+    PostProcessType m_postProcessType = t_GraysCale;
+    void processPostProcessType(PostProcessType type, QOpenGLShaderProgram* pShaderProgram);
 
 private:
     // 旋转
