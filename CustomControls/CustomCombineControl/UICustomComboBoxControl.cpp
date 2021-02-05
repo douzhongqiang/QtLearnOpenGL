@@ -12,6 +12,9 @@ UICustomComboBoxControl::UICustomComboBoxControl(QWidget* parent)
                      this, SIGNAL(currentIndexChanged(int)));
     QObject::connect(m_pCustomComboBox, SIGNAL(currentIndexChanged(const QString &)), \
                      this, SIGNAL(currentTextChanged(const QString&)));
+
+    this->setWidth(400);
+    this->setHeight(30);
 }
 
 UICustomComboBoxControl::~UICustomComboBoxControl()

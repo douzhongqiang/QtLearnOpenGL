@@ -4,6 +4,7 @@
 #include "NDColorAttribute.h"
 #include "NDIntAttribute.h"
 #include "NDStringAttribute.h"
+#include "NDString2Attribute.h"
 #include "NDNodeBase.h"
 #include "NDNodeManager.h"
 #include "NDVec3Attribute.h"
@@ -122,6 +123,11 @@ NDAttributeBase* NDAttributeBase::createAttribute(const QString& name, Attribute
         attribute = new NDStringAttribute;
         break;
     }
+    case t_string2:
+    {
+        attribute = new NDString2Attribute;
+        break;
+    }
     case t_color:
     {
         attribute = new NDColorAttribute;
@@ -163,6 +169,8 @@ QString NDAttributeBase::getTypeName(void)
         return "QReal";
     case t_string:
         return "String";
+    case t_string2:
+        return "String2";
     case t_stringList:
         return "StringList";
     case t_color:

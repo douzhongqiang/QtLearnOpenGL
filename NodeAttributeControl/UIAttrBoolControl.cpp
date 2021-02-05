@@ -17,7 +17,7 @@ void UIAttrBoolControl::setAttribute(NDAttributeBase* attribute)
         return;
 
     m_attribute = qobject_cast<NDBoolAttribute*>(attribute);
-    this->setCurrentValue(m_attribute->getValue().toBool());
+    this->setCurrentValue(m_attribute->getValue().toBool(), false);
     this->setTagText(m_attribute->getDisplayName());
 
     QObject::connect(m_attribute, &NDBoolAttribute::valueChanged, this, &UIAttrBoolControl::onAttrValueChanged);

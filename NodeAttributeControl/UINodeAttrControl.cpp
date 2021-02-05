@@ -5,6 +5,7 @@
 #include "UIAttrIntControl.h"
 #include "UIAttrBoolControl.h"
 #include "UIAttrVec3Control.h"
+#include "UIAttrComboBoxControl.h"
 #include "NDAttributeBase.h"
 #include "NDAttributeGroup.h"
 #include "CustomCombineControl/UICustomGroupControl.h"
@@ -64,6 +65,10 @@ QWidget* UINodeAttrControl::createAttributeControl(NDAttributeBase* attribute)
     case NDAttributeBase::t_string:
     {
         return new UIAttrTextControl(attribute);
+    }
+    case NDAttributeBase::t_string2:
+    {
+        return new UIAttrComboxControl(attribute);
     }
     case NDAttributeBase::t_qreal:
     {

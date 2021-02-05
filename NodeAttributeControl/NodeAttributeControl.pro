@@ -38,6 +38,7 @@ INCLUDEPATH += $$PWD/../NDNodeAttribute
 SOURCES += \
         UIAttrBoolControl.cpp \
         UIAttrColorControl.cpp \
+        UIAttrComboBoxControl.cpp \
         UIAttrFloatControl.cpp \
         UIAttrIntControl.cpp \
         UIAttrTextControl.cpp \
@@ -47,6 +48,7 @@ SOURCES += \
 HEADERS += \
         UIAttrBoolControl.h \
         UIAttrColorControl.h \
+        UIAttrComboBoxControl.h \
         UIAttrFloatControl.h \
         UIAttrIntControl.h \
         UIAttrTextControl.h \

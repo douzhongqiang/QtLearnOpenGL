@@ -41,6 +41,7 @@ SOURCES += \
         NDNodeManager.cpp \
         NDPostionAttribute.cpp \
         NDRealAttribute.cpp \
+        NDString2Attribute.cpp \
         NDStringAttribute.cpp \
         NDTextNode.cpp \
         NDVec3Attribute.cpp
@@ -56,6 +57,7 @@ HEADERS += \
         NDNodeManager.h \
         NDPostionAttribute.h \
         NDRealAttribute.h \
+        NDString2Attribute.h \
         NDStringAttribute.h \
         NDTextNode.h \
         NDVec3Attribute.h \

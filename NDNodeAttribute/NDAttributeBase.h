@@ -17,6 +17,7 @@ public:
         t_int,              // int 型
         t_qreal,            // 浮点型
         t_string,           // 字符串类型
+        t_string2,          // 字符串类型2
         t_stringList,       // 字符串数组
         t_color,            // 颜色
         t_postion2d,        // 2D坐标类型

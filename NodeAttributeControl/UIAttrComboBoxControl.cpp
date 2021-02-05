@@ -31,6 +31,7 @@ void UIAttrComboxControl::setAttribute(NDAttributeBase* attribute)
         this->addItem(iter->first, iter->second);
     }
     this->setTagText(m_attribute->getDisplayName());
+    this->setCurrentIndex(m_attribute->getCurrentSelectedIndex());
 
     // 连接信号和槽
     QObject::connect(this, &UIAttrComboxControl::currentIndexChanged, this, &UIAttrComboxControl::onControlCurrentIndexChanged);
