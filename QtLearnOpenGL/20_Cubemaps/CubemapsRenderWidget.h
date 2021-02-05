@@ -1,5 +1,5 @@
-#ifndef FRAMEBUFFERRENDERWIDGET_H
-#define FRAMEBUFFERRENDERWIDGET_H
+#ifndef CUBEMAPSRENDERWIDGET_H
+#define CUBEMAPSRENDERWIDGET_H
 
 #include <QOpenGLWidget>
 #include <QOpenGLShader>
@@ -15,7 +15,7 @@
 class COpenGLCamera;
 class COpenGLModel;
 class COpenGLMesh;
-class FrameBufferRenderWidget : public QOpenGLWidget, public QOpenGLFunctions_3_3_Core
+class CubemapsRenderWidget : public QOpenGLWidget, public QOpenGLFunctions_3_3_Core
 {
     Q_OBJECT
 
@@ -54,8 +54,8 @@ public:
     };
 
 public:
-    FrameBufferRenderWidget(QWidget* parent = nullptr);
-    ~FrameBufferRenderWidget();
+    CubemapsRenderWidget(QWidget* parent = nullptr);
+    ~CubemapsRenderWidget();
 
     // 设置/获取线框模式
     void setFillStatus(bool isFill);

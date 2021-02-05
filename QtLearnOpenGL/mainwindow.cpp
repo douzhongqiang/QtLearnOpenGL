@@ -18,6 +18,7 @@
 #include "17_InvertedImage/InvertedImageWidget.h"
 #include "18_CullFace/CullFaceWidget.h"
 #include "19_FrameBuffer/FrameBufferWidget.h"
+#include "20_Cubemaps/CubemapsWidget.h"
 #include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -96,5 +97,7 @@ void MainWindow::initUI(void)
 
     FrameBufferWidget* pW19 = new FrameBufferWidget;
     m_pLeftControl->addWidget(pW19, tr("19.Frame Buffer"));
-}
 
+    CubemapsWidget* pW20 = new CubemapsWidget;
+    m_pLeftControl->addWidget(pW20, tr("20.Cubemaps"));
+}

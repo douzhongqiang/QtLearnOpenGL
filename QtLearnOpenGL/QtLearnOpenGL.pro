@@ -79,13 +79,18 @@ SOURCES += \
     18_CullFace/CullFaceAttrNode.cpp \
     18_CullFace/CullFaceRenderWidget.cpp \
     18_CullFace/CullFaceWidget.cpp \
-    19_FrameBuffer/COpenGLFrameBufferObject.cpp \
     19_FrameBuffer/FrameBufferAttrNode.cpp \
     19_FrameBuffer/FrameBufferRenderWidget.cpp \
     19_FrameBuffer/FrameBufferWidget.cpp \
+    20_Cubemaps/COpenGLCubeTexture.cpp \
+    20_Cubemaps/COpenGLSkyBox.cpp \
+    20_Cubemaps/CubemapsAttrNode.cpp \
+    20_Cubemaps/CubemapsRenderWidget.cpp \
+    20_Cubemaps/CubemapsWidget.cpp \
     OpenGLEngine/CAttributePoint.cpp \
     OpenGLEngine/COpenGLCamera.cpp \
     OpenGLEngine/COpenGLElementArray.cpp \
+    OpenGLEngine/COpenGLFrameBufferObject.cpp \
     OpenGLEngine/COpenGLMesh.cpp \
     OpenGLEngine/COpenGLModel.cpp \
     OpenGLEngine/COpenGLRender.cpp \
@@ -141,13 +146,18 @@ HEADERS += \
     18_CullFace/CullFaceAttrNode.h \
     18_CullFace/CullFaceRenderWidget.h \
     18_CullFace/CullFaceWidget.h \
-    19_FrameBuffer/COpenGLFrameBufferObject.h \
     19_FrameBuffer/FrameBufferAttrNode.h \
     19_FrameBuffer/FrameBufferRenderWidget.h \
     19_FrameBuffer/FrameBufferWidget.h \
+    20_Cubemaps/COpenGLCubeTexture.h \
+    20_Cubemaps/COpenGLSkyBox.h \
+    20_Cubemaps/CubemapsAttrNode.h \
+    20_Cubemaps/CubemapsRenderWidget.h \
+    20_Cubemaps/CubemapsWidget.h \
     OpenGLEngine/CAttributePoint.h \
     OpenGLEngine/COpenGLCamera.h \
     OpenGLEngine/COpenGLElementArray.h \
+    OpenGLEngine/COpenGLFrameBufferObject.h \
     OpenGLEngine/COpenGLMesh.h \
     OpenGLEngine/COpenGLModel.h \
     OpenGLEngine/COpenGLRender.h \
