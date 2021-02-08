@@ -96,7 +96,7 @@ void CubemapsAttrNode::initAttribute(void)
             << QPair<QString, QVariant>("Blur", 3) \
             << QPair<QString, QVariant>("EdgeDetection", 3);
     m_pPostProcessTypeAttr->setStringList(postProcessTypeStringList);
-    m_pPostProcessTypeAttr->setCurrentSelectedIndex(2);
+    m_pPostProcessTypeAttr->setCurrentSelectedIndex(0);
     pPostProcessAttrGroup->addAttribute(m_pPostProcessTypeAttr);
     QObject::connect(m_pPostProcessTypeAttr, &NDBoolAttribute::valueChanged, this, &CubemapsAttrNode::attributeValueChanged);
 }

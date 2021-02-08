@@ -18,8 +18,8 @@ public:
         t_CubeLeft,
         t_CubeTop,
         t_CubeButtom,
-        t_CubeFront,
-        t_CubeBack
+        t_CubeBack,
+        t_CubeFront
     };
 
 public:

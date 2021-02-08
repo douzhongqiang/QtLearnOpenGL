@@ -47,5 +47,13 @@
         <file>17_InvertedImage/shader/vertexshader.vsh</file>
         <file>19_FrameBuffer/shader/fragmentshader.fsh</file>
         <file>19_FrameBuffer/shader/vertexshader.vsh</file>
+        <file>20_Cubemaps/shader/fragmentshader.fsh</file>
+        <file>20_Cubemaps/shader/vertexshader.vsh</file>
+        <file>20_Cubemaps/skybox/back.jpg</file>
+        <file>20_Cubemaps/skybox/bottom.jpg</file>
+        <file>20_Cubemaps/skybox/front.jpg</file>
+        <file>20_Cubemaps/skybox/left.jpg</file>
+        <file>20_Cubemaps/skybox/right.jpg</file>
+        <file>20_Cubemaps/skybox/top.jpg</file>
     </qresource>
 </RCC>

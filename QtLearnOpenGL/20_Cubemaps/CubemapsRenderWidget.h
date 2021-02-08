@@ -15,6 +15,8 @@
 class COpenGLCamera;
 class COpenGLModel;
 class COpenGLMesh;
+class COpenGLCubeTexture;
+class COpenGLSkyBox;
 class CubemapsRenderWidget : public QOpenGLWidget, public QOpenGLFunctions_3_3_Core
 {
     Q_OBJECT
@@ -169,6 +171,12 @@ private:
 
     void initModelData3(void);
 
+    // 天空盒
+    void initSkyBox(QOpenGLFunctions* f);
+    void drawSkyBox(void);
+    COpenGLCubeTexture* m_pSkeyCubTexture = nullptr;
+    COpenGLSkyBox* m_pSkyBox = nullptr;
+
     // 绘制整个场景
     void drawScene(void);
 
@@ -183,7 +191,7 @@ private:
 private:
     // FBO相关
     COpenGLFrameBufferObject* m_pFBO = nullptr;
-    PostProcessType m_postProcessType = t_GraysCale;
+    PostProcessType m_postProcessType = t_Normal;
     void processPostProcessType(PostProcessType type, QOpenGLShaderProgram* pShaderProgram);
 
 private:

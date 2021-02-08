@@ -5,6 +5,8 @@
 #include "OpenGLEngine/CAttributePoint.h"
 #include "OpenGLEngine/COpenGLCamera.h"
 #include "OpenGLEngine/COpenGLMesh.h"
+#include "COpenGLCubeTexture.h"
+#include "COpenGLSkyBox.h"
 #include "Utils.h"
 #include <QtMath>
 #include <QDebug>
@@ -56,6 +58,7 @@ void CubemapsRenderWidget::initializeGL()
     initGrass(f);
     initCurrentFBO(f);
     initCurrentFBO2(f);
+    initSkyBox(f);
 
     // 初始化FBO
     int width = this->width();
@@ -150,8 +153,13 @@ void CubemapsRenderWidget::drawScene(void)
     else
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-    // 绘制灯光
+    // 设置相机矩阵的值
     m_pCamera->activeCamera(m_pLightShaderProgram);
+
+    // 绘制天空盒
+    drawSkyBox();
+
+    // 绘制点光源
     drawLight();
 
     // 使用shader
@@ -853,6 +861,37 @@ void CubemapsRenderWidget::initModelData3(void)
     m_pMeshFloor->setObjectType(COpenGLVertexObject::t_Quads);
 
     m_pMeshFloor->setupMesh();
+}
+
+// 天空盒
+void CubemapsRenderWidget::initSkyBox(QOpenGLFunctions* f)
+{
+    m_pSkeyCubTexture = new COpenGLCubeTexture(this);
+    m_pSkyBox = new COpenGLSkyBox(f, this);
+
+//    m_pSkeyCubTexture->setImage(COpenGLCubeTexture::t_CubeRight, QImage(":/14_DepthTest/image/container2.png"));
+//    m_pSkeyCubTexture->setImage(COpenGLCubeTexture::t_CubeRight, QImage(":/14_DepthTest/image/container2.png"));
+//    m_pSkeyCubTexture->setImage(COpenGLCubeTexture::t_CubeLeft, QImage(":/14_DepthTest/image/container2.png"));
+//    m_pSkeyCubTexture->setImage(COpenGLCubeTexture::t_CubeTop, QImage(":/14_DepthTest/image/container2.png"));
+//    m_pSkeyCubTexture->setImage(COpenGLCubeTexture::t_CubeButtom, QImage(":/14_DepthTest/image/container2.png"));
+//    m_pSkeyCubTexture->setImage(COpenGLCubeTexture::t_CubeFront, QImage(":/14_DepthTest/image/container2.png"));
+//    m_pSkeyCubTexture->setImage(COpenGLCubeTexture::t_CubeBack, QImage(":/14_DepthTest/image/container2.png"));
+
+    m_pSkeyCubTexture->setImage(COpenGLCubeTexture::t_CubeRight, QImage(":/20_Cubemaps/skybox/right.jpg"));
+    m_pSkeyCubTexture->setImage(COpenGLCubeTexture::t_CubeLeft, QImage(":/20_Cubemaps/skybox/left.jpg"));
+    m_pSkeyCubTexture->setImage(COpenGLCubeTexture::t_CubeTop, QImage(":/20_Cubemaps/skybox/top.jpg"));
+    m_pSkeyCubTexture->setImage(COpenGLCubeTexture::t_CubeButtom, QImage(":/20_Cubemaps/skybox/bottom.jpg"));
+    m_pSkeyCubTexture->setImage(COpenGLCubeTexture::t_CubeFront, QImage(":/20_Cubemaps/skybox/back.jpg"));
+    m_pSkeyCubTexture->setImage(COpenGLCubeTexture::t_CubeBack, QImage(":/20_Cubemaps/skybox/front.jpg"));
+    m_pSkeyCubTexture->create();
+
+    m_pSkyBox->setCubeTexture(m_pSkeyCubTexture);
+    m_pSkyBox->setCamera(m_pCamera);
+}
+
+void CubemapsRenderWidget::drawSkyBox(void)
+{
+    m_pSkyBox->draw();
 }
 
 void CubemapsRenderWidget::initFloor(QOpenGLFunctions* f)

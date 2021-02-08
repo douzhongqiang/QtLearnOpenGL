@@ -22,19 +22,19 @@ void COpenGLCubeTexture::create(void)
     for (auto iter = m_cubeTextureMap.begin(); iter != m_cubeTextureMap.end(); ++iter)
     {
         QImage tempImage = iter.value();
-        if (tempImage.format() != QImage::Format_RGBA8888)
-            tempImage = tempImage.convertToFormat(QImage::Format_RGBA8888);
+        if (tempImage.format() != QImage::Format_RGB888)
+            tempImage = tempImage.convertToFormat(QImage::Format_RGB888);
 
         pFunc->glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + count++, 0, GL_RGB, \
                             tempImage.width(), tempImage.height(), 0, GL_RGB, \
                             GL_UNSIGNED_BYTE, tempImage.constBits());
-
-        pFunc->glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        pFunc->glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        pFunc->glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        pFunc->glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        pFunc->glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
     }
+
+    pFunc->glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    pFunc->glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    pFunc->glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    pFunc->glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    pFunc->glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
     this->unbind();
 }
