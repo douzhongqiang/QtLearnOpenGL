@@ -158,6 +158,12 @@ void COpenGLModel::draw(void)
 {
     for (auto iter = m_meshs.begin(); iter != m_meshs.end(); ++iter)
     {
+        (*iter)->setTextureRenderEnabled(m_isTextureRender);
         (*iter)->draw();
     }
+}
+
+void COpenGLModel::setTextureRenderEnabled(bool isEnabled)
+{
+    m_isTextureRender = isEnabled;
 }

@@ -61,6 +61,9 @@ void COpenGLMesh::setupMesh(void)
 
 void COpenGLMesh::activeTexture(void)
 {
+    if (!m_isRenderTexture)
+        return;
+
     int count = m_textures.size();
     for (int i=0; i<count; ++i)
     {
@@ -84,6 +87,11 @@ void COpenGLMesh::draw(void)
     pFunc->glBindVertexArray(0);
 
     m_pFunction->glActiveTexture(GL_TEXTURE0);
+}
+
+void COpenGLMesh::setTextureRenderEnabled(bool isEnabled)
+{
+    m_isRenderTexture = isEnabled;
 }
 
 void COpenGLMesh::setObjectType(COpenGLVertexObject::ObjectType type)

@@ -55,5 +55,7 @@
         <file>20_Cubemaps/skybox/left.jpg</file>
         <file>20_Cubemaps/skybox/right.jpg</file>
         <file>20_Cubemaps/skybox/top.jpg</file>
+        <file>20_Cubemaps/shader/ReflectionAndRefractionFragmentShader.fsh</file>
+        <file>20_Cubemaps/shader/ReflectionAndRefractionVertexShader.vsh</file>
     </qresource>
 </RCC>

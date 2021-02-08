@@ -22,6 +22,7 @@ public:
     void processMaterial(aiMaterial* pMaterial, aiTextureType type, COpenGLMesh* pOpenGLMaterial);
 
     void draw(void);
+    void setTextureRenderEnabled(bool isEnabled);
 
 private:
     QString m_dirPath;
@@ -31,6 +32,8 @@ private:
 
     QOpenGLFunctions* m_pFunction = nullptr;
     QOpenGLShaderProgram* m_pShaderProgram = nullptr;
+
+    bool m_isTextureRender = true;
 };
 
 #endif

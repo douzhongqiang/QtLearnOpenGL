@@ -11,6 +11,7 @@
 #include <QMatrix4x4>
 #include <QTimer>
 #include "OpenGLEngine/COpenGLFrameBufferObject.h"
+#include "OpenGLEngine/COpenGLModel.h"
 
 class COpenGLCamera;
 class COpenGLModel;
@@ -118,11 +119,14 @@ private:
     bool initGrassShaderProgram(void);
     bool initCurrentFBOShaderProgram(void);
 
+    QOpenGLShaderProgram* createShaderProgram(const QString& vertexShader, const QString& fragmentShader);
+
     GLuint m_shaderProgramId;
     QOpenGLShaderProgram* m_pShaderProgram = nullptr;
     QOpenGLShaderProgram* m_pLightShaderProgram = nullptr;
     QOpenGLShaderProgram* m_pGrassShaderProgram = nullptr;
     QOpenGLShaderProgram* m_pCurrentFBOShaderProgram = nullptr;
+    QOpenGLShaderProgram* m_pReflectionAndRefractionShaderProgram = nullptr;
     QOpenGLShader* m_pVertexShader = nullptr;
     QOpenGLShader* m_pFragmentShader = nullptr;
 
@@ -144,6 +148,11 @@ private:
     COpenGLMesh* m_pGrassMesh = nullptr;
     COpenGLMesh* m_pCurrentFBOMesh = nullptr;
     COpenGLMesh* m_pCurrentFBOMesh2 = nullptr;
+
+    // 反射和折射
+    COpenGLMesh* m_pReflectionMesh = nullptr;       // 反射
+    COpenGLMesh* m_pRefractionMesh = nullptr;
+    COpenGLModel* m_pModel = nullptr;
 
     // 灯
     void initLight(QOpenGLFunctions* f);
@@ -176,6 +185,12 @@ private:
     void drawSkyBox(void);
     COpenGLCubeTexture* m_pSkeyCubTexture = nullptr;
     COpenGLSkyBox* m_pSkyBox = nullptr;
+
+    // 折射和反射
+    void initReflectionBox(QOpenGLFunctions* f);
+    void initRefractionBox(QOpenGLFunctions* f);
+    void drawReflectionBox(void);
+    void drawRefractionBox(void);
 
     // 绘制整个场景
     void drawScene(void);

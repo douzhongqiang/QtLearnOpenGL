@@ -36,6 +36,8 @@ void CubemapsRenderWidget::initializeGL()
     initLightShaderProgram();
     initGrassShaderProgram();
     initCurrentFBOShaderProgram();
+    m_pReflectionAndRefractionShaderProgram = this->createShaderProgram(":/20_Cubemaps/shader/ReflectionAndRefractionVertexShader.vsh", \
+                                                                        ":/20_Cubemaps/shader/ReflectionAndRefractionFragmentShader.fsh");
 
     glEnable(GL_DEPTH_TEST);
 
@@ -59,6 +61,8 @@ void CubemapsRenderWidget::initializeGL()
     initCurrentFBO(f);
     initCurrentFBO2(f);
     initSkyBox(f);
+    initReflectionBox(f);
+    initRefractionBox(f);
 
     // 初始化FBO
     int width = this->width();
@@ -86,7 +90,7 @@ void CubemapsRenderWidget::paintGL()
 
     processPostProcessType(m_postProcessType, m_pCurrentFBOShaderProgram);
     drawCurrentFBO();
-    drawCurrentFBO2();
+//    drawCurrentFBO2();
 
     m_pCurrentFBOShaderProgram->release();
 }
@@ -157,10 +161,14 @@ void CubemapsRenderWidget::drawScene(void)
     m_pCamera->activeCamera(m_pLightShaderProgram);
 
     // 绘制天空盒
+    glStencilMask(0x00);
     drawSkyBox();
 
     // 绘制点光源
     drawLight();
+
+    // 绘制反射Box
+    drawReflectionBox();
 
     // 使用shader
     m_pShaderProgram->bind();
@@ -408,6 +416,40 @@ bool CubemapsRenderWidget::initCurrentFBOShaderProgram(void)
     m_pCurrentFBOShaderProgram->addShader(pVertexShader);
     m_pCurrentFBOShaderProgram->addShader(pFragmentShader);
     return m_pCurrentFBOShaderProgram->link();
+}
+
+QOpenGLShaderProgram* CubemapsRenderWidget::createShaderProgram(const QString& vertexShader, const QString& fragmentShader)
+{
+    // 加载顶点着色器
+    QString vertexShaderStr(vertexShader);
+    QOpenGLShader* pVertexShader = new QOpenGLShader(QOpenGLShader::Vertex, this);
+    bool result = pVertexShader->compileSourceFile(vertexShaderStr);
+    if (!result)
+    {
+        qDebug() << pVertexShader->log();
+        pVertexShader->deleteLater();
+        return nullptr;
+    }
+
+    // 加载片段着色器
+    QString fragmentShaderStr(fragmentShader);
+    QOpenGLShader* pFragmentShader = new QOpenGLShader(QOpenGLShader::Fragment, this);
+    result = pFragmentShader->compileSourceFile(fragmentShaderStr);
+    if (!result)
+    {
+        qDebug() << pFragmentShader->log();
+        pFragmentShader->deleteLater();
+        pVertexShader->deleteLater();
+        return nullptr;
+    }
+
+    // 创建ShaderProgram
+    QOpenGLShaderProgram* pShaderProgram = new QOpenGLShaderProgram(this);
+    pShaderProgram->addShader(pVertexShader);
+    pShaderProgram->addShader(pFragmentShader);
+    pShaderProgram->link();
+
+    return pShaderProgram;
 }
 
 void CubemapsRenderWidget::setFillStatus(bool isFill)
@@ -892,6 +934,65 @@ void CubemapsRenderWidget::initSkyBox(QOpenGLFunctions* f)
 void CubemapsRenderWidget::drawSkyBox(void)
 {
     m_pSkyBox->draw();
+}
+
+// 折射和反射
+void CubemapsRenderWidget::initReflectionBox(QOpenGLFunctions* f)
+{
+//    m_pReflectionMesh = new COpenGLMesh(f, m_pReflectionAndRefractionShaderProgram, this);
+//    initModelData(m_pReflectionMesh);
+
+    m_pModel = new COpenGLModel(f, m_pReflectionAndRefractionShaderProgram, this);
+    m_pModel->loadModel("./planet/planet.obj");
+}
+
+void CubemapsRenderWidget::initRefractionBox(QOpenGLFunctions* f)
+{
+    m_pRefractionMesh = new COpenGLMesh(f, m_pReflectionAndRefractionShaderProgram, this);
+    initModelData(m_pRefractionMesh);
+}
+
+void CubemapsRenderWidget::drawReflectionBox(void)
+{
+    m_pReflectionAndRefractionShaderProgram->bind();
+
+    for (int i=0; i<2; ++i)
+    {
+        // 设置模型矩阵
+        QMatrix4x4 modelMat;
+        if (i == 0)
+        {
+            modelMat.translate(0.0f, 0.0f, 0.0f);
+            m_pReflectionAndRefractionShaderProgram->setUniformValue("M_isRefection", true);
+        }
+        else
+        {
+            modelMat.translate(2.0f, 0.0f, 2.0f);
+            m_pReflectionAndRefractionShaderProgram->setUniformValue("M_isRefection", false);
+        }
+        modelMat.scale(0.2f, 0.2f, 0.2f);
+        m_pReflectionAndRefractionShaderProgram->setUniformValue("M", modelMat);
+
+        // 获取相机
+        m_pCamera->activeCamera(m_pReflectionAndRefractionShaderProgram);
+        m_pReflectionAndRefractionShaderProgram->setUniformValue("M_EyePostion", m_pCamera->getCameraPostion());
+
+        // 设置Cube贴图
+        glActiveTexture(GL_TEXTURE0);
+        m_pSkyBox->getCubeTexture()->bind();
+        m_pReflectionAndRefractionShaderProgram->setUniformValue("skyBoxCube", 0);
+
+    //    m_pReflectionMesh->draw();
+        m_pModel->setTextureRenderEnabled(false);
+        m_pModel->draw();
+    }
+
+    m_pReflectionAndRefractionShaderProgram->release();
+}
+
+void CubemapsRenderWidget::drawRefractionBox(void)
+{
+
 }
 
 void CubemapsRenderWidget::initFloor(QOpenGLFunctions* f)

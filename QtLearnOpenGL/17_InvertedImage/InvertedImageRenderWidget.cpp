@@ -74,7 +74,7 @@ void InvertedImageRenderWidget::paintGL()
 
     // 开启蒙版测试
     glEnable(GL_STENCIL_TEST);
-    glStencilOp(GL_KEEP, GL_REPLACE, GL_REPLACE);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
     glStencilFunc(GL_ALWAYS, 1, 0xFF);
 
     glClearColor(100.0f / 255.0f, 100.0f / 255.0f, 100.0f / 255.0f, 1.0f);

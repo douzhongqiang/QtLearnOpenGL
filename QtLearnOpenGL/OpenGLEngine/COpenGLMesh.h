@@ -28,6 +28,8 @@ public:
 
     void draw(void);
 
+    void setTextureRenderEnabled(bool isEnabled);
+
 private:
     COpenGLVertexObject* m_pObject = nullptr;
     QVector<COpenGLTexture*> m_textures;
@@ -38,6 +40,8 @@ private:
     void activeTexture(void);
 
     GLuint m_VAO;
+
+    bool m_isRenderTexture = true;
 };
 
 #endif

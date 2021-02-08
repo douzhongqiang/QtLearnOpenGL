@@ -23,6 +23,7 @@ public:
 
     // 设置CubeTexture
     void setCubeTexture(COpenGLCubeTexture* pTexture);
+    COpenGLCubeTexture* getCubeTexture(void);
 
     // 设置相机
     void setCamera(COpenGLCamera* pCamera);

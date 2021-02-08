@@ -27,6 +27,11 @@ void COpenGLSkyBox::setCubeTexture(COpenGLCubeTexture* pTexture)
     m_pCubeTexture = pTexture;
 }
 
+COpenGLCubeTexture* COpenGLSkyBox::getCubeTexture(void)
+{
+    return m_pCubeTexture;
+}
+
 void COpenGLSkyBox::setCamera(COpenGLCamera* pCamera)
 {
     m_pCamera = pCamera;
