@@ -92,6 +92,8 @@ SOURCES += \
     21_GeometryShader/GeometryShaderRenderWidget3.cpp \
     21_GeometryShader/GeometryShaderRenderWidget4.cpp \
     21_GeometryShader/GeometryShaderWidget.cpp \
+    22_DrawInstance/DrawInstanceRenderWidget.cpp \
+    22_DrawInstance/DrawInstanceWidget.cpp \
     OpenGLEngine/CAttributePoint.cpp \
     OpenGLEngine/COpenGLCamera.cpp \
     OpenGLEngine/COpenGLElementArray.cpp \
@@ -164,6 +166,8 @@ HEADERS += \
     21_GeometryShader/GeometryShaderRenderWidget3.h \
     21_GeometryShader/GeometryShaderRenderWidget4.h \
     21_GeometryShader/GeometryShaderWidget.h \
+    22_DrawInstance/DrawInstanceRenderWidget.h \
+    22_DrawInstance/DrawInstanceWidget.h \
     OpenGLEngine/CAttributePoint.h \
     OpenGLEngine/COpenGLCamera.h \
     OpenGLEngine/COpenGLElementArray.h \
