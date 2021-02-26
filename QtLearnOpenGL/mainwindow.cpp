@@ -19,6 +19,7 @@
 #include "18_CullFace/CullFaceWidget.h"
 #include "19_FrameBuffer/FrameBufferWidget.h"
 #include "20_Cubemaps/CubemapsWidget.h"
+#include "21_GeometryShader/GeometryShaderWidget.h"
 #include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -100,4 +101,7 @@ void MainWindow::initUI(void)
 
     CubemapsWidget* pW20 = new CubemapsWidget;
     m_pLeftControl->addWidget(pW20, tr("20.Cubemaps"));
+
+    GeometryShaderWidget* pW21 = new GeometryShaderWidget;
+    m_pLeftControl->addWidget(pW21, tr("21.Geometry Shader"));
 }

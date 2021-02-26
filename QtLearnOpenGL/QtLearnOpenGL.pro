@@ -87,6 +87,11 @@ SOURCES += \
     20_Cubemaps/CubemapsAttrNode.cpp \
     20_Cubemaps/CubemapsRenderWidget.cpp \
     20_Cubemaps/CubemapsWidget.cpp \
+    21_GeometryShader/GeometryShaderRenderWidget.cpp \
+    21_GeometryShader/GeometryShaderRenderWidget2.cpp \
+    21_GeometryShader/GeometryShaderRenderWidget3.cpp \
+    21_GeometryShader/GeometryShaderRenderWidget4.cpp \
+    21_GeometryShader/GeometryShaderWidget.cpp \
     OpenGLEngine/CAttributePoint.cpp \
     OpenGLEngine/COpenGLCamera.cpp \
     OpenGLEngine/COpenGLElementArray.cpp \
@@ -154,6 +159,11 @@ HEADERS += \
     20_Cubemaps/CubemapsAttrNode.h \
     20_Cubemaps/CubemapsRenderWidget.h \
     20_Cubemaps/CubemapsWidget.h \
+    21_GeometryShader/GeometryShaderRenderWidget.h \
+    21_GeometryShader/GeometryShaderRenderWidget2.h \
+    21_GeometryShader/GeometryShaderRenderWidget3.h \
+    21_GeometryShader/GeometryShaderRenderWidget4.h \
+    21_GeometryShader/GeometryShaderWidget.h \
     OpenGLEngine/CAttributePoint.h \
     OpenGLEngine/COpenGLCamera.h \
     OpenGLEngine/COpenGLElementArray.h \

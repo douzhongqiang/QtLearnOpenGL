@@ -57,5 +57,14 @@
         <file>20_Cubemaps/skybox/top.jpg</file>
         <file>20_Cubemaps/shader/ReflectionAndRefractionFragmentShader.fsh</file>
         <file>20_Cubemaps/shader/ReflectionAndRefractionVertexShader.vsh</file>
+        <file>21_GeometryShader/shader/fragmentshader.fsh</file>
+        <file>21_GeometryShader/shader/vertexshader.vsh</file>
+        <file>21_GeometryShader/shader/gometryshader.gsh</file>
+        <file>21_GeometryShader/shader/gometryshader2.gsh</file>
+        <file>21_GeometryShader/shader/ModelFragmentShader.fsh</file>
+        <file>21_GeometryShader/shader/ModelVertexShader.vsh</file>
+        <file>21_GeometryShader/shader/gometryshader3.gsh</file>
+        <file>21_GeometryShader/shader/gometryshader4.gsh</file>
+        <file>21_GeometryShader/shader/gometryshader4_DrawOnly.gsh</file>
     </qresource>
 </RCC>
