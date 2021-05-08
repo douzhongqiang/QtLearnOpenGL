@@ -17,6 +17,7 @@ INCLUDEPATH += $$PWD/../NodeAttributeControl
 INCLUDEPATH += $$PWD/../Utils
 
 INCLUDEPATH += $$PWD/../ThirdParty/assimp/include
+INCLUDEPATH += $$PWD/../ThirdParty/glm
 CONFIG(debug, debug|release) {
     #VS2019
     LIBS += -L$$PWD/../ThirdParty/assimp/lib/Debug -lassimp-vc140-mt
@@ -94,6 +95,7 @@ SOURCES += \
     21_GeometryShader/GeometryShaderWidget.cpp \
     22_DrawInstance/DrawInstanceRenderWidget.cpp \
     22_DrawInstance/DrawInstanceWidget.cpp \
+    23_TransformFeedback/TransformFeedbackRenderWidget.cpp \
     OpenGLEngine/CAttributePoint.cpp \
     OpenGLEngine/COpenGLCamera.cpp \
     OpenGLEngine/COpenGLElementArray.cpp \
@@ -168,6 +170,7 @@ HEADERS += \
     21_GeometryShader/GeometryShaderWidget.h \
     22_DrawInstance/DrawInstanceRenderWidget.h \
     22_DrawInstance/DrawInstanceWidget.h \
+    23_TransformFeedback/TransformFeedbackRenderWidget.h \
     OpenGLEngine/CAttributePoint.h \
     OpenGLEngine/COpenGLCamera.h \
     OpenGLEngine/COpenGLElementArray.h \

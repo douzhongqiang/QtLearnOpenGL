@@ -13,6 +13,9 @@
 #include "OpenGLEngine/COpenGLFrameBufferObject.h"
 #include "OpenGLEngine/COpenGLModel.h"
 #include "OpenGLEngine/COpenGLMesh.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 class DrawInstaceRenderWidget : public QOpenGLWidget, public QOpenGLFunctions_3_3_Core
 {
@@ -35,10 +38,10 @@ private:
     GLuint m_nVBO;
 
     void initMatrixs(void);
-    QVector<QMatrix4x4> m_matrixVecs;
+    QVector<glm::mat4> m_matrixVecs;
     QVector<GLuint> m_VAOVecs;
     int m_nTotalSize = 1000;
-    GLuint m_nVBOId;
+    GLuint m_nVBOId; 
 };
 
 #endif

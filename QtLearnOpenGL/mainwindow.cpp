@@ -21,6 +21,7 @@
 #include "20_Cubemaps/CubemapsWidget.h"
 #include "21_GeometryShader/GeometryShaderWidget.h"
 #include "22_DrawInstance/DrawInstanceWidget.h"
+#include "23_TransformFeedback/TransformFeedbackRenderWidget.h"
 #include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -107,5 +108,8 @@ void MainWindow::initUI(void)
     m_pLeftControl->addWidget(pW21, tr("21.Geometry Shader"));
 
     DrawInstanceWidget* pW22 = new DrawInstanceWidget;
-    m_pLeftControl->addWidget(pW22, tr("21.Draw Instance"));
+    m_pLeftControl->addWidget(pW22, tr("22.Draw Instance"));
+
+    TransformFeedbackRenderWidget* pW23 = new TransformFeedbackRenderWidget;
+    m_pLeftControl->addWidget(pW23, tr("23. Transform Feedback"));
 }

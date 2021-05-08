@@ -142,24 +142,38 @@ void DrawInstaceRenderWidget::initMatrixs(void)
     // 设置每一个陨石的模型矩阵
     for (int i=0; i<m_nTotalSize; ++i)
     {
-        QMatrix4x4 model;
+        qDebug() << qrand() << qrand();
         // 1. 位移：分布在半径为 'radius' 的圆形上，偏移的范围是 [-offset, offset]
         float angle = (float)i / (float)amount * 360.0f;
-        float displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
+        float displacement = (qrand() % (int)(2 * offset * 100)) / 100.0f - offset;
         float x = sin(angle) * radius + displacement;
-        displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
+
+        int number = qrand();
+        qDebug() << number << (int)(2 * offset * 100);
+        qDebug() << number % (int)(2 * offset * 100) << (number % (int)(2 * offset * 100));
+        qDebug() << (number % (int)(2 * offset * 100)) / 100.0f;
+        qDebug() << (number % (int)(2 * offset * 100)) / 100.0f - offset;
+        int temp2 = 2 * offset * 100;
+        float tempValue = (number % temp2) / 100.0f - offset;
+        qDebug() << 100;
+        displacement = tempValue;
+
+//        displacement = (number % (int)(2 * offset * 100)) / 100.0f - offset;
         float y = displacement * 0.4f; // 让行星带的高度比x和z的宽度要小
-        displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
+        displacement = (qrand() % (int)(2 * offset * 100)) / 100.0f - offset;
         float z = cos(angle) * radius + displacement;
-        model.translate(QVector3D(x, y, z));
+//        model.translate(QVector3D(x, y, z));
+        glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z));
 
         // 2. 缩放：在 0.05 和 0.25f 之间缩放
-        float scale = (rand() % 20) / 100.0f + 0.05;
-        model.scale(scale);
+        float scale = (qrand() % 20) / 100.0f + 0.05;
+//        model.scale(scale);
+        model = glm::scale(model, glm::vec3(scale, scale, scale));
 
         // 3. 旋转：绕着一个（半）随机选择的旋转轴向量进行随机的旋转
-        float rotAngle = (rand() % 360);
-        model.rotate(rotAngle, QVector3D(0.4f, 0.6f, 0.8f));
+        float rotAngle = (qrand() % 360);
+//        model.rotate(rotAngle, QVector3D(0.4f, 0.6f, 0.8f));
+        model = glm::rotate(model, rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
 
         // 4. 添加到矩阵的数组中
         m_matrixVecs << model;
@@ -168,8 +182,8 @@ void DrawInstaceRenderWidget::initMatrixs(void)
     // 创建VBO
     this->glGenBuffers(1, &m_nVBOId);
     this->glBindBuffer(GL_VERTEX_ARRAY, m_nVBOId);
-    qDebug() << sizeof(QMatrix4x4);
-    this->glBufferData(GL_VERTEX_ARRAY, m_matrixVecs.size() * sizeof (QMatrix4x4), m_matrixVecs.data(), GL_STATIC_DRAW);
+    qDebug() << sizeof(glm::mat4);
+    this->glBufferData(GL_VERTEX_ARRAY, m_matrixVecs.size() * sizeof (glm::mat4), m_matrixVecs.data(), GL_STATIC_DRAW);
 
     for (int i=0; i<m_nTotalSize; ++i)
     {
@@ -185,16 +199,16 @@ void DrawInstaceRenderWidget::initMatrixs(void)
         GLuint p4 = p3 + 1;
 
         this->glEnableVertexAttribArray(p1);
-        this->glVertexAttribPointer(p1, 4, GL_FLOAT, GL_FALSE, sizeof(QMatrix4x4), (void*)0);
+        this->glVertexAttribPointer(p1, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
 
         this->glEnableVertexAttribArray(p2);
-        this->glVertexAttribPointer(p2, 4, GL_FLOAT, GL_FALSE, sizeof(QMatrix4x4), (void*)(sizeof(QVector4D)));
+        this->glVertexAttribPointer(p2, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(QVector4D)));
 
         this->glEnableVertexAttribArray(p3);
-        this->glVertexAttribPointer(p3, 4, GL_FLOAT, GL_FALSE, sizeof(QMatrix4x4), (void*)(sizeof(QVector4D) * 2));
+        this->glVertexAttribPointer(p3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(QVector4D) * 2));
 
         this->glEnableVertexAttribArray(p4);
-        this->glVertexAttribPointer(p4, 4, GL_FLOAT, GL_FALSE, sizeof(QMatrix4x4), (void*)(sizeof(QVector4D) * 3));
+        this->glVertexAttribPointer(p4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(QVector4D) * 3));
 
         this->glVertexAttribDivisor(p1, 1);
         this->glVertexAttribDivisor(p2, 1);
