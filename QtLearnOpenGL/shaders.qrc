@@ -68,5 +68,9 @@
         <file>21_GeometryShader/shader/gometryshader4_DrawOnly.gsh</file>
         <file>23_TransformFeedback/shader/fragmentshader.fsh</file>
         <file>23_TransformFeedback/shader/vertexshader.vsh</file>
+        <file>23_TransformFeedback/shader/geometeryshader.gsh</file>
+        <file>24_ParticleSystem/shader/fragmentshader.fsh</file>
+        <file>24_ParticleSystem/shader/geometeryshader.gsh</file>
+        <file>24_ParticleSystem/shader/vertexshader.vsh</file>
     </qresource>
 </RCC>

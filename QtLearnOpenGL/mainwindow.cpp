@@ -22,6 +22,7 @@
 #include "21_GeometryShader/GeometryShaderWidget.h"
 #include "22_DrawInstance/DrawInstanceWidget.h"
 #include "23_TransformFeedback/TransformFeedbackRenderWidget.h"
+#include "24_ParticleSystem/ParticleSystemRenderWidget.h"
 #include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -111,5 +112,8 @@ void MainWindow::initUI(void)
     m_pLeftControl->addWidget(pW22, tr("22.Draw Instance"));
 
     TransformFeedbackRenderWidget* pW23 = new TransformFeedbackRenderWidget;
-    m_pLeftControl->addWidget(pW23, tr("23. Transform Feedback"));
+    m_pLeftControl->addWidget(pW23, tr("23.Transform Feedback"));
+
+    ParticleSystemRenderWidget* pW24 = new ParticleSystemRenderWidget;
+    m_pLeftControl->addWidget(pW24, tr("24.Particl System"));
 }

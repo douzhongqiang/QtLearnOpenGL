@@ -1,9 +1,9 @@
 #version 330 core
 
 in float inValue;
-out float outValue;
+out float geoValue;
 
 void main(void)
 {
-    outValue = sqrt(inValue);
+    geoValue = sqrt(inValue);
 }

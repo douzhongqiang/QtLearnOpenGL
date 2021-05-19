@@ -96,6 +96,7 @@ SOURCES += \
     22_DrawInstance/DrawInstanceRenderWidget.cpp \
     22_DrawInstance/DrawInstanceWidget.cpp \
     23_TransformFeedback/TransformFeedbackRenderWidget.cpp \
+    24_ParticleSystem/ParticleSystemRenderWidget.cpp \
     OpenGLEngine/CAttributePoint.cpp \
     OpenGLEngine/COpenGLCamera.cpp \
     OpenGLEngine/COpenGLElementArray.cpp \
@@ -171,6 +172,7 @@ HEADERS += \
     22_DrawInstance/DrawInstanceRenderWidget.h \
     22_DrawInstance/DrawInstanceWidget.h \
     23_TransformFeedback/TransformFeedbackRenderWidget.h \
+    24_ParticleSystem/ParticleSystemRenderWidget.h \
     OpenGLEngine/CAttributePoint.h \
     OpenGLEngine/COpenGLCamera.h \
     OpenGLEngine/COpenGLElementArray.h \

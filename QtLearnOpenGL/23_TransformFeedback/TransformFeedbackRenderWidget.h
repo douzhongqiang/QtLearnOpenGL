@@ -23,6 +23,12 @@ protected:
 private:
     bool initShaderProgram(void);
     QOpenGLShaderProgram* m_pShaderProgram = nullptr;
+
+    GLuint m_vao;
+    GLuint m_vbo;
+    GLuint m_tbo;
+
+    GLuint m_queryId;
 };
 
 #endif
